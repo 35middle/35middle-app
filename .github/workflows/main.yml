@@ -46,6 +46,15 @@ jobs:
           container-name: iv-app-image
           image: ${{ steps.build-image.outputs.image }}
 
+      - name: Update App Spec File
+        run: |
+          sed -ie "s/<CONTAINER_NAME>/$CONTAINER_NAME/" ./appspec.json
+          sed -ie "s/<CONTAINER_PORT>/$CONTAINER_PORT/" ./appspec.json
+
+        env:
+          CONTAINER_NAME: iv-app-image
+          CONTAINER_PORT: 3000
+
       - name: Deploy Amazon ECS task definition
         uses: aws-actions/amazon-ecs-deploy-task-definition@v1
         with:
@@ -53,3 +62,6 @@ jobs:
           service: web-service-iv-app-prod
           cluster: web-cluster-iv-app-prod
           wait-for-service-stability: true
+          codedeploy-appspec: appspec.json
+          codedeploy-application: deployment-app-iv-app-prod
+          codedeploy-deployment-group: deployment-group-iv-app-prod

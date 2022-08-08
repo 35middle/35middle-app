@@ -15,6 +15,111 @@ locals {
   ecs_log_group = "/aws/ecs/${var.project_id}-${var.env}"
   # Retention in days
   ecs_log_retention = 1
+
+  # Deployment Configuration
+  ecs_deployment_type = "TimeBasedCanary"
+  ## In minutes
+  ecs_deployment_config_interval = 5
+  ## In percentage
+  ecs_deployment_config_pct = 25
+}
+
+resource "aws_codedeploy_deployment_config" "custom_canary" {
+  deployment_config_name = "EcsCanary25Percent20Minutes"
+  compute_platform       = "ECS"
+  traffic_routing_config {
+    type = local.ecs_deployment_type
+    time_based_canary {
+      interval   = local.ecs_deployment_config_interval
+      percentage = local.ecs_deployment_config_pct
+    }
+  }
+}
+
+resource "aws_codedeploy_app" "iv_app" {
+  compute_platform = "ECS"
+  name             = "deployment-app-${var.project_id}-${var.env}"
+}
+
+## Cloudwatch log errors
+module "application_error_alarm" {
+  source             = "github.com/Jareechang/tf-modules//cloudwatch/alarms/application-log-errors?ref=v1.0.12"
+  evaluation_periods = "2"
+  threshold          = "10"
+  arn_suffix         = module.alb.lb.arn_suffix
+  project_id         = var.project_id
+  env                = var.env
+  # Keyword to match for this can be changed
+  pattern            = "Error"
+  log_group_name     = aws_cloudwatch_log_group.ecs.name
+  metric_name        = "ApplicationErrorCount"
+  metric_namespace   = "ECS/${var.project_id}-${var.env}"
+}
+
+## ALB errors (5xx)
+module "http_error_alarm" {
+  source             = "github.com/Jareechang/tf-modules//cloudwatch/alarms/alb-http-errors?ref=v1.0.8"
+  evaluation_periods = "2"
+  threshold          = "10"
+  arn_suffix         = module.alb.lb.arn_suffix
+  project_id         = var.project_id
+}
+
+resource "aws_codedeploy_deployment_group" "this" {
+  app_name               = aws_codedeploy_app.iv_app.name
+  deployment_config_name = aws_codedeploy_deployment_config.custom_canary.id
+  deployment_group_name  = "deployment-group-${var.project_id}-${var.env}"
+  service_role_arn       = aws_iam_role.codedeploy_role.arn
+
+  auto_rollback_configuration {
+    enabled = true
+    events  = ["DEPLOYMENT_FAILURE", "DEPLOYMENT_STOP_ON_ALARM"]
+  }
+
+  alarm_configuration {
+    alarms  = [
+      module.http_error_alarm.name,
+      module.application_error_alarm.name
+    ]
+    enabled = true
+  }
+
+  blue_green_deployment_config {
+    deployment_ready_option {
+      action_on_timeout = "CONTINUE_DEPLOYMENT"
+    }
+
+    terminate_blue_instances_on_deployment_success {
+      action                           = "TERMINATE"
+      termination_wait_time_in_minutes = 0
+    }
+  }
+
+  deployment_style {
+    deployment_option = "WITH_TRAFFIC_CONTROL"
+    deployment_type   = "BLUE_GREEN"
+  }
+
+  ecs_service {
+    cluster_name = aws_ecs_cluster.iv_app_cluster.name
+    service_name = aws_ecs_service.iv_app_ecs_service.name
+  }
+
+  load_balancer_info {
+    target_group_pair_info {
+      prod_traffic_route {
+        listener_arns = [module.alb.http_listener.arn]
+      }
+
+      target_group {
+        name = module.ecs_tg_blue.tg.name
+      }
+
+      target_group {
+        name = module.ecs_tg_green.tg.name
+      }
+    }
+  }
 }
 
 data "template_file" "task_def_generated" {
@@ -71,7 +176,7 @@ resource "aws_ecs_service" "iv_app_ecs_service" {
   launch_type = local.ecs_launch_type
 
   load_balancer {
-    target_group_arn = module.ecs_tg.tg.arn
+    target_group_arn = module.ecs_tg_blue.tg.arn
     container_name   = local.ecs_container_name
     container_port   = local.target_port
   }
@@ -79,6 +184,10 @@ resource "aws_ecs_service" "iv_app_ecs_service" {
   network_configuration {
     subnets         = module.networking.private_subnets[*].id
     security_groups = [aws_security_group.ecs_sg.id]
+  }
+
+  deployment_controller {
+    type = "CODE_DEPLOY"
   }
 
   tags = {
@@ -171,6 +280,27 @@ module "ecs_tg" {
   vpc_id              = module.networking.vpc_id
 }
 
+
+module "ecs_tg_blue" {
+  project_id          = "${var.project_id}-blue"
+  source              = "github.com/Jareechang/tf-modules//alb?ref=v1.0.2"
+  create_target_group = true
+  port                = local.target_port
+  protocol            = "HTTP"
+  target_type         = "ip"
+  vpc_id              = module.networking.vpc_id
+}
+
+module "ecs_tg_green" {
+  project_id          = "${var.project_id}-green"
+  source              = "github.com/Jareechang/tf-modules//alb?ref=v1.0.2"
+  create_target_group = true
+  port                = local.target_port
+  protocol            = "HTTP"
+  target_type         = "ip"
+  vpc_id              = module.networking.vpc_id
+}
+
 module "alb" {
   source             = "github.com/Jareechang/tf-modules//alb?ref=v1.0.2"
   create_alb         = true
@@ -179,7 +309,7 @@ module "alb" {
   load_balancer_type = "application"
   security_groups    = [aws_security_group.alb_ecs_sg.id]
   subnets            = module.networking.public_subnets[*].id
-  target_group       = module.ecs_tg.tg.arn
+  target_group       = module.ecs_tg_blue.tg.arn
 }
 
 data "aws_caller_identity" "current" {}
@@ -200,5 +330,47 @@ module "ecr_ecs_ci_user" {
     "arn:aws:ecr:${var.aws_region}:${data.aws_caller_identity.current.account_id}:repository/web/${var.project_id}",
     "arn:aws:ecr:${var.aws_region}:${data.aws_caller_identity.current.account_id}:repository/web/${var.project_id}/*"
   ]
-  other_iam_statements = {}
+  other_iam_statements = {
+    codedeploy = {
+      actions = [
+        "codedeploy:GetDeploymentGroup",
+        "codedeploy:CreateDeployment",
+        "codedeploy:GetDeployment",
+        "codedeploy:GetDeploymentConfig",
+        "codedeploy:RegisterApplicationRevision"
+      ]
+      effect = "Allow"
+      resources = [
+        "*"
+      ]
+    }
+  }
+}
+
+data "aws_iam_policy_document" "codedeploy_assume_role" {
+  version = "2012-10-17"
+  statement {
+    effect  = "Allow"
+    actions = ["sts:AssumeRole"]
+    principals {
+      type        = "Service"
+      identifiers = [
+        "codedeploy.amazonaws.com"
+      ]
+    }
+  }
+}
+
+resource "aws_iam_role" "codedeploy_role" {
+  name               = "CodeDeployRole${var.project_id}"
+  description        = "CodeDeployRole for ${var.project_id} in ${var.env}"
+  assume_role_policy = data.aws_iam_policy_document.codedeploy_assume_role.json
+  lifecycle {
+    create_before_destroy = true
+  }
+}
+
+resource "aws_iam_role_policy_attachment" "codedeploy_policy_attachment" {
+  policy_arn = "arn:aws:iam::aws:policy/AWSCodeDeployRoleForECS"
+  role       = aws_iam_role.codedeploy_role.name
 }
