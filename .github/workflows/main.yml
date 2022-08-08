@@ -50,6 +50,6 @@ jobs:
         uses: aws-actions/amazon-ecs-deploy-task-definition@v1
         with:
           task-definition: ${{ steps.task-def.outputs.task-definition }}
-          service: web-service-node-app-prod
+          service: web-service-iv-app-prod
           cluster: web-cluster-iv-app-prod
           wait-for-service-stability: true
