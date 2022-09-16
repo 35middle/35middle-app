@@ -43,7 +43,7 @@ resource "aws_codedeploy_app" "iv_app" {
 
 ## Cloudwatch log errors
 module "application_error_alarm" {
-  source             = "github.com/Jareechang/tf-modules//cloudwatch/alarms/application-log-errors?ref=v1.0.12"
+  source             = "github.com/Jareechang/tf-modules//cloudwatch/alarms/application-log-errors?ref=v1.0.23"
   evaluation_periods = "2"
   threshold          = "10"
   arn_suffix         = module.alb.lb.arn_suffix
@@ -58,7 +58,7 @@ module "application_error_alarm" {
 
 ## ALB errors (5xx)
 module "http_error_alarm" {
-  source             = "github.com/Jareechang/tf-modules//cloudwatch/alarms/alb-http-errors?ref=v1.0.8"
+  source             = "github.com/Jareechang/tf-modules//cloudwatch/alarms/alb-http-errors?ref=v1.0.23"
   evaluation_periods = "2"
   threshold          = "10"
   arn_suffix         = module.alb.lb.arn_suffix
@@ -208,7 +208,7 @@ resource "aws_cloudwatch_log_group" "ecs" {
 
 ## Execution role and task roles
 module "ecs_roles" {
-  source                    = "github.com/Jareechang/tf-modules//iam/ecs?ref=v1.0.1"
+  source                    = "github.com/Jareechang/tf-modules//iam/ecs?ref=v1.0.23"
   create_ecs_execution_role = true
   create_ecs_task_role      = true
 
@@ -217,7 +217,7 @@ module "ecs_roles" {
 }
 
 module "networking" {
-  source = "github.com/Jareechang/tf-modules//networking?ref=v1.0.1"
+  source = "github.com/Jareechang/tf-modules//networking?ref=v1.0.23"
   env = var.env
   project_id = var.project_id
   subnet_public_cidrblock = [
@@ -271,7 +271,7 @@ resource "aws_security_group" "ecs_sg" {
 }
 
 module "ecs_tg" {
-  source              = "github.com/Jareechang/tf-modules//alb?ref=v1.0.2"
+  source              = "github.com/Jareechang/tf-modules//alb?ref=v1.0.23"
   create_target_group = true
   port                = local.target_port
   protocol            = "HTTP"
@@ -283,7 +283,7 @@ module "ecs_tg" {
 
 module "ecs_tg_blue" {
   project_id          = "${var.project_id}-blue"
-  source              = "github.com/Jareechang/tf-modules//alb?ref=v1.0.2"
+  source              = "github.com/Jareechang/tf-modules//alb?ref=v1.0.23"
   create_target_group = true
   port                = local.target_port
   protocol            = "HTTP"
@@ -293,7 +293,7 @@ module "ecs_tg_blue" {
 
 module "ecs_tg_green" {
   project_id          = "${var.project_id}-green"
-  source              = "github.com/Jareechang/tf-modules//alb?ref=v1.0.2"
+  source              = "github.com/Jareechang/tf-modules//alb?ref=v1.0.23"
   create_target_group = true
   port                = local.target_port
   protocol            = "HTTP"
@@ -302,7 +302,7 @@ module "ecs_tg_green" {
 }
 
 module "alb" {
-  source             = "github.com/Jareechang/tf-modules//alb?ref=v1.0.2"
+  source             = "github.com/Jareechang/tf-modules//alb?ref=v1.0.23"
   create_alb         = true
   enable_https       = false
   internal           = false
@@ -321,7 +321,7 @@ resource "aws_ecr_repository" "main" {
 
 ## CI/CD user role for managing pipeline for AWS ECR resources
 module "ecr_ecs_ci_user" {
-  source            = "github.com/Jareechang/tf-modules//iam/ecr?ref=v1.0.12"
+  source            = "github.com/Jareechang/tf-modules//iam/ecr?ref=v1.0.23"
   env               = var.env
   project_id        = var.project_id
   create_ci_user    = true
