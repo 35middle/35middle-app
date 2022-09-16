@@ -36,7 +36,7 @@
     "@types/react": "^18.0.15",
     "@typescript-eslint/eslint-plugin": "5.37.0",
     "@typescript-eslint/parser": "5.37.0",
-    "autoprefixer": "^10.4.7",
+    "autoprefixer": "10.4.11",
     "cross-env": "^7.0.3",
     "cssnano": "^5.1.12",
     "cypress": "^10.3.0",
