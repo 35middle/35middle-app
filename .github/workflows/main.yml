@@ -46,9 +46,9 @@ jobs:
         if: github.ref == 'refs/heads/develop' || github.ref == 'refs/heads/main'
         run: |
           yarn tf-next
-          echo "::set-output name=url::$(yarn tf-next:deploy --endpoint $TF_NEXT_API_ENDPONT)\n"
+          echo "::set-output name=url::$(yarn tf-next:deploy --endpoint $TF_NEXT_API_ENDPOINT | grep 'Available at:' | sed 's/^.*: //')"
         env:
-          TF_NEXT_API_ENDPONT: ${{ secrets.TF_NEXT_API_ENDPONT }}
+          TF_NEXT_API_ENDPOINT: ${{ secrets.TF_NEXT_API_ENDPOINT }}
 
       # Production
 
