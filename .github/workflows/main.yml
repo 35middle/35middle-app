@@ -42,20 +42,21 @@ jobs:
       # Staging
 
       - name: Deploy Staging
-        if: github.ref == 'refs/heads/develop'
+        id: atomic_deployment
+        if: github.ref == 'refs/heads/develop' | github.ref == 'refs/heads/main'
         run: |
           yarn tf-next
-          yarn tf-next:deploy --endpoint $TF_NEXT_API_ENDPONT
-
+          echo "::set-output name=url::$(yarn tf-next:deploy --endpoint $TF_NEXT_API_ENDPONT)\n"
         env:
           TF_NEXT_API_ENDPONT: ${{ secrets.TF_NEXT_API_ENDPONT }}
 
       # Production
 
-      - name: Deploy Production
-        if: github.ref == 'refs/heads/main'
+      - name: Link Prod
+        if: github.ref == 'refs/heads/develop'
         run: |
-          yarn tf-next
-          yarn tf-next:deploy $TF_NEXT_API_ENDPONT
+          tf-next alias set $DOMAIN $DEPLOYED_URL --force
+
         env:
-          TF_NEXT_API_ENDPONT: ${{ secrets.TF_NEXT_API_ENDPONT }}
+          DEPLOYED_URL: ${{ steps.atomic_deployment.outputs.url }}
+          DOMAIN: ${{ secrets.DOMAIN }}
