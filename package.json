@@ -4,6 +4,7 @@
   "scripts": {
     "dev": "next dev",
     "tf-next": "tf-next build",
+    "tf-next:link": "tf-next alias set",
     "tf-next:deploy": "tf-next deploy",
     "build": "next build",
     "start": "next start",

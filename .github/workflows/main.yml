@@ -55,7 +55,7 @@ jobs:
       - name: Link Prod
         if: github.ref == 'refs/heads/develop'
         run: |
-          tf-next alias set $DOMAIN $DEPLOYED_URL --force
+          yarn tf-next:link $DOMAIN $DEPLOYED_URL --force
 
         env:
           DEPLOYED_URL: ${{ steps.atomic_deployment.outputs.url }}
