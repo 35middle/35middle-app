@@ -43,3 +43,6 @@ local
 
 terraform*
 *.terraform
+
+.next-tf
+.pkg
