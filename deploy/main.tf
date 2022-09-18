@@ -82,7 +82,7 @@ resource "aws_route53_record" "cloudfront_alias_domain" {
 # https://registry.terraform.io/modules/terraform-aws-modules/acm/aws/
 module "cloudfront_cert" {
   source  = "terraform-aws-modules/acm/aws"
-  version = "~> 3.0"
+  version = "~> 4.0"
 
   domain_name               = var.custom_domain
   zone_id                   = data.aws_route53_zone.custom_domain_zone.zone_id
