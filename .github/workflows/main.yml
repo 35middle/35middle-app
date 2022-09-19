@@ -40,23 +40,22 @@ jobs:
         run: yarn test
 
       # Staging
-
       - name: Deploy Staging
         id: atomic_deployment
-        if: github.ref == 'refs/heads/develop' || github.ref == 'refs/heads/main'
+        if: github.ref == 'refs/heads/develop'
         run: |
           yarn tf-next
-          echo "::set-output name=url::$(yarn tf-next:deploy --endpoint $TF_NEXT_API_ENDPOINT | grep 'Available at:' | sed 's/^.*: //')"
+          yarn tf-next:deploy --endpoint $TF_NEXT_API_ENDPOINT
+#          echo "::set-output name=url::$(yarn tf-next:deploy --endpoint $TF_NEXT_API_ENDPOINT | grep 'Available at:' | sed 's/^.*: //')"
         env:
           TF_NEXT_API_ENDPOINT: ${{ secrets.TF_NEXT_API_ENDPOINT }}
 
       # Production
-
-      - name: Link Prod
+      - name: Deploy Prod
         if: github.ref == 'refs/heads/develop'
         run: |
-          yarn tf-next:link $DOMAIN ${{ steps.atomic_deployment.outputs.url }} --force
+          yarn tf-next
+          yarn tf-next:link $DOMAIN ${{echo "$(yarn tf-next:deploy --endpoint $TF_NEXT_API_ENDPOINT | grep 'Available at:' | sed 's/^.*: //')"}} --force
 
         env:
-          DEPLOYED_URL: ${{ steps.atomic_deployment.outputs.url }}
           DOMAIN: ${{ secrets.DOMAIN }}
