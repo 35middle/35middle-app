@@ -55,7 +55,7 @@ jobs:
         if: github.ref == 'refs/heads/develop'
         run: |
           yarn tf-next
-          yarn tf-next:link $DOMAIN ${{echo "$(yarn tf-next:deploy --endpoint $TF_NEXT_API_ENDPOINT | grep 'Available at:' | sed 's/^.*: //')"}} --force
+          yarn tf-next:link $DOMAIN $(yarn tf-next:deploy --endpoint $TF_NEXT_API_ENDPOINT | grep 'Available at:' | sed 's/^.*: //') --force
 
         env:
           DOMAIN: ${{ secrets.DOMAIN }}
