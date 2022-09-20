@@ -62,7 +62,7 @@ jobs:
         run: |
           if [ ${{ github.ref }} == 'refs/heads/develop' ]; then
           echo "SLACK_MESSAGE=Deployed to staging: ${{ steps.atomic_deployment.outputs.url }}" >> $GITHUB_ENV
-          else
+          elif [ ${{ github.ref }} == 'refs/heads/main' ]; then
           echo "SLACK_MESSAGE=Deployed to production: ${{ secrets.DOMAIN }}" >> $GITHUB_ENV
           fi 
 
