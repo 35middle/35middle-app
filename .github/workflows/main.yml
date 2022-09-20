@@ -50,13 +50,15 @@ jobs:
           TF_NEXT_API_ENDPOINT: ${{ secrets.TF_NEXT_API_ENDPOINT }}
 
       # Production
-      - name: Link Prod
+      - name: Link Prod and release
         if: github.ref == 'refs/heads/main'
         run: |
           yarn tf-next:link $DOMAIN ${{ steps.atomic_deployment.outputs.url }} --force
-
+          yarn semantic-release
         env:
           DOMAIN: ${{ secrets.DOMAIN }}
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 
       - name: Slack Message
         run: |
