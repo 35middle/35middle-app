@@ -11093,7 +11093,7 @@ scheduler@^0.23.0:
   dependencies:
     loose-envify "^1.1.0"
 
-semantic-release-cli@^5.4.4:
+semantic-release-cli@5.4.4:
   version "5.4.4"
   resolved "https://registry.yarnpkg.com/semantic-release-cli/-/semantic-release-cli-5.4.4.tgz#22e2dcabe9a5d7c9727abf4bea78d012ac1860ba"
   integrity sha512-z/oX4LjhTon7+bpXcEvgQz8iRuWAhEPtDvVyvycNAq4dBopX+oXIMe3TlmtNWShhT2kQTDlXGZnXJxVtDMQgIg==
@@ -11126,7 +11126,7 @@ semantic-release-cli@^5.4.4:
     user-home "^2.0.0"
     validator "^12.0.0"
 
-semantic-release@^19.0.5:
+semantic-release@19.0.5:
   version "19.0.5"
   resolved "https://registry.yarnpkg.com/semantic-release/-/semantic-release-19.0.5.tgz#d7fab4b33fc20f1288eafd6c441e5d0938e5e174"
   integrity sha512-NMPKdfpXTnPn49FDogMBi36SiBfXkSOJqCkk0E4iWOY1tusvvgBwqUmxTX1kmlT6kIYed9YwNKD1sfPpqa5yaA==
