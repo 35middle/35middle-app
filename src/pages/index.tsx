@@ -11,7 +11,7 @@ const Index = () => {
         />
       }
     >
-      Hello 35 middle
+      <button className="btn-primary btn">Hello world 35button</button>
     </Main>
   );
 };
