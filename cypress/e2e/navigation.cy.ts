@@ -9,7 +9,7 @@ describe('Navigation', () => {
         name: 'Boilerplate code for your Nextjs project with Tailwind CSS',
       });
 
-      // Find a link containing "About" text and click it
+      // Find a link containing "ForgetPassword" text and click it
       cy.findByRole('link', { name: 'About' }).click();
 
       // The new url should include "/about"
