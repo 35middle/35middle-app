@@ -24,7 +24,7 @@
     "semantic-release": "semantic-release"
   },
   "dependencies": {
-    "@headlessui/react": "^1.7.2",
+    "@headlessui/react": "1.7.3",
     "daisyui": "^2.30.0",
     "formik": "^2.2.9",
     "next": "12.3.1",
