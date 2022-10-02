@@ -1,6 +1,8 @@
 import { LockClosedIcon } from '@heroicons/react/20/solid';
 import React from 'react';
 
+export const validateInput = (str = '') => str.includes('@');
+
 const Login = () => {
   return (
     <div className="flex min-h-full items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
@@ -84,8 +86,8 @@ const Login = () => {
             </div>
           </div>
 
-          <div>
-            <div className="mr-5 ml-20 inline-block w-1/4">
+          <div className="flex justify-center">
+            <div className="inline-block w-1/4">
               <button
                 type="submit"
                 className="group relative flex w-full justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
