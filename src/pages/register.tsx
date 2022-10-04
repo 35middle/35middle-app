@@ -1,7 +1,6 @@
 import { Box, Button, TextField, Typography } from '@mui/material';
 import type { FormikProps } from 'formik';
 import { useFormik } from 'formik';
-import Image from 'next/image';
 import * as React from 'react';
 import * as yup from 'yup';
 
@@ -60,7 +59,7 @@ const Register = () => {
     <Box className="flex h-screen items-center justify-center bg-background">
       <Box className="w-full max-w-md space-y-8">
         <Box className="flex flex-col items-center justify-center">
-          <Image
+          <img
             src="/assets/images/35middle.png"
             alt="logo"
             width="240"
