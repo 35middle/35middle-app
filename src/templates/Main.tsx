@@ -20,6 +20,7 @@ const Main = (props: IMainProps) => (
           </div>
           <div className="text-xl">{AppConfig.description}</div>
         </div>
+
         <div>
           <ul className="flex flex-wrap text-xl">
             <li className="mr-6">
