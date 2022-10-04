@@ -24,7 +24,11 @@
     "semantic-release": "semantic-release"
   },
   "dependencies": {
+    "@emotion/react": "^11.10.4",
+    "@emotion/styled": "^11.10.4",
     "@headlessui/react": "^1.7.2",
+    "@mui/icons-material": "^5.10.6",
+    "@mui/material": "^5.10.7",
     "daisyui": "^2.30.0",
     "formik": "^2.2.9",
     "next": "12.3.1",
