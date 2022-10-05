@@ -51,7 +51,7 @@ pipeline {
         stage('npm build') {
             steps{
                 // dir("./") {
-                    sh 'yarn build'
+                    sh 'yarn run build'
                     sh 'yarn export'
 //                     sh 'npm run build'
 //                     sh 'npm run export'
