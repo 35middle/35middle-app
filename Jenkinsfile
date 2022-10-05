@@ -5,6 +5,7 @@ pipeline {
             args '-u 0:0'
         }
     }
+    // agent any
 
     environment {
         ENVIRONMENT = 'UAT'
@@ -29,27 +30,27 @@ pipeline {
                 git branch:'develop', url:'https://github.com/35middle/35middle-app.git'
             }
         }
-        // stage('nvm') {
-        //     steps{
-        //         sh 'nvm use'
-        //         sh 'nvm install'
-        //     }
-        // }
-        stage('npm install') {
+        stage('yarn install') {
             steps{
                 // dir("./") {
                     sh 'node -v'
-                    sh 'npm -v'
-                    sh 'npm install'
-                    
+                    // sh 'npm -v'
+                    // sh 'npm install'
+                    // sh 'echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list'
+                    sh 'apt update'
+                    sh 'apt install yarn -y'
+                    // sh 'curl -fsSL https://deb.nodesource.com/setup_16.x | sudo -E bash -'
+                    // sh 'sudo apt-get install -y nodejs'
+                    // sh 'sudo npm install -g yarn@1.22.17'
+                    sh 'yarn --version'
                 // }
             }
         }
         stage('npm build') {
             steps{
                 // dir("./") {
-                    sh 'npm run build'
-                    sh 'npm run export'
+                    sh 'yarn build'
+                    sh 'yarn export'
                     echo 'bye'
                 // }
             }
