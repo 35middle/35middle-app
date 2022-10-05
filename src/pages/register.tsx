@@ -128,7 +128,7 @@ const Register = () => {
               href="#"
               className="font-sans text-sm font-medium text-primary no-underline"
             >
-              <Typography variant="button">Already registered?</Typography>
+              <Typography variant="button">Already r四大发</Typography>
             </a>
           </Box>
         </form>
