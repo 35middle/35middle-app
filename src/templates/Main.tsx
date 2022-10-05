@@ -53,19 +53,20 @@ const Main = (props: IMainProps) => (
 
       <div className="content py-5 text-xl">{props.children}</div>
 
-      <div className="border-t border-gray-300 py-8 text-center text-sm">
-        © Copyright {new Date().getFullYear()} {AppConfig.title}. Powered with{' '}
-        <span role="img" aria-label="Love">
-          ♥
-        </span>{' '}
-        by <a href="https://creativedesignsguru.com">CreativeDesignsGuru</a>
-        {/*
-         * PLEASE READ THIS SECTION
-         * We'll really appreciate if you could have a link to our website
-         * The link doesn't need to appear on every pages, one link on one page is enough.
-         * Thank you for your support it'll mean a lot for us.
-         */}
-      </div>
+      <footer className="max-w-container bottom-0 mx-auto mt-32 w-full px-4 sm:px-6 lg:px-8">
+        <p className="border-t border-gray-300 py-8 text-center text-sm">
+          Copyright ©{new Date().getFullYear()} {AppConfig.title} {}
+          <span role="img" aria-label="Love">
+            all rights reserved.
+          </span>
+        </p>
+      </footer>
+      {/*
+       * PLEASE READ THIS SECTION
+       * We'll really appreciate if you could have a link to our website
+       * The link doesn't need to appear on every pages, one link on one page is enough.
+       * Thank you for your support it'll mean a lot for us.
+       */}
     </div>
   </div>
 );
