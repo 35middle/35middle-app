@@ -24,14 +24,14 @@ pipeline {
                 echo 'Hello World'
             }
         }
-        stage('Git checkout') {
-            steps{
-                // Get source code from a GitHub repository
-                // git branch:'develop', url:'https://github.com/35middle/35middle-app.git'
+//         stage('Git checkout') {
+//             steps{
+//                 // Get source code from a GitHub repository
+//                 // git branch:'develop', url:'https://github.com/35middle/35middle-app.git'
                 
-                git branch:'main', url:'https://github.com/thomasni91/35middle-app'
-            }
-        }
+//                 git branch:'main', url:'https://github.com/thomasni91/35middle-app'
+//             }
+//         }
         stage('yarn install') {
             steps{
                 // dir("./") {
