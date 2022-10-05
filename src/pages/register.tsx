@@ -122,7 +122,7 @@ const Register = () => {
               color="primary"
               size="large"
             >
-              Register
+              Register....
             </Button>
             <a
               href="#"
