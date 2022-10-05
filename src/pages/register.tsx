@@ -65,7 +65,7 @@ const Register = () => {
             width="240"
             height="240"
           />
-          <Typography variant="h1">Welcome to Registersdfasdfsdfsddf</Typography>
+          <Typography variant="h1">Welcome to Register9sdfasdfsdfsddf</Typography>
         </Box>
         <form
           className="flex flex-col items-center justify-center"
