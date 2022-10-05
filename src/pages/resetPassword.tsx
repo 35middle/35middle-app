@@ -1,97 +1,118 @@
-import { Meta } from '@/layouts/Meta';
-import { Main } from '@/templates/Main';
-import logo from '../../public/assets/images/35middle.png'
-import { useState } from 'react';
+import { Box, Button, TextField, Typography } from '@mui/material';
+import type { FormikProps } from 'formik';
+import { useFormik } from 'formik';
+import * as React from 'react';
+import * as yup from 'yup';
 
-
-
-function resetPassword() {
-  const [input, setInput] = useState({
-    password: '',
-    confirmPassword: '',
-  });
-
-  const [error, setError] = useState({
-    password: '',
-    confirmPassword: '',
-  });
-
-  const onInputChange = (e) => {
-    const { name, value } = e.target;
-    setInput((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
-    validateInput(e);
-  };
-
-  const validateInput = (e) => {
-    let { name, value } = e.target;
-    setError((prev) => {
-      const stateObj = { ...prev, [name]: '' };
-
-      switch (name) {
-          case 'password':
-          if (!value) {
-            stateObj[name] = 'Please enter New Password.';
-          } else if (input.confirmPassword && value !== input.confirmPassword) {
-            stateObj['confirmPassword'] =
-              'New Password and Confirm Password does not match.';
-          } else {
-            stateObj['confirmPassword'] = input.confirmPassword
-              ? ''
-              : error.confirmPassword;
-          }
-          break;
-
-        case 'confirmPassword':
-          if (!value) {
-            stateObj[name] = 'Please enter Confirm Password.';
-          } else if (input.password && value !== input.password) {
-            stateObj[name] = 'New Password and Confirm Password does not match.';
-          }
-          break;
-
-        default:
-          break;
-      }
-
-      return stateObj;
-    });
-  };
-
-  return (
-    <Main meta={<Meta title="35 Middle-app" description="reset password" />}>
-      <div className='flex flex-col items-center justify-center m-20'>
-      <img src={ logo } alt="35middle Logo" />
-        <input 
-          type="password" 
-          name="password" 
-          placeholder="New Password" 
-          value={input.password}
-          onChange={onInputChange}
-          onBlur={validateInput}
-          pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
-          className="input input-bordered input-info w-full max-w-xs m-2 bg-gradient-to-r from-blue-200 to bule-100"></input>
-          {error.password && <span className="err text-sm text-red-500">{error.password}</span>}
-
-        <input 
-          type="password" 
-          name="confirmPassword" 
-          placeholder="Confirm Password"  
-          value={input.confirmPassword}
-          onChange={onInputChange}
-          onBlur={validateInput}
-          pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" 
-          className="input input-bordered input-info w-full max-w-xs m-2 bg-gradient-to-r from-blue-200 to bule-100"></input>
-          {error.confirmPassword && (
-            <span className="err text-sm text-red-500">{error.confirmPassword}</span>
-          )}
-      <button type="submit" className="btn btn-info mt-4">Submit</button>
-        </div>
-    </Main>
-  );
+interface ObjType {
+  password: string;
+  confirmPassword: string;
 }
 
+const schema = yup.object({
+  password: yup
+    .string()
+    .required('Please Enter your password')
+    .matches(
+      /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/,
+      'Must Contain 8 Characters, One Uppercase, One Lowercase, One Number and one special case Character'
+    ),
+  confirmPassword: yup
+    .string()
+    .required('Please Enter your confirm password')
+    .oneOf([yup.ref('password'), null], 'Passwords must match'),
+});
 
-export default resetPassword;
+const onSubmit = async (actions: any) => {
+  // console.log(values);
+  await new Promise((resolve) => {
+    setTimeout(resolve, 1000);
+  });
+  actions.resetForm();
+};
+
+const ResetPassword = () => {
+  const {
+    values,
+    errors,
+    touched,
+    handleBlur,
+    handleChange,
+    handleSubmit,
+  }: FormikProps<ObjType> = useFormik<ObjType>({
+    initialValues: {
+      password: '',
+      confirmPassword: '',
+    },
+    validationSchema: schema,
+    onSubmit,
+  });
+
+  return (
+    <Box className="flex h-screen items-center justify-center bg-background">
+      <Box className="m-20 flex flex-col items-center justify-center">
+        <Box className="flex flex-col items-center justify-center">
+          <img
+            src="/assets/images/35middle.png"
+            alt="35middle Logo"
+            height="240"
+            width="240"
+          />
+          <Typography variant="h4">Reset Passowrd</Typography>
+        </Box>
+        <form
+          className="flex flex-col items-center justify-center"
+          onSubmit={handleSubmit}
+        >
+          <TextField
+            id="password"
+            value={values.password}
+            onChange={handleChange}
+            onBlur={handleBlur}
+            label="Password"
+            type="password"
+            data-testid="password"
+            // isInvalid={!!errors.password}
+            // pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
+            className="mb-4 w-full"
+            error={touched.password && Boolean(errors.password)}
+            helperText={touched.password && errors.password}
+          />
+          {/* {error.password && (
+            <span className="err text-sm text-red-500">{error.password}</span>
+          )} */}
+
+          <TextField
+            id="confirmPassword"
+            value={values.confirmPassword}
+            onChange={handleChange}
+            onBlur={handleBlur}
+            label="Confirm Password"
+            type="Password"
+            // pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
+            // isInvalid={!!errors.confirmPassword}
+            className="mb-4 w-full"
+            error={touched.confirmPassword && Boolean(errors.confirmPassword)}
+            helperText={touched.confirmPassword && errors.confirmPassword}
+          />
+          {/* {error.confirmPassword && (
+            <span className="err text-sm text-red-500">
+              {error.confirmPassword}
+            </span>
+          )} */}
+        </form>
+        <Button
+          type="submit"
+          variant="contained"
+          color="primary"
+          size="large"
+          className="btn-info btn"
+        >
+          Submit
+        </Button>
+      </Box>
+    </Box>
+  );
+};
+
+export default ResetPassword;
