@@ -14,7 +14,7 @@ pipeline {
         BUCKET_NAME = '35middlefront'
 
         // WORKSPACE_PATH = '/var/jenkins_home/workspace/jr-dashboard-uat/dist'
-        WORKSPACE_PATH = '/var/lib/jenkins/workspace/gooda/out'
+        WORKSPACE_PATH = '/var/lib/jenkins/workspace/good/out'
 
     }
 
