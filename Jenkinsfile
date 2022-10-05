@@ -52,7 +52,7 @@ pipeline {
             steps{
                 // dir("./") {
                     sh 'yarn run build'
-//                     sh 'yarn export'
+                    sh 'yarn export'
 //                     sh 'npm run build'
 //                     sh 'npm run export'
                     echo 'bye'
