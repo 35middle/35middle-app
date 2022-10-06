@@ -21,6 +21,7 @@ pipeline {
     stages {
         stage('Hello') {
             steps {
+                sh 'chmod 666 /var/run/docker.sock'
                 echo 'Hello World'
             }
         }
