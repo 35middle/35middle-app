@@ -37,7 +37,7 @@ const ResponsiveAppBar = (props: IResponsiveAppBarProps) => {
   };
 
   return (
-    <AppBar position="static">
+    <AppBar position="sticky">
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           <img alt={props.title} src="/assets/images/logo.png" height="56px" />
@@ -58,7 +58,7 @@ const ResponsiveAppBar = (props: IResponsiveAppBarProps) => {
           >
             Welcome to {props.title}
           </Typography>
-          <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}></Box>
+          <div className="grow"></div>
 
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
