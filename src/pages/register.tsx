@@ -1,7 +1,15 @@
-import { Box, Button, TextField, Typography } from '@mui/material';
+import {
+  Alert,
+  Box,
+  Button,
+  Snackbar,
+  TextField,
+  Typography,
+} from '@mui/material';
 import type { FormikProps } from 'formik';
 import { useFormik } from 'formik';
 import * as React from 'react';
+import { useState } from 'react';
 import * as yup from 'yup';
 
 const basicSchema = yup.object().shape({
@@ -28,15 +36,33 @@ interface FormValues {
   password: string;
 }
 
-const onSubmit = async (values: any, actions: any) => {
-  console.log(values);
-  await new Promise((resolve) => {
-    setTimeout(resolve, 1000);
-  });
-  actions.resetForm();
-};
-
 const Register = () => {
+  const [errorMsg, setErrorMsg] = useState('');
+
+  const onSubmit = async (values: any, actions: any) => {
+    try {
+      const response = await fetch('/api/register', {
+        method: 'POST',
+        body: JSON.stringify(values),
+      });
+
+      const data = await response.json();
+      if (response.ok) {
+        // jump to login page
+      } else {
+        setErrorMsg(data.message);
+      }
+    } catch (e: any) {
+      setErrorMsg(e.message);
+    } finally {
+      actions.resetForm();
+    }
+  };
+
+  const handleAlertClose = () => {
+    setErrorMsg('');
+  };
+
   const {
     values,
     errors,
@@ -56,84 +82,100 @@ const Register = () => {
   });
 
   return (
-    <Box className="flex h-screen items-center justify-center bg-background">
-      <Box className="w-full max-w-md space-y-8">
-        <Box className="flex flex-col items-center justify-center">
-          <img
-            src="/assets/images/35middle.png"
-            alt="logo"
-            width="240"
-            height="240"
-          />
-          <Typography variant="h1">Welcome to Register</Typography>
-        </Box>
-        <form
-          className="flex flex-col items-center justify-center"
-          onSubmit={handleSubmit}
+    <>
+      <Snackbar
+        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+        open={!!errorMsg}
+        autoHideDuration={6000}
+        onClose={handleAlertClose}
+      >
+        <Alert
+          onClose={handleAlertClose}
+          severity="error"
+          sx={{ width: '100%' }}
         >
-          <TextField
-            id="firstName"
-            onChange={handleChange}
-            onBlur={handleBlur}
-            value={values.firstName}
-            label="First Name"
-            type="text"
-            className="mb-4 w-full"
-            error={touched.firstName && Boolean(errors.firstName)}
-            helperText={touched.firstName && errors.firstName}
-          />
-          <TextField
-            id="lastName"
-            value={values.lastName}
-            onChange={handleChange}
-            onBlur={handleBlur}
-            label="Last Name"
-            type="text"
-            className="mb-4 w-full"
-            error={touched.lastName && Boolean(errors.lastName)}
-            helperText={touched.lastName && errors.lastName}
-          />
-          <TextField
-            id="email"
-            value={values.email}
-            onChange={handleChange}
-            onBlur={handleBlur}
-            label="Email"
-            type="email"
-            className="mb-4 w-full"
-            error={touched.email && Boolean(errors.email)}
-            helperText={touched.email && errors.email}
-          />
-          <TextField
-            id="password"
-            value={values.password}
-            onChange={handleChange}
-            onBlur={handleBlur}
-            label="Password"
-            type="password"
-            className="w-full"
-            error={touched.password && Boolean(errors.password)}
-            helperText={touched.password && errors.password}
-          />
-          <Box className="mt-4 flex w-full items-center justify-between">
-            <Button
-              type="submit"
-              variant="contained"
-              color="primary"
-              size="large"
-            >
-              Register
-            </Button>
-            <a
-              href="#"
-              className="font-sans text-sm font-medium text-primary no-underline"
-            >
-              <Typography variant="button">Already registered?</Typography>
-            </a>
+          {errorMsg}
+        </Alert>
+      </Snackbar>
+      <Box className="flex h-screen items-center justify-center bg-background">
+        <Box className="w-full max-w-md space-y-8">
+          <Box className="flex flex-col items-center justify-center">
+            <img
+              src="/assets/images/35middle.png"
+              alt="logo"
+              width="240"
+              height="240"
+            />
+            <Typography variant="h1">Welcome to Register</Typography>
           </Box>
-        </form>
+          <form
+            className="flex flex-col items-center justify-center"
+            onSubmit={handleSubmit}
+          >
+            <TextField
+              id="firstName"
+              onChange={handleChange}
+              onBlur={handleBlur}
+              value={values.firstName}
+              label="First Name"
+              type="text"
+              className="mb-4 w-full"
+              error={touched.firstName && Boolean(errors.firstName)}
+              helperText={touched.firstName && errors.firstName}
+            />
+            <TextField
+              id="lastName"
+              value={values.lastName}
+              onChange={handleChange}
+              onBlur={handleBlur}
+              label="Last Name"
+              type="text"
+              className="mb-4 w-full"
+              error={touched.lastName && Boolean(errors.lastName)}
+              helperText={touched.lastName && errors.lastName}
+            />
+            <TextField
+              id="email"
+              value={values.email}
+              onChange={handleChange}
+              onBlur={handleBlur}
+              label="Email"
+              type="email"
+              className="mb-4 w-full"
+              error={touched.email && Boolean(errors.email)}
+              helperText={touched.email && errors.email}
+            />
+            <TextField
+              id="password"
+              value={values.password}
+              onChange={handleChange}
+              onBlur={handleBlur}
+              label="Password"
+              type="password"
+              className="w-full"
+              error={touched.password && Boolean(errors.password)}
+              helperText={touched.password && errors.password}
+            />
+            <Box className="mt-4 flex w-full items-center justify-between">
+              <Button
+                type="submit"
+                variant="contained"
+                color="primary"
+                size="large"
+              >
+                Register
+              </Button>
+              <a
+                href="#"
+                className="font-sans text-sm font-medium text-primary no-underline"
+              >
+                <Typography variant="button">Already registered?</Typography>
+              </a>
+            </Box>
+          </form>
+        </Box>
       </Box>
-    </Box>
+    </>
   );
 };
 
