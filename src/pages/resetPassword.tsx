@@ -21,10 +21,12 @@ const schema = yup.object({
   password: yup
     .string()
     .required('Please Enter your password')
-    .matches(
-      /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/,
-      'Must Contain 8 Characters, One Uppercase, One Lowercase, One Number and one special case Character'
-    ),
+    // .matches(
+    //   /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/,
+    //   'Must Contain 8 Characters, One Uppercase, One Lowercase, One Number and one special case Character'
+    // ),
+    .min(8, 'Password should be of minimum 8 characters length')
+    .max(16, 'Password should be of maximum 16 characters length'),
   confirmPassword: yup
     .string()
     .required('Please Enter your confirm password')
@@ -91,7 +93,7 @@ const ResetPassword = () => {
         </Alert>
       </Snackbar>
       <Box className="flex h-screen items-center justify-center bg-background">
-        <Box className="m-20 flex flex-col items-center justify-center">
+        <Box className="flex flex-col items-center space-y-8">
           <Box className="flex flex-col items-center justify-center">
             <img
               src="/assets/images/35middle-removebg-preview.png"
@@ -99,13 +101,14 @@ const ResetPassword = () => {
               height="240"
               width="240"
             />
-            <Typography variant="h3">Reset Passowrd</Typography>
+            <Typography variant="h1">Reset Passowrd</Typography>
           </Box>
           <form
             className="flex flex-col items-center justify-center"
             onSubmit={handleSubmit}
           >
             <TextField
+              InputProps={{ sx: { width: 450 } }}
               id="password"
               value={values.password}
               onChange={handleChange}
@@ -113,41 +116,30 @@ const ResetPassword = () => {
               label="New Password"
               type="password"
               data-testid="password"
-              // isInvalid={!!errors.password}
-              // pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
-              className="my-4 w-full"
+              className="mb-4 w-full"
               error={touched.password && Boolean(errors.password)}
               helperText={touched.password && errors.password}
             />
-            {/* {error.password && (
-            <span className="err text-sm text-red-500">{error.password}</span>
-          )} */}
 
             <TextField
+              InputProps={{ sx: { width: 450 } }}
               id="confirmPassword"
               value={values.confirmPassword}
               onChange={handleChange}
               onBlur={handleBlur}
               label="Confirm Password"
               type="Password"
-              // pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
-              // isInvalid={!!errors.confirmPassword}
-              className="mb-4 w-full"
+              className="w-full"
               error={touched.confirmPassword && Boolean(errors.confirmPassword)}
               helperText={touched.confirmPassword && errors.confirmPassword}
             />
-            {/* {error.confirmPassword && (
-            <span className="err text-sm text-red-500">
-              {error.confirmPassword}
-            </span>
-          )} */}
           </form>
           <Button
+            className="items-center justify-between"
             type="submit"
             variant="contained"
             color="primary"
             size="large"
-            className="btn-info btn"
           >
             Submit
           </Button>
