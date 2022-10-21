@@ -11,20 +11,17 @@ import { useFormik } from 'formik';
 import * as React from 'react';
 import { useState } from 'react';
 import * as yup from 'yup';
+// import Link from 'next/link';
 // TypeScript object type
 interface ObjType {
   password: string;
   confirmPassword: string;
 }
 // Formik with yup
-const schema = yup.object({
+const schema = yup.object().shape({
   password: yup
     .string()
     .required('Please Enter your password')
-    // .matches(
-    //   /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/,
-    //   'Must Contain 8 Characters, One Uppercase, One Lowercase, One Number and one special case Character'
-    // ),
     .min(8, 'Password should be of minimum 8 characters length')
     .max(16, 'Password should be of maximum 16 characters length'),
   confirmPassword: yup
@@ -37,20 +34,39 @@ const ResetPassword = () => {
   const [errorMsg, setErrorMsg] = useState('');
 
   const onSubmit = async (values: any, actions: any) => {
+    // console.log(values);
+    const token = window.localStorage.getItem('token');
+    // console.log("token",token)
     try {
-      const response = await fetch('/api/resetPassword', {
-        method: 'POST',
+      const response = await fetch('/api/resetPassword/', {
+        method: 'PUT',
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
         body: JSON.stringify(values),
       });
 
       const data = await response.json();
       if (response.ok) {
         // jump to login page
+        setTimeout(() => {
+          // window.location.replace(<Link href='/login'/>);
+          window.location.replace('/login');
+        }, 3000);
       } else {
         setErrorMsg(data.message);
       }
     } catch (e: any) {
+      // console.log('123')
       setErrorMsg(e.message);
+      // if (e.response.statusCode === 404) {
+      //   setErrorMsg('user not found');
+      // } else if (e.response.statusCode === 500) {
+      //   setErrorMsg('server error, please try again later');
+      // } else {
+      //   setErrorMsg('unknown error');
+      // }
     } finally {
       actions.resetForm();
     }
@@ -90,6 +106,7 @@ const ResetPassword = () => {
           sx={{ width: '100%' }}
         >
           {errorMsg}
+          {/* {'Reset password failed!'} */}
         </Alert>
       </Snackbar>
       <Box className="flex h-screen items-center justify-center bg-background">
@@ -129,20 +146,20 @@ const ResetPassword = () => {
               onBlur={handleBlur}
               label="Confirm Password"
               type="Password"
-              className="w-full"
+              className="mb-4 w-full"
               error={touched.confirmPassword && Boolean(errors.confirmPassword)}
               helperText={touched.confirmPassword && errors.confirmPassword}
             />
+            <Button
+              className="items-center justify-between"
+              type="submit"
+              variant="contained"
+              color="primary"
+              size="large"
+            >
+              Submit
+            </Button>
           </form>
-          <Button
-            className="items-center justify-between"
-            type="submit"
-            variant="contained"
-            color="primary"
-            size="large"
-          >
-            Submit
-          </Button>
         </Box>
       </Box>
     </>
