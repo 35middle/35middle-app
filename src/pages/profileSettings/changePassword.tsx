@@ -14,14 +14,16 @@ import * as yup from 'yup';
 // import Link from 'next/link';
 // TypeScript object type
 interface ObjType {
-  password: string;
+  currentPassword: string;
+  newPassword: string;
   confirmPassword: string;
 }
 // Formik with yup
 const schema = yup.object().shape({
-  password: yup
+  currentPassword: yup.string().required('Please Enter your current password'),
+  newPassword: yup
     .string()
-    .required('Please Enter your password')
+    .required('Please Enter your new password')
     .min(8, 'Password should be of minimum 8 characters length')
     .max(16, 'Password should be of maximum 16 characters length'),
   confirmPassword: yup
@@ -30,7 +32,7 @@ const schema = yup.object().shape({
     .oneOf([yup.ref('password'), null], 'Passwords must match'),
 });
 
-const ResetPassword = () => {
+const ChangePassword = () => {
   const [errorMsg, setErrorMsg] = useState('');
 
   const onSubmit = async (values: any, actions: any) => {
@@ -38,7 +40,7 @@ const ResetPassword = () => {
     const token = window.localStorage.getItem('token');
     // console.log("token",token)
     try {
-      const response = await fetch('/api/resetPassword/', {
+      const response = await fetch('/api/changePassword/', {
         method: 'PUT',
         headers: {
           Authorization: `Bearer ${token}`,
@@ -85,7 +87,8 @@ const ResetPassword = () => {
     handleSubmit,
   }: FormikProps<ObjType> = useFormik<ObjType>({
     initialValues: {
-      password: '',
+      currentPassword: '',
+      newPassword: '',
       confirmPassword: '',
     },
     validationSchema: schema,
@@ -112,34 +115,41 @@ const ResetPassword = () => {
       <Box className="flex h-screen items-center justify-center bg-background">
         <Box className="flex flex-col items-center space-y-8">
           <Box className="flex flex-col items-center justify-center">
-            <img
-              src="/assets/images/35middle-removebg-preview.png"
-              alt="35middle Logo"
-              height="240"
-              width="240"
-            />
-            <Typography variant="h1">Reset Passowrd</Typography>
+            <Typography variant="h1">Change password</Typography>
           </Box>
           <form
             className="flex flex-col items-center justify-center"
             onSubmit={handleSubmit}
           >
             <TextField
-              InputProps={{ sx: { width: 450 } }}
-              id="password"
-              value={values.password}
+              InputProps={{ sx: { width: 350 } }}
+              id="currentPassword"
+              value={values.currentPassword}
+              onChange={handleChange}
+              onBlur={handleBlur}
+              label="Current Password"
+              type="password"
+              className="mb-4 w-full"
+              error={touched.currentPassword && Boolean(errors.currentPassword)}
+              helperText={touched.currentPassword && errors.currentPassword}
+            />
+
+            <TextField
+              InputProps={{ sx: { width: 350 } }}
+              id="newPassword"
+              value={values.newPassword}
               onChange={handleChange}
               onBlur={handleBlur}
               label="New Password"
               type="password"
               data-testid="password"
               className="mb-4 w-full"
-              error={touched.password && Boolean(errors.password)}
-              helperText={touched.password && errors.password}
+              error={touched.newPassword && Boolean(errors.newPassword)}
+              helperText={touched.newPassword && errors.newPassword}
             />
 
             <TextField
-              InputProps={{ sx: { width: 450 } }}
+              InputProps={{ sx: { width: 350 } }}
               id="confirmPassword"
               value={values.confirmPassword}
               onChange={handleChange}
@@ -150,15 +160,26 @@ const ResetPassword = () => {
               error={touched.confirmPassword && Boolean(errors.confirmPassword)}
               helperText={touched.confirmPassword && errors.confirmPassword}
             />
-            <Button
-              className="items-center justify-between"
-              type="submit"
-              variant="contained"
-              color="primary"
-              size="large"
-            >
-              Submit
-            </Button>
+            <Box>
+              <Button
+                className="items-center justify-between"
+                type="submit"
+                variant="contained"
+                color="primary"
+                size="large"
+              >
+                Submit
+              </Button>
+              <Button
+                className="items-center justify-between"
+                type="submit"
+                variant="contained"
+                color="primary"
+                size="large"
+              >
+                Cancel
+              </Button>
+            </Box>
           </form>
         </Box>
       </Box>
@@ -166,4 +187,4 @@ const ResetPassword = () => {
   );
 };
 
-export default ResetPassword;
+export default ChangePassword;
