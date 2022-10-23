@@ -20,7 +20,7 @@ interface FormValues {
 const ForgetPassword = () => {
   const [alertData, setAlertData] = useState<AlertData>();
 
-  const onSubmit = async (values: any, actions: any) => {
+  const onSubmit = async (values: FormValues, actions: any) => {
     try {
       const response = await fetch('/api/forgetPassword', {
         method: 'POST',
