@@ -1,9 +1,13 @@
-import { Box, Button, TextField, Typography } from '@mui/material';
+import { Alert, Box, Button, Snackbar, TextField } from '@mui/material';
 import type { FormikProps } from 'formik';
 import { useFormik } from 'formik';
+import Link from 'next/link';
 import * as React from 'react';
+import { useState } from 'react';
 import * as yup from 'yup';
 import YupPassword from 'yup-password';
+
+import UnauthorizedLayout from '@/layouts/UnauthorizedLayout';
 
 YupPassword(yup);
 
@@ -14,16 +18,7 @@ const basicSchema = yup.object().shape({
     .string()
     .email('Please enter a valid email')
     .required('Email is required'),
-  password: yup
-    .string()
-    .min(8, 'Password should be of minimum 8 characters length')
-    .max(16, 'Password should be of maximum 16 characters length')
-    .minLowercase(1, 'password must contain at least 1 lower case letter')
-    .minUppercase(1, 'password must contain at least 1 upper case letter')
-    .minNumbers(1, 'password must contain at least 1 number')
-    .minSymbols(1, 'password must contain at least 1 special character')
-    .required('Password is required')
-    .required('Required'),
+  password: yup.string().required('Required'),
 });
 
 // form with formik
@@ -33,15 +28,35 @@ interface FormValues {
   password: string;
 }
 
-const onSubmit = async (values: any, actions: any) => {
-  console.log(values);
-  await new Promise((resolve) => {
-    setTimeout(resolve, 1000);
-  });
-  actions.resetForm();
-};
-
 const Login = () => {
+  const [errorMsg, setErrorMsg] = useState('');
+  const [open, setOpen] = useState(false);
+
+  const onSubmit = async (values: FormValues) => {
+    try {
+      const response = await fetch('/api/login', {
+        method: 'POST',
+        body: JSON.stringify(values),
+      });
+
+      const data = await response.json();
+      if (response.ok) {
+        console.log(data);
+        // jump into main page
+      } else if (data.statusCode === 401) {
+        setOpen(true);
+        setErrorMsg('Email or password is incorrect');
+      }
+    } catch (e: any) {
+      setOpen(true);
+      setErrorMsg(e.message);
+    }
+  };
+
+  const handleAlertClose = () => {
+    setOpen(false);
+  };
+
   const {
     values,
     errors,
@@ -59,17 +74,22 @@ const Login = () => {
   });
 
   return (
-    <Box className="flex h-screen items-center justify-center bg-background">
-      <Box className="w-full max-w-md space-y-8">
-        <Box className="flex flex-col items-center justify-center">
-          <img
-            src="/assets/images/35middle.png"
-            alt="logo"
-            width="240"
-            height="240"
-          />
-          <Typography variant="h1">Welcome to 35 middle</Typography>
-        </Box>
+    <>
+      <Snackbar
+        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+        open={open}
+        autoHideDuration={6000}
+        onClose={handleAlertClose}
+      >
+        <Alert
+          onClose={handleAlertClose}
+          severity="error"
+          sx={{ width: '100%' }}
+        >
+          {errorMsg}
+        </Alert>
+      </Snackbar>
+      <UnauthorizedLayout title="Welcome to 35middle">
         <form
           className="flex flex-col items-center justify-center"
           onSubmit={handleSubmit}
@@ -96,9 +116,8 @@ const Login = () => {
             error={touched.password && Boolean(errors.password)}
             helperText={touched.password && errors.password}
           />
-          <Box className="mt-4 inline-block w-full items-center justify-between">
+          <Box className="mt-4  flex w-full items-center justify-between">
             <Button
-              className="mr-8"
               type="submit"
               variant="contained"
               color="primary"
@@ -106,26 +125,18 @@ const Login = () => {
             >
               LOGIN
             </Button>
-            <Button
-              type="submit"
-              variant="contained"
-              color="primary"
-              size="large"
-            >
-              SIGN UP
+            <Link href="/register">
+              <Button variant="contained" color="primary" size="large">
+                SIGN UP
+              </Button>
+            </Link>
+            <Button variant="text" color="primary" size="large" className="p-0">
+              Forget Password
             </Button>
-            <a
-              href="#"
-              className="font-sans text-sm font-medium text-primary no-underline"
-            >
-              <Typography variant="button" className="ml-12">
-                Forget Password
-              </Typography>
-            </a>
           </Box>
         </form>
-      </Box>
-    </Box>
+      </UnauthorizedLayout>
+    </>
   );
 };
 
