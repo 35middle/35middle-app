@@ -1,12 +1,12 @@
-import { Alert, Box, Button, Snackbar, TextField } from '@mui/material';
+import { Box, Button, TextField } from '@mui/material';
 import type { FormikProps } from 'formik';
 import { useFormik } from 'formik';
 import Link from 'next/link';
-import { useRouter } from 'next/router';
 import * as React from 'react';
 import { useState } from 'react';
 import * as yup from 'yup';
 
+import type { AlertData } from '@/layouts/UnauthorizedLayout';
 import UnauthorizedLayout from '@/layouts/UnauthorizedLayout';
 
 const basicSchema = yup.object().shape({
@@ -34,8 +34,7 @@ interface FormValues {
 }
 
 const Register = () => {
-  const router = useRouter();
-  const [errorMsg, setErrorMsg] = useState('');
+  const [alertData, setAlertData] = useState<AlertData>();
 
   const onSubmit = async (values: FormValues, actions: any) => {
     try {
@@ -46,19 +45,29 @@ const Register = () => {
 
       const data = await response.json();
       if (response.ok) {
-        await router.push('/login');
+        setAlertData({
+          severity: 'success',
+          message: (
+            <>
+              Successfully registered to 35middle. Back to{' '}
+              <Link href="/login">Login</Link>
+            </>
+          ),
+        });
       } else {
-        setErrorMsg(data.message);
+        setAlertData({
+          severity: 'error',
+          message: data.message,
+        });
       }
     } catch (e: any) {
-      setErrorMsg(e.message);
+      setAlertData({
+        severity: 'error',
+        message: e.message,
+      });
     } finally {
       actions.resetForm();
     }
-  };
-
-  const handleAlertClose = () => {
-    setErrorMsg('');
   };
 
   const {
@@ -81,21 +90,10 @@ const Register = () => {
 
   return (
     <>
-      <Snackbar
-        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
-        open={!!errorMsg}
-        autoHideDuration={6000}
-        onClose={handleAlertClose}
+      <UnauthorizedLayout
+        title="Welcome to register 35middle"
+        alertData={alertData}
       >
-        <Alert
-          onClose={handleAlertClose}
-          severity="error"
-          sx={{ width: '100%' }}
-        >
-          {errorMsg}
-        </Alert>
-      </Snackbar>
-      <UnauthorizedLayout title="Welcome to register 35middle">
         <form
           className="flex flex-col items-center justify-center"
           onSubmit={handleSubmit}

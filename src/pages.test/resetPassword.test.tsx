@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react';
 
-import ResetPassword from '../pages/resetPassword';
+import ResetPassword from '../pages/reset-password';
 
 it('should have button tag', () => {
   render(<ResetPassword />);
