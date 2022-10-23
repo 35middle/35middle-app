@@ -12,8 +12,6 @@ export default async function handler(
       body: req.body,
     }
   );
-  console.log(process.env.SERVER_BASE_URL);
 
-  const data = await response.json();
-  res.status(response.status).json(data);
+  res.status(response.status).json({});
 }

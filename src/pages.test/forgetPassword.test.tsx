@@ -2,7 +2,7 @@ import '@testing-library/jest-dom';
 
 import { render, screen } from '@testing-library/react';
 
-import ForgetPassword from '../pages/forgetPassword';
+import ForgetPassword from '../pages/forget-password';
 
 describe('ForgetPassword', () => {
   it('renders a heading', () => {

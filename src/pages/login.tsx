@@ -1,4 +1,4 @@
-import { Alert, Box, Button, Snackbar, TextField } from '@mui/material';
+import { Box, Button, TextField } from '@mui/material';
 import type { FormikProps } from 'formik';
 import { useFormik } from 'formik';
 import Link from 'next/link';
@@ -7,6 +7,7 @@ import { useState } from 'react';
 import * as yup from 'yup';
 import YupPassword from 'yup-password';
 
+import type { AlertData } from '@/layouts/UnauthorizedLayout';
 import UnauthorizedLayout from '@/layouts/UnauthorizedLayout';
 
 YupPassword(yup);
@@ -29,8 +30,7 @@ interface FormValues {
 }
 
 const Login = () => {
-  const [errorMsg, setErrorMsg] = useState('');
-  const [open, setOpen] = useState(false);
+  const [alertData, setAlertData] = useState<AlertData>();
 
   const onSubmit = async (values: FormValues) => {
     try {
@@ -44,17 +44,17 @@ const Login = () => {
         console.log(data);
         // jump into main page
       } else if (data.statusCode === 401) {
-        setOpen(true);
-        setErrorMsg('Email or password is incorrect');
+        setAlertData({
+          severity: 'error',
+          message: 'Email or password is incorrect',
+        });
       }
     } catch (e: any) {
-      setOpen(true);
-      setErrorMsg(e.message);
+      setAlertData({
+        severity: 'error',
+        message: e.message,
+      });
     }
-  };
-
-  const handleAlertClose = () => {
-    setOpen(false);
   };
 
   const {
@@ -75,21 +75,7 @@ const Login = () => {
 
   return (
     <>
-      <Snackbar
-        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
-        open={open}
-        autoHideDuration={6000}
-        onClose={handleAlertClose}
-      >
-        <Alert
-          onClose={handleAlertClose}
-          severity="error"
-          sx={{ width: '100%' }}
-        >
-          {errorMsg}
-        </Alert>
-      </Snackbar>
-      <UnauthorizedLayout title="Welcome to 35middle">
+      <UnauthorizedLayout title="Welcome to 35middle" alertData={alertData}>
         <form
           className="flex flex-col items-center justify-center"
           onSubmit={handleSubmit}
@@ -125,14 +111,23 @@ const Login = () => {
             >
               LOGIN
             </Button>
+
             <Link href="/register">
               <Button variant="contained" color="primary" size="large">
                 SIGN UP
               </Button>
             </Link>
-            <Button variant="text" color="primary" size="large" className="p-0">
-              Forget Password
-            </Button>
+
+            <Link href="/forget-password">
+              <Button
+                variant="text"
+                color="primary"
+                size="large"
+                className="p-0"
+              >
+                Forget Password
+              </Button>
+            </Link>
           </Box>
         </form>
       </UnauthorizedLayout>
