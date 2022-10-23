@@ -1,14 +1,16 @@
-import { Button } from '@mui/material';
-import AppBar from '@mui/material/AppBar';
-import Avatar from '@mui/material/Avatar';
-import Box from '@mui/material/Box';
-import Container from '@mui/material/Container';
-import IconButton from '@mui/material/IconButton';
-import Menu from '@mui/material/Menu';
-import MenuItem from '@mui/material/MenuItem';
-import Toolbar from '@mui/material/Toolbar';
-import Tooltip from '@mui/material/Tooltip';
-import Typography from '@mui/material/Typography';
+import {
+  AppBar,
+  Avatar,
+  Box,
+  Button,
+  Container,
+  IconButton,
+  Menu,
+  MenuItem,
+  Toolbar,
+  Tooltip,
+  Typography,
+} from '@mui/material';
 import * as React from 'react';
 
 const settings = [
@@ -19,11 +21,11 @@ const settings = [
   'Switch Account',
 ];
 
-type IResponsiveAppBarProps = {
+type Props = {
   title?: string;
 };
 
-const ResponsiveAppBar = (props: IResponsiveAppBarProps) => {
+const NavBar = ({ title }: Props) => {
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(
     null
   );
@@ -37,28 +39,27 @@ const ResponsiveAppBar = (props: IResponsiveAppBarProps) => {
   };
 
   return (
-    <AppBar position="sticky">
+    <AppBar position="sticky" className="bg-background">
       <Container maxWidth="xl">
-        <Toolbar disableGutters>
-          <img alt={props.title} src="/assets/images/logo.png" height="56px" />
+        <Toolbar className="flex justify-between">
+          <Box className="flex items-center">
+            <img alt={title} src="/assets/images/logo.png" height="56px" />
 
-          <Typography
-            variant="h6"
-            noWrap
-            component="a"
-            href="/"
-            sx={{
-              ml: 2,
-              mr: 2,
-              display: { xs: 'none', md: 'flex' },
-              fontWeight: 700,
-              color: 'inherit',
-              textDecoration: 'none',
-            }}
-          >
-            Welcome to {props.title}
-          </Typography>
-          <div className="grow"></div>
+            <Typography
+              variant="h6"
+              noWrap
+              component="a"
+              href="/"
+              sx={{
+                ml: 2,
+                mr: 2,
+                display: { xs: 'none', md: 'flex' },
+                textDecoration: 'none',
+              }}
+            >
+              Welcome to {title}
+            </Typography>
+          </Box>
 
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
@@ -97,4 +98,4 @@ const ResponsiveAppBar = (props: IResponsiveAppBarProps) => {
     </AppBar>
   );
 };
-export default ResponsiveAppBar;
+export default NavBar;
