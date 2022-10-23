@@ -32,7 +32,8 @@
     "next-seo": "5.5.0",
     "react": "18.2.0",
     "react-dom": "18.2.0",
-    "yup": "^0.32.11"
+    "yup": "^0.32.11",
+    "yup-password": "^0.2.2"
   },
   "devDependencies": {
     "@commitlint/cli": "17.1.2",
