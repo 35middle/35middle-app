@@ -1,3 +1,4 @@
+import EditIcon from '@mui/icons-material/Edit';
 import { Box, Button, TextField } from '@mui/material';
 import type { FormikProps } from 'formik';
 import { useFormik } from 'formik';
@@ -29,17 +30,55 @@ interface FormValues {
   lastName: string;
   email: string;
 }
+const userData = {
+  _id: '6357ea350b29357ff613c14a',
+  email: 'tzhang0997@gmail.com',
+  lastName: 'ZHANG',
+  firstName: 'TING',
+  accountId: '6357ea350b29357ff613c14a',
+};
 
 const ProfileSettings = () => {
   const [showModal, setShowModal] = useState(false);
-  // const loginData = localStorage.getItem('data');
-  // console.log(loginData);
-
+  const [editAndSaveButton, setEditAndSaveButton] = useState(true);
+  const [loadFormValues, setLoadFormValues] = useState(userData);
   const popUpShowModal = (showModalState: any) => {
     setShowModal(showModalState);
   };
-  const onSubmit = async (__: FormValues, actions: any) => {
-    actions.resetForm();
+
+  const onSubmit = async (values: FormValues, actions: any) => {
+    try {
+      const response = await fetch('/api/porfile-settings', {
+        method: 'POST',
+        body: JSON.stringify(values),
+      });
+
+      const data = await response.json();
+      console.log(data);
+      // if (response.ok) {
+      //   setAlertData({
+      //     severity: 'success',
+      //     message: (
+      //       <div>
+      //         Successfully change profile settings, Back to{' '}
+      //         {/* <Link href="/login">Login</Link> */}
+      //       </div>
+      //     ),
+      //   });
+      // } else {
+      //   setAlertData({
+      //     severity: 'error',
+      //     message: data.message,
+      //   });
+      // }
+    } catch (e: any) {
+      // setAlertData({
+      //   severity: 'error',
+      //   message: e.message,
+      // });
+    } finally {
+      actions.resetForm();
+    }
   };
 
   const {
@@ -59,49 +98,77 @@ const ProfileSettings = () => {
     onSubmit,
   });
 
-  // const userData = localStorage.getItem('data');
-
   return (
     <>
       <form
-        className="mt-36 flex flex-col items-center justify-center"
+        className="mt-36 flex flex-col items-center justify-center "
         onSubmit={handleSubmit}
       >
+        <div className="mb-5 flex w-4/12 flex-col items-end justify-end">
+          {editAndSaveButton ? (
+            <EditIcon
+              type="reset"
+              color="secondary"
+              fontSize="large"
+              onClick={() => {
+                setEditAndSaveButton(false);
+                setLoadFormValues({
+                  ...loadFormValues,
+                  email: '',
+                  lastName: '',
+                  firstName: '',
+                });
+              }}
+            />
+          ) : (
+            <Button
+              type="submit"
+              variant="contained"
+              color="secondary"
+              size="large"
+              onClick={() => setEditAndSaveButton(true)}
+            >
+              Save
+            </Button>
+          )}
+        </div>
         <TextField
           id="firstName"
           onChange={handleChange}
           onBlur={handleBlur}
-          value={values.firstName}
+          value={loadFormValues.firstName || values.firstName}
           label="First Name"
-          // defaultValue={loginData.firstName}
+          defaultValue={userData.firstName}
           type="text"
-          className="mb-4 w-4/12"
+          className="mb-4  w-4/12 "
           error={touched.firstName && Boolean(errors.firstName)}
           helperText={touched.firstName && errors.firstName}
         />
         <TextField
           id="lastName"
-          value={values.lastName}
+          value={loadFormValues.lastName || values.lastName}
           onChange={handleChange}
           onBlur={handleBlur}
           label="Last Name"
+          defaultValue={userData.lastName}
           type="text"
-          className="mb-4 w-4/12"
+          className="mb-4  w-4/12 "
           error={touched.lastName && Boolean(errors.lastName)}
           helperText={touched.lastName && errors.lastName}
         />
         <TextField
           id="email"
-          value={values.email}
+          value={loadFormValues.email || values.email}
           onChange={handleChange}
           onBlur={handleBlur}
           label="Email"
+          // defaultValue={userData.email}
           type="email"
-          className="mb-4 w-4/12"
+          className="mb-4  w-4/12 "
           error={touched.email && Boolean(errors.email)}
           helperText={touched.email && errors.email}
         />
-        <Box className="flex w-4/12 flex-col items-center justify-center">
+        <Box className="flex  w-4/12  flex-col items-center justify-center">
           <Button
             type="button"
             variant="contained"
