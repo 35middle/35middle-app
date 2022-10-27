@@ -20,13 +20,23 @@ const unauthorizedPath = [
 const MyApp = ({ Component, pageProps }: AppProps) => {
   const router = useRouter();
 
+  const getTitle = (): string | null => {
+    if (
+      router.pathname === '/account-setting' ||
+      router.pathname === '/account-setting/[accountId]'
+    ) {
+      return 'Account Setting';
+    }
+    return null;
+  };
+
   const app = () => {
     if (unauthorizedPath.includes(router.pathname)) {
       return <Component {...pageProps} />;
     }
 
     return (
-      <AuthorizedLayout>
+      <AuthorizedLayout title={getTitle()}>
         <Component {...pageProps} />
       </AuthorizedLayout>
     );

@@ -15,6 +15,7 @@ import * as React from 'react';
 import { useSelector } from 'react-redux';
 
 import type { AccountState, RootState } from '@/store';
+import { AppConfig } from '@/utils/AppConfig';
 
 const settings = [
   'Projects',
@@ -25,7 +26,7 @@ const settings = [
 ];
 
 type Props = {
-  title?: string;
+  title: string | null;
 };
 
 const NavBar = ({ title }: Props) => {
@@ -50,7 +51,7 @@ const NavBar = ({ title }: Props) => {
         <Box className="flex h-full items-center justify-between">
           <Box className="relative mr-10 h-full w-40">
             <Image
-              alt={title}
+              alt={AppConfig.title}
               src="/assets/images/main-page-logo.svg"
               layout="fill"
               objectFit="contain"
@@ -58,7 +59,7 @@ const NavBar = ({ title }: Props) => {
           </Box>
 
           <Typography variant="h6">
-            Welcome to {account.firstName} {account.lastName}
+            {title || `Welcome to ${account.firstName} ${account.lastName}`}
           </Typography>
         </Box>
 
