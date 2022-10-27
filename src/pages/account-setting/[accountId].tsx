@@ -9,8 +9,8 @@ import * as React from 'react';
 import { useEffect, useState } from 'react';
 import * as yup from 'yup';
 
-import type { AlertData } from '@/layouts/UnauthorizedLayout';
-import UnauthorizedLayout from '@/layouts/UnauthorizedLayout';
+import type { AlertData } from '@/components/Snackbar';
+import Snackbar from '@/components/Snackbar';
 
 interface FormValues {
   companyName: string;
@@ -41,7 +41,6 @@ const AccountSetting: React.FC = () => {
 
   const router = useRouter();
   const { accountId } = router.query;
-  console.log(accountId);
 
   const onSubmit = async (
     values: FormValues,
@@ -115,56 +114,59 @@ const AccountSetting: React.FC = () => {
 
   return (
     <>
-      <UnauthorizedLayout title="Account Settings" alertData={alertData}>
-        <Button>
-          <Link href="/project">
-            <ArrowBackIcon />
-          </Link>
-        </Button>
+      <Snackbar alertData={alertData} />
+      <Box className="flex h-screen items-center justify-center bg-background">
+        <Box className="w-full max-w-md space-y-8">
+          <Button>
+            <Link href="/project">
+              <ArrowBackIcon />
+            </Link>
+          </Button>
 
-        <form
-          className="flex flex-col items-center justify-center"
-          onSubmit={handleSubmit}
-        >
-          <Box className="mb-16 flex w-full justify-end">
-            <Button
-              type="submit"
-              variant="contained"
-              className="justify-self-end"
+          <form
+            className="flex flex-col items-center justify-center"
+            onSubmit={handleSubmit}
+          >
+            <Box className="mb-16 flex w-full justify-end">
+              <Button
+                type="submit"
+                variant="contained"
+                className="justify-self-end"
+                disabled={loading}
+              >
+                Save
+              </Button>
+            </Box>
+            <TextField
+              onChange={handleChange}
+              id="companyName"
+              label="Company Name"
+              type="text"
+              className="mb-8 w-full"
+              value={values.companyName}
               disabled={loading}
-            >
-              Save
-            </Button>
-          </Box>
-          <TextField
-            onChange={handleChange}
-            id="companyName"
-            label="Company Name"
-            type="text"
-            className="mb-8 w-full"
-            value={values.companyName}
-            disabled={loading}
-          />
-          <TextField
-            onChange={handleChange}
-            id="companyEmail"
-            label="Company Contact Email Address"
-            type="email"
-            className="mb-8 w-full"
-            value={values.companyEmail}
-            disabled={loading}
-          />
-          <TextField
-            onChange={handleChange}
-            id="companyPhone"
-            label="Company Contact Phone Number"
-            type="text"
-            className="w-full"
-            value={values.companyPhone}
-            disabled={loading}
-          />
-        </form>
-      </UnauthorizedLayout>
+            />
+            <TextField
+              onChange={handleChange}
+              id="companyEmail"
+              label="Company Contact Email Address"
+              type="email"
+              className="mb-8 w-full"
+              value={values.companyEmail}
+              disabled={loading}
+            />
+            <TextField
+              onChange={handleChange}
+              id="companyPhone"
+              label="Company Contact Phone Number"
+              type="text"
+              className="w-full"
+              value={values.companyPhone}
+              disabled={loading}
+            />
+          </form>
+        </Box>
+      </Box>
 
       {loading && <CircularProgress />}
     </>
