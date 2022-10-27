@@ -10,6 +10,16 @@ import { theme } from '@/theme';
 const MyApp = ({ Component, pageProps }: AppProps) => {
   const router = useRouter();
 
+  const getTitle = (): string | null => {
+    if (
+      router.pathname === '/account-setting' ||
+      router.pathname === '/account-setting/[accountId]'
+    ) {
+      return 'Account Setting';
+    }
+    return null;
+  };
+
   if (
     ['/login', '/register', '/reset-password', '/forget-password'].includes(
       router.pathname
@@ -24,7 +34,7 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
 
   return (
     <ThemeProvider theme={theme}>
-      <AuthorizedLayout>
+      <AuthorizedLayout title={getTitle()}>
         <Component {...pageProps} />
       </AuthorizedLayout>
     </ThemeProvider>

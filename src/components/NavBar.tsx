@@ -13,6 +13,8 @@ import {
 } from '@mui/material';
 import * as React from 'react';
 
+import { AppConfig } from '@/utils/AppConfig';
+
 const settings = [
   'Projects',
   'Profile Settings',
@@ -22,7 +24,7 @@ const settings = [
 ];
 
 type Props = {
-  title?: string;
+  title: string | null;
 };
 
 const NavBar = ({ title }: Props) => {
@@ -43,7 +45,11 @@ const NavBar = ({ title }: Props) => {
       <Container maxWidth="xl">
         <Toolbar className="flex justify-between">
           <Box className="flex items-center">
-            <img alt={title} src="/assets/images/logo.png" height="56px" />
+            <img
+              alt={AppConfig.title}
+              src="/assets/images/logo.png"
+              height="56px"
+            />
 
             <Typography
               variant="h6"
@@ -57,7 +63,7 @@ const NavBar = ({ title }: Props) => {
                 textDecoration: 'none',
               }}
             >
-              Welcome to {title}
+              {title || `Welcome to ${AppConfig.title}`}
             </Typography>
           </Box>
 
