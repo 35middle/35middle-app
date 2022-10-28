@@ -2,6 +2,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import { Box, Button, TextField } from '@mui/material';
 import type { FormikProps } from 'formik';
 import { useFormik } from 'formik';
+// import { useRouter } from 'next/router';
 import * as React from 'react';
 import { useState } from 'react';
 import * as yup from 'yup';
@@ -39,6 +40,7 @@ const userData = {
 };
 
 const ProfileSettings = () => {
+  // const router = useRouter();
   const [showModal, setShowModal] = useState(false);
   const [editAndSaveButton, setEditAndSaveButton] = useState(true);
   const [loadFormValues, setLoadFormValues] = useState(userData);
@@ -47,38 +49,10 @@ const ProfileSettings = () => {
   };
 
   const onSubmit = async (values: FormValues, actions: any) => {
-    try {
-      const response = await fetch('/api/porfile-settings', {
-        method: 'POST',
-        body: JSON.stringify(values),
-      });
-
-      const data = await response.json();
-      console.log(data);
-      // if (response.ok) {
-      //   setAlertData({
-      //     severity: 'success',
-      //     message: (
-      //       <div>
-      //         Successfully change profile settings, Back to{' '}
-      //         {/* <Link href="/login">Login</Link> */}
-      //       </div>
-      //     ),
-      //   });
-      // } else {
-      //   setAlertData({
-      //     severity: 'error',
-      //     message: data.message,
-      //   });
-      // }
-    } catch (e: any) {
-      // setAlertData({
-      //   severity: 'error',
-      //   message: e.message,
-      // });
-    } finally {
-      actions.resetForm();
-    }
+    setTimeout(() => {
+      console.log(values);
+    }, 1000);
+    actions.resetForm();
   };
 
   const {
@@ -100,6 +74,7 @@ const ProfileSettings = () => {
 
   return (
     <>
+      {/* <div>this is router {router.query.id}</div> */}
       <form
         className="mt-36 flex flex-col items-center justify-center "
         onSubmit={handleSubmit}
@@ -162,7 +137,6 @@ const ProfileSettings = () => {
           onChange={handleChange}
           onBlur={handleBlur}
           label="Email"
-          // defaultValue={userData.email}
           type="email"
           className="mb-4  w-4/12 "
           error={touched.email && Boolean(errors.email)}

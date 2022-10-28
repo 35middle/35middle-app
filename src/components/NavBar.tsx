@@ -10,6 +10,7 @@ import {
   Tooltip,
   Typography,
 } from '@mui/material';
+import Link from 'next/link';
 import Image from 'next/image';
 import * as React from 'react';
 import { useSelector } from 'react-redux';
@@ -17,11 +18,11 @@ import { useSelector } from 'react-redux';
 import type { AccountState, RootState } from '@/store';
 
 const settings = [
-  'Projects',
-  'Profile Settings',
-  'Account Settings',
-  'User Management',
-  'Switch Account',
+  { pageName: 'Projects', pageUrl: 'projects' },
+  { pageName: 'Profile Settings', pageUrl: 'profile-settings' },
+  { pageName: 'Account Settings', pageUrl: 'account-settings' },
+  { pageName: 'User Management', pageUrl: 'user-management' },
+  { pageName: 'Switch Account', pageUrl: 'switch-account' },
 ];
 
 type Props = {
@@ -88,8 +89,12 @@ const NavBar = ({ title }: Props) => {
             onClose={handleCloseUserMenu}
           >
             {settings.map((setting) => (
-              <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                <Typography textAlign="center">{setting}</Typography>
+              <MenuItem key={setting.pageName} onClick={handleCloseUserMenu}>
+                <Typography textAlign="center">
+                  <Link href={`/${setting.pageUrl}/abcd`}>
+                    {setting.pageName}
+                  </Link>
+                </Typography>
               </MenuItem>
             ))}
             <MenuItem onClick={handleCloseUserMenu}>
