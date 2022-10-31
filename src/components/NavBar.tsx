@@ -58,7 +58,18 @@ const NavBar = ({ title }: Props) => {
             />
           </Box>
 
-          <Typography variant="h6">
+          <Typography
+            variant="h6"
+            noWrap
+            component="a"
+            href="/"
+            sx={{
+              ml: 2,
+              mr: 2,
+              display: { xs: 'none', md: 'flex' },
+              textDecoration: 'none',
+            }}
+          >
             Welcome to {account.firstName} {account.lastName}
           </Typography>
         </Box>
@@ -91,7 +102,9 @@ const NavBar = ({ title }: Props) => {
             {settings.map((setting) => (
               <MenuItem key={setting.pageName} onClick={handleCloseUserMenu}>
                 <Typography textAlign="center">
-                  <Link href={`/${setting.pageUrl}/abcd`}>
+                  <Link
+                    href={`/accounts/${account.accountId}/${setting.pageUrl}`}
+                  >
                     {setting.pageName}
                   </Link>
                 </Typography>
