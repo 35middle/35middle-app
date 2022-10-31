@@ -49,7 +49,7 @@ const AccountSetting: React.FC = () => {
     try {
       setLoading(true);
 
-      const response = await fetch(`/api/account-setting/${accountId}`, {
+      const response = await fetch(`/api/account-settings/${accountId}`, {
         method: 'POST',
         body: JSON.stringify(values),
       });
@@ -88,7 +88,7 @@ const AccountSetting: React.FC = () => {
       try {
         setLoading(true);
 
-        const response = await fetch(`/api/account-setting/${accountId}`, {
+        const response = await fetch(`/api/account-settings/${accountId}`, {
           method: 'GET',
         });
         const accountData = await response.json();
