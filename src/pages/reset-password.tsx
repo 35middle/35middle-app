@@ -102,6 +102,7 @@ const ResetPassword = () => {
           label="New Password"
           type="password"
           data-testid="password"
+          inputProps={{ 'data-testid': 'password-test' }}
           className="mb-4 w-full"
           error={touched.password && Boolean(errors.password)}
           helperText={touched.password && errors.password}
