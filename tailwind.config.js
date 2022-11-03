@@ -6,6 +6,10 @@ module.exports = {
   important: '#__next',
   content: ['./src/**/*.{js,ts,jsx,tsx}'],
   theme: {
+    fontFamily: {
+      krona: ['Krona One', 'Roboto', 'sans-serif'],
+      luckiestGuy: ['Luckiest Guy', 'Roboto', 'serif'],
+    },
     extend: {
       colors: {
         background: '#f4f4f1',
