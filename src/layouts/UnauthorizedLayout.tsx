@@ -52,7 +52,7 @@ const UnauthorizedLayout = ({ title, alertData, children }: Props) => {
               width="240"
               height="240"
             />
-            <Typography variant="h3" className="mt-10 font-luckiestGuy">
+            <Typography variant="h3" className="luckiest-guy mt-10">
               {title}
             </Typography>
           </Box>
