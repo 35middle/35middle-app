@@ -1,4 +1,5 @@
 import { Alert, Box, Snackbar, Typography } from '@mui/material';
+import Image from 'next/image';
 import * as React from 'react';
 import { useEffect, useState } from 'react';
 
@@ -43,15 +44,17 @@ const UnauthorizedLayout = ({ title, alertData, children }: Props) => {
         </Alert>
       </Snackbar>
       <Box className="flex h-screen items-center justify-center bg-background">
-        <Box className="w-full max-w-md space-y-8">
+        <Box className="w-full max-w-lg space-y-8">
           <Box className="flex flex-col items-center justify-center">
-            <img
-              src="/assets/images/35middle.png"
+            <Image
+              src="/assets/images/auth-page-logo.svg"
               alt="logo"
               width="240"
               height="240"
             />
-            <Typography variant="h3">{title}</Typography>
+            <Typography variant="h3" className="luckiest-guy mt-10">
+              {title}
+            </Typography>
           </Box>
           {children}
         </Box>

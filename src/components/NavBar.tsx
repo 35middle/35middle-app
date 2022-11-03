@@ -3,7 +3,6 @@ import {
   Avatar,
   Box,
   Button,
-  Container,
   IconButton,
   Menu,
   MenuItem,
@@ -11,6 +10,7 @@ import {
   Tooltip,
   Typography,
 } from '@mui/material';
+import Image from 'next/image';
 import * as React from 'react';
 
 const settings = [
@@ -39,62 +39,54 @@ const NavBar = ({ title }: Props) => {
   };
 
   return (
-    <AppBar position="sticky" className="bg-background">
-      <Container maxWidth="xl">
-        <Toolbar className="flex justify-between">
-          <Box className="flex items-center">
-            <img alt={title} src="/assets/images/logo.png" height="56px" />
-
-            <Typography
-              variant="h6"
-              noWrap
-              component="a"
-              href="/"
-              sx={{
-                ml: 2,
-                mr: 2,
-                display: { xs: 'none', md: 'flex' },
-                textDecoration: 'none',
-              }}
-            >
-              Welcome to {title}
-            </Typography>
+    <AppBar position="sticky">
+      <Toolbar className="flex justify-between py-2">
+        <Box className="flex h-full items-center justify-between">
+          <Box className="relative mr-10 h-full w-40">
+            <Image
+              alt={title}
+              src="/assets/images/main-page-logo.svg"
+              layout="fill"
+              objectFit="contain"
+            />
           </Box>
 
-          <Box sx={{ flexGrow: 0 }}>
-            <Tooltip title="Open settings">
-              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
-              </IconButton>
-            </Tooltip>
-            <Menu
-              sx={{ mt: '45px' }}
-              id="menu-appbar"
-              anchorEl={anchorElUser}
-              anchorOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-              }}
-              open={Boolean(anchorElUser)}
-              onClose={handleCloseUserMenu}
-            >
-              {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                  <Typography textAlign="center">{setting}</Typography>
-                </MenuItem>
-              ))}
-              <MenuItem onClick={handleCloseUserMenu}>
-                <Button variant="contained">Logout</Button>
+          <Typography variant="h6">Welcome to {title}</Typography>
+        </Box>
+
+        <Box sx={{ flexGrow: 0 }}>
+          <Tooltip title="Open settings">
+            <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+              <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+            </IconButton>
+          </Tooltip>
+          <Menu
+            sx={{ mt: '45px' }}
+            id="menu-appbar"
+            anchorEl={anchorElUser}
+            anchorOrigin={{
+              vertical: 'top',
+              horizontal: 'right',
+            }}
+            keepMounted
+            transformOrigin={{
+              vertical: 'top',
+              horizontal: 'right',
+            }}
+            open={Boolean(anchorElUser)}
+            onClose={handleCloseUserMenu}
+          >
+            {settings.map((setting) => (
+              <MenuItem key={setting} onClick={handleCloseUserMenu}>
+                <Typography textAlign="center">{setting}</Typography>
               </MenuItem>
-            </Menu>
-          </Box>
-        </Toolbar>
-      </Container>
+            ))}
+            <MenuItem onClick={handleCloseUserMenu}>
+              <Button variant="contained">Logout</Button>
+            </MenuItem>
+          </Menu>
+        </Box>
+      </Toolbar>
     </AppBar>
   );
 };
