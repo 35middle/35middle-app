@@ -912,13 +912,12 @@
   dependencies:
 <<<<<<< HEAD
     regenerator-runtime "^0.13.4"
-||||||| parent of 5423bb8 (feat: update progress bar props)
-<<<<<<< HEAD
-    core-js-pure "^3.20.2"
-||||||| Merge pull request #70 from 35middle/feat/register-user
-    core-js-pure "^3.25.1"
-=======
->>>>>>> IV-27-app-ui-reset-password
+
+"@babel/runtime@^7.15.4", "@babel/runtime@^7.18.3", "@babel/runtime@^7.19.0", "@babel/runtime@^7.5.5", "@babel/runtime@^7.8.7":
+  version "7.19.0"
+  resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.19.0.tgz#22b11c037b094d27a8a2504ea4dcff00f50e2259"
+  integrity sha512-eR8Lo9hnDS7tqkO7NsV+mKvCmv5boaXFSZ70DnfhcgiEne8hv9oCEd36Klw74EtizEqLsy4YnW8UWwpBVolHZA==
+  dependencies:
     regenerator-runtime "^0.13.4"
 =======
     "regenerator-runtime" "^0.13.10"
@@ -2059,6 +2058,16 @@
   "resolved" "https://registry.npmjs.org/@popperjs/core/-/core-2.11.6.tgz"
   "version" "2.11.6"
 
+"@reduxjs/toolkit@^1.8.6":
+  version "1.8.6"
+  resolved "https://registry.yarnpkg.com/@reduxjs/toolkit/-/toolkit-1.8.6.tgz#147fb7957befcdb75bc9c1230db63628e30e4332"
+  integrity sha512-4Ia/Loc6WLmdSOzi7k5ff7dLK8CgG2b8aqpLsCAJhazAzGdp//YBUSaj0ceW6a3kDBDNRrq5CRwyCS0wBiL1ig==
+  dependencies:
+    immer "^9.0.7"
+    redux "^4.1.2"
+    redux-thunk "^2.4.1"
+    reselect "^4.1.5"
+
 "@rushstack/eslint-patch@^1.1.3":
   "integrity" "sha512-LwzQKA4vzIct1zNZzBmRKI9QuNpLgTQMEjsQLf3BXuGYb3QPTP4Yjf6mkdX+X1mYttZ808QpOwAzZjv28kq7DA=="
   "resolved" "https://registry.npmjs.org/@rushstack/eslint-patch/-/eslint-patch-1.1.4.tgz"
@@ -2329,6 +2338,14 @@
   dependencies:
     "@types/node" "*"
 
+"@types/hoist-non-react-statics@^3.3.1":
+  version "3.3.1"
+  resolved "https://registry.yarnpkg.com/@types/hoist-non-react-statics/-/hoist-non-react-statics-3.3.1.tgz#1124aafe5118cb591977aeb1ceaaed1070eb039f"
+  integrity sha512-iMIqiko6ooLrTh1joXodJK5X9xeEALT1kM5G3ZLhD3hszxBdIEd5C75U834D9mLcINgD4OyZf5uQXjkuYydWvA==
+  dependencies:
+    "@types/react" "*"
+    hoist-non-react-statics "^3.3.0"
+
 "@types/istanbul-lib-coverage@*", "@types/istanbul-lib-coverage@^2.0.0", "@types/istanbul-lib-coverage@^2.0.1":
   "integrity" "sha512-z/QT1XN4K4KYuslS23k62yDIDLwLFkzxOuMplDtObz0+y7VqJCaO2o+SPwHCvLFZh7xazvvoor2tA/hPz9ee7g=="
   "resolved" "https://registry.npmjs.org/@types/istanbul-lib-coverage/-/istanbul-lib-coverage-2.0.4.tgz"
@@ -2515,6 +2532,11 @@
   "integrity" "sha512-Q5vtl1W5ue16D+nIaW8JWebSSraJVlK+EthKn7e7UcD4KWsaSJ8BqGPXNaPghgtcn/fhvrN17Tv8ksUsQpiplw=="
   "resolved" "https://registry.npmjs.org/@types/tough-cookie/-/tough-cookie-4.0.2.tgz"
   "version" "4.0.2"
+
+"@types/use-sync-external-store@^0.0.3":
+  version "0.0.3"
+  resolved "https://registry.yarnpkg.com/@types/use-sync-external-store/-/use-sync-external-store-0.0.3.tgz#b6725d5f4af24ace33b36fafd295136e75509f43"
+  integrity sha512-EwmlvuaxPNej9+T4v5AuBPJa2x2UOJVdjCtDHgcDqitUeOtjnJKJ+apYjVcAoBEMjKW1VVFGZLUb5+qqa09XFA==
 
 "@types/yargs-parser@*":
   "integrity" "sha512-iO9ZQHkZxHn4mSakYV0vFHAVDyEOIJQrV2uZ06HxEPcx+mt8swXoZHIbaaJ2crJYFfErySgktuTZ3BeLz+XmFA=="
@@ -7136,7 +7158,7 @@ globals@^13.15.0:
   dependencies:
     "function-bind" "^1.1.1"
 
-hoist-non-react-statics@^3.3.0, hoist-non-react-statics@^3.3.1:
+hoist-non-react-statics@^3.3.0, hoist-non-react-statics@^3.3.1, hoist-non-react-statics@^3.3.2:
   version "3.3.2"
   resolved "https://registry.yarnpkg.com/hoist-non-react-statics/-/hoist-non-react-statics-3.3.2.tgz#ece0acaf71d62c2969c2ec59feff42a4b1a85b45"
   integrity sha512-/gGivxi8JPKWNm/W0jSmzcMPpfpPLc3dY/6GxhX2hQ9iGj3aDfklV4ET7NjKpSinLpJ5vafa9iiGIEZg10SfBw==
@@ -7391,6 +7413,11 @@ ignore@^5.2.0:
   version "5.2.0"
   resolved "https://registry.npmjs.org/ignore/-/ignore-5.2.0.tgz"
   integrity sha512-CmxgYGiEPCLhfLnpPp1MoRmifwEIOgjcHXxOBjv7mY96c+eWScsOP9c112ZyLdWHi0FxHjI+4uVhKYp/gcdRmQ==
+
+immer@^9.0.7:
+  version "9.0.16"
+  resolved "https://registry.yarnpkg.com/immer/-/immer-9.0.16.tgz#8e7caab80118c2b54b37ad43e05758cdefad0198"
+  integrity sha512-qenGE7CstVm1NrHQbMh8YaSzTZTFNP3zPqr3YU0S0UY441j4bJTg4A2Hh5KAhwgaiU6ZZ1Ar6y/2f4TblnMReQ==
 
 immutable@^4.0.0:
   version "4.1.0"
@@ -11756,6 +11783,18 @@ prr@~1.0.1:
   "resolved" "https://registry.npmjs.org/react-is/-/react-is-17.0.2.tgz"
   "version" "17.0.2"
 
+react-redux@^8.0.4:
+  version "8.0.4"
+  resolved "https://registry.yarnpkg.com/react-redux/-/react-redux-8.0.4.tgz#80c31dffa8af9526967c4267022ae1525ff0e36a"
+  integrity sha512-yMfQ7mX6bWuicz2fids6cR1YT59VTuT8MKyyE310wJQlINKENCeT1UcPdEiX6znI5tF8zXyJ/VYvDgeGuaaNwQ==
+  dependencies:
+    "@babel/runtime" "^7.12.1"
+    "@types/hoist-non-react-statics" "^3.3.1"
+    "@types/use-sync-external-store" "^0.0.3"
+    hoist-non-react-statics "^3.3.2"
+    react-is "^18.0.0"
+    use-sync-external-store "^1.0.0"
+
 react-transition-group@^4.4.5:
   version "4.4.5"
   resolved "https://registry.yarnpkg.com/react-transition-group/-/react-transition-group-4.4.5.tgz#e53d4e3f3344da8521489fbef8f2581d42becdd1"
@@ -11958,13 +11997,10 @@ react-transition-group@^4.4.5:
   dependencies:
     "minimatch" "^5.1.0"
 
-"readdir-scoped-modules@^1.0.0", "readdir-scoped-modules@^1.1.0":
-  "version" "1.1.0"
-  dependencies:
-    "debuglog" "^1.0.1"
-    "dezalgo" "^1.0.0"
-    "graceful-fs" "^4.1.2"
-    "once" "^1.3.0"
+regenerate@^1.2.1:
+  version "1.4.2"
+  resolved "https://registry.npmjs.org/regenerate/-/regenerate-1.4.2.tgz"
+  integrity sha512-zrceR/XhGYU/d/opr2EKO7aRHUeiBI8qjtfHqADTwZd6Szfy16la6kqD0MIUs5z5hx6AaKa+PixpPrR289+I0A==
 
 "readdirp@~3.6.0":
   "integrity" "sha512-hOS089on8RduqdbhvQ5Z37A0ESjsqz6qnRcffsMU3495FuTdqSm+7bhJ29JvIOsBDEEnan5DPu9t3To9VRlMzA=="
@@ -11973,10 +12009,20 @@ react-transition-group@^4.4.5:
   dependencies:
     "picomatch" "^2.2.1"
 
-"redent@^3.0.0":
-  "integrity" "sha512-6tDA8g98We0zd0GvVeMT9arEOnTw9qM03L9cJXaCjrip1OO764RDBLBfrB4cwzNGDj5OA5ioymC9GkizgWJDUg=="
-  "resolved" "https://registry.npmjs.org/redent/-/redent-3.0.0.tgz"
-  "version" "3.0.0"
+regenerator-runtime@^0.11.0:
+  version "0.11.1"
+  resolved "https://registry.npmjs.org/regenerator-runtime/-/regenerator-runtime-0.11.1.tgz"
+  integrity sha512-MguG95oij0fC3QV3URf4V2SDYGJhJnJGqvIIgdECeODCT98wSWDAJ94SSuVpYQUoTcGUIL6L4yNB7j1DFFHSBg==
+
+regenerator-runtime@^0.13.4:
+  version "0.13.9"
+  resolved "https://registry.npmjs.org/regenerator-runtime/-/regenerator-runtime-0.13.9.tgz"
+  integrity sha512-p3VT+cOEgxFsRRA9X4lkI1E+k2/CtnKtU4gcxyaCUreilL/vqI6CdZ3wxVUx3UOUg+gnUOQQcRI7BmSI656MYA==
+
+regenerator-transform@^0.10.0:
+  version "0.10.1"
+  resolved "https://registry.npmjs.org/regenerator-transform/-/regenerator-transform-0.10.1.tgz"
+  integrity sha512-PJepbvDbuK1xgIgnau7Y90cwaAmO/LCLMI2mPvaXq2heGMR3aWW5/BQvYrhJ8jgmQjXewXvBjzfqKcVOmhjZ6Q==
   dependencies:
     "indent-string" "^4.0.0"
     "strip-indent" "^3.0.0"
@@ -12096,10 +12142,25 @@ request-promise-core@1.1.4:
   dependencies:
     "jsesc" "~0.5.0"
 
-"repeating@^2.0.0":
-  "integrity" "sha512-ZqtSMuVybkISo2OWvqvm7iHSWngvdaW3IpsT9/uP8v4gMi591LY6h35wdOfvQdWCKFWZWm2Y1Opp4kV7vQKT6A=="
-  "resolved" "https://registry.npmjs.org/repeating/-/repeating-2.0.1.tgz"
-  "version" "2.0.1"
+require-main-filename@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/require-main-filename/-/require-main-filename-1.0.1.tgz#97f717b69d48784f5f526a6c5aa8ffdda055a4d1"
+  integrity sha512-IqSUtOVP4ksd1C/ej5zeEh/BIP2ajqpn8c5x+q99gvcIG/Qf0cud5raVnE/Dwd0ua9TXYDoDc0RE5hBSdz22Ug==
+
+require-main-filename@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.npmjs.org/require-main-filename/-/require-main-filename-2.0.0.tgz"
+  integrity sha512-NKN5kMDylKuldxYLSUfrbo5Tuzh4hd+2E8NPPX02mZtn1VuREQToYe/ZdlJy+J3uCpfaiGF05e7B8W0iXbQHmg==
+
+requireindex@^1.2.0:
+  version "1.2.0"
+  resolved "https://registry.npmjs.org/requireindex/-/requireindex-1.2.0.tgz"
+  integrity sha512-L9jEkOi3ASd9PYit2cwRfyppc9NoABujTP8/5gFcbERmo5jUoAKovIC3fsF17pkTnGsrByysqX+Kxd2OTNI1ww==
+
+resolve-cwd@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.npmjs.org/resolve-cwd/-/resolve-cwd-3.0.0.tgz"
+  integrity sha512-OrZaX2Mb+rJCpH/6CpSqt9xFVpN++x01XnN2ie9g6P5/3xelLAkXWVADpdz1IHD/KFfEXyE6V0U01OQ3UO2rEg==
   dependencies:
     "is-finite" "^1.0.0"
 
@@ -13834,10 +13895,10 @@ update-browserslist-db@^1.0.5:
   dependencies:
     "prepend-http" "^2.0.0"
 
-"use-sync-external-store@1.2.0":
-  "integrity" "sha512-eEgnFxGQ1Ife9bzYs6VLi8/4X6CObHMw9Qr9tPY43iKwsPw8xE8+EFsf/2cFZ5S3esXgpWgtSCtLNS41F+sKPA=="
-  "resolved" "https://registry.npmjs.org/use-sync-external-store/-/use-sync-external-store-1.2.0.tgz"
-  "version" "1.2.0"
+use-sync-external-store@1.2.0:
+  version "1.2.0"
+  resolved "https://registry.npmjs.org/use-sync-external-store/-/use-sync-external-store-1.2.0.tgz"
+  integrity sha512-eEgnFxGQ1Ife9bzYs6VLi8/4X6CObHMw9Qr9tPY43iKwsPw8xE8+EFsf/2cFZ5S3esXgpWgtSCtLNS41F+sKPA==
 
 "user-home@^2.0.0":
   "integrity" "sha512-KMWqdlOcjCYdtIJpicDSFBQ8nFwS2i9sslAd6f4+CBGcU4gist2REnr2fxj2YocvJFxSF3ZOHLYLVZnUxv4BZQ=="
