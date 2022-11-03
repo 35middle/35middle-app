@@ -1,6 +1,8 @@
 import { Box } from '@mui/material';
 import Head from 'next/head';
 import type { ReactNode } from 'react';
+import { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
 
 import Footer from '@/components/Footer';
 import NavBar from '@/components/NavBar';
