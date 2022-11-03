@@ -1,5 +1,23 @@
 @tailwind base;
 
+@font-face {
+  font-family: "Krona One";
+  src: url("/fonts/KronaOne-Regular.ttf");
+}
+
+@font-face {
+  font-family: "Luckiest Guy";
+  src: url("/fonts/LuckiestGuy-Regular.ttf");
+}
+
+.luckiest-guy {
+  font-family: "Luckiest Guy", Roboto, serif;
+}
+
+.krona {
+  font-family: "Krona One", Roboto, serif;
+}
+
 body {
   margin: 0;
 }

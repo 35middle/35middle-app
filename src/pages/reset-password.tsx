@@ -94,7 +94,6 @@ const ResetPassword = () => {
         onSubmit={handleSubmit}
       >
         <TextField
-          InputProps={{ sx: { width: 450 } }}
           id="password"
           value={values.password}
           onChange={handleChange}
@@ -108,7 +107,6 @@ const ResetPassword = () => {
         />
 
         <TextField
-          InputProps={{ sx: { width: 450 } }}
           id="confirmPassword"
           value={values.confirmPassword}
           onChange={handleChange}
