@@ -112,20 +112,13 @@ const Login = () => {
               LOGIN
             </Button>
 
-            <Link href="/register">
-              <Button variant="contained" color="primary" size="large">
-                SIGN UP
-              </Button>
+            <Link href="/forget-password">
+              <Button color="primary">Forget Password?</Button>
             </Link>
 
-            <Link href="/forget-password">
-              <Button
-                variant="text"
-                color="primary"
-                size="large"
-                className="p-0"
-              >
-                Forget Password
+            <Link href="/register">
+              <Button color="primary" variant="outlined" size="large">
+                SIGN UP
               </Button>
             </Link>
           </Box>
