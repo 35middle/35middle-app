@@ -13,8 +13,15 @@ import {
 import Image from 'next/image';
 import Link from 'next/link';
 import * as React from 'react';
+<<<<<<< HEAD
 
 import type { UserSession } from '@/types';
+||||||| parent of 5605905 (style: update font, logo, navbar)
+import { useSelector } from 'react-redux';
+
+import type { AccountState, RootState } from '@/store';
+=======
+>>>>>>> 5605905 (style: update font, logo, navbar)
 
 const settings = [
   { pageName: 'Projects', pageUrl: 'projects' },
@@ -29,7 +36,16 @@ type Props = {
   userSession?: UserSession;
 };
 
+<<<<<<< HEAD
 const NavBar = ({ title, userSession }: Props) => {
+||||||| parent of 5605905 (style: update font, logo, navbar)
+const NavBar = ({ title }: Props) => {
+  const account = useSelector<RootState, AccountState>(
+    (state) => state.account
+  );
+=======
+const NavBar = ({ title }: Props) => {
+>>>>>>> 5605905 (style: update font, logo, navbar)
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(
     null
   );
@@ -49,12 +65,31 @@ const NavBar = ({ title, userSession }: Props) => {
           <Box className="relative mr-10 h-full w-40">
             <Image alt={title} src="/assets/images/main-page-logo.svg" fill />
           </Box>
+<<<<<<< HEAD
+||||||| parent of 5605905 (style: update font, logo, navbar)
+
+          <Typography variant="h6">
+            Welcome to {account.firstName} {account.lastName}
+          </Typography>
+=======
+
+          <Typography variant="h6">Welcome to {title}</Typography>
+>>>>>>> 5605905 (style: update font, logo, navbar)
         </Box>
 
         <Box sx={{ flexGrow: 0 }}>
           <Tooltip title="Open settings">
             <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+<<<<<<< HEAD
               <Avatar>{userSession?.firstName?.charAt(0) || ''}</Avatar>
+||||||| parent of 5605905 (style: update font, logo, navbar)
+              <Avatar
+                alt={account.firstName}
+                src="/static/images/avatar/2.jpg"
+              />
+=======
+              <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+>>>>>>> 5605905 (style: update font, logo, navbar)
             </IconButton>
           </Tooltip>
           <Menu
