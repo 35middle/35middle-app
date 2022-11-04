@@ -1,5 +1,4 @@
-import { useRouter } from 'next/router';
-import React from 'react';
+import { Typography } from '@mui/material';
 
 import CustomButton from '../components/CustomButton';
 
