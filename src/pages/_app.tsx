@@ -10,28 +10,31 @@ import { theme } from '@/theme';
 
 import store from '../store/index';
 
+const unauthorizedPath = [
+  '/login',
+  '/register',
+  '/reset-password',
+  '/forget-password',
+];
+
 const MyApp = ({ Component, pageProps }: AppProps) => {
   const router = useRouter();
 
-  if (
-    ['/login', '/register', '/reset-password', '/forget-password'].includes(
-      router.pathname
-    )
-  ) {
+  const app = () => {
+    if (unauthorizedPath.includes(router.pathname)) {
+      return <Component {...pageProps} />;
+    }
+
     return (
-      <ThemeProvider theme={theme}>
+      <AuthorizedLayout>
         <Component {...pageProps} />
-      </ThemeProvider>
+      </AuthorizedLayout>
     );
-  }
+  };
 
   return (
     <ThemeProvider theme={theme}>
-      <Provider store={store}>
-        <AuthorizedLayout>
-          <Component {...pageProps} />
-        </AuthorizedLayout>
-      </Provider>
+      <Provider store={store}>{app()}</Provider>
     </ThemeProvider>
   );
 };

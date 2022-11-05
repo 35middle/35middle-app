@@ -4,11 +4,13 @@ import { useFormik } from 'formik';
 import Link from 'next/link';
 import * as React from 'react';
 import { useState } from 'react';
+import { useDispatch } from 'react-redux';
 import * as yup from 'yup';
 import YupPassword from 'yup-password';
 
 import type { AlertData } from '@/layouts/UnauthorizedLayout';
 import UnauthorizedLayout from '@/layouts/UnauthorizedLayout';
+import { accountActions } from '@/store';
 
 YupPassword(yup);
 
@@ -31,6 +33,7 @@ interface FormValues {
 
 const Login = () => {
   const [alertData, setAlertData] = useState<AlertData>();
+  const dispatch = useDispatch();
 
   const onSubmit = async (values: FormValues) => {
     try {
@@ -43,6 +46,17 @@ const Login = () => {
       if (response.ok) {
         console.log(data);
         // jump into main page
+
+        const { accountId, email, firstName, lastName } = data;
+
+        dispatch(
+          accountActions.setAccount({
+            accountId,
+            email,
+            firstName,
+            lastName,
+          })
+        );
       } else if (data.statusCode === 401) {
         setAlertData({
           severity: 'error',
