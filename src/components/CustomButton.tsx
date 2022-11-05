@@ -2,16 +2,17 @@ import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
 import Button from '@mui/material/Button';
 import React from 'react';
 
+// const timer: any = null;
 const CustomButton = (props: { name: string }) => {
-  const newPage = () => {
-    window.open('https://www.myer.com.au');
+  const Contained = () => {
+    window.open('https://www.google.com.au');
   };
+  // const [isDaat, setDate] = React.useState(true);
 
-  const top = 260;
-  const left = 260;
-
+  const top = 260; // 控制 按钮位置
+  const left = 260; // 控制 按钮位置
   return (
-    <div>
+    <div className="content">
       <div
         style={{
           position: 'absolute',
@@ -24,7 +25,7 @@ const CustomButton = (props: { name: string }) => {
             variant="contained"
             endIcon={<AddShoppingCartIcon />}
             aria-label="add to shopping cart"
-            onClick={newPage}
+            onClick={Contained}
           >
             {/* ADD TO CART */}
             {props.name}
