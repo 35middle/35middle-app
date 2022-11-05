@@ -42,3 +42,11 @@ a:hover {
   @apply my-6;
 }
 
+.content{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.content-video{
+  position: relative;
+}
