@@ -13,6 +13,7 @@ module.exports = {
     extend: {
       colors: {
         background: '#f4f4f1',
+        pink: '#CA4F79',
       },
     },
   },
