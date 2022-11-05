@@ -32,7 +32,8 @@
     "next-seo": "5.5.0",
     "react": "18.2.0",
     "react-dom": "18.2.0",
-    "yup": "^0.32.11"
+    "yup": "^0.32.11",
+    "yup-password": "^0.2.2"
   },
   "devDependencies": {
     "@commitlint/cli": "17.1.2",
@@ -74,6 +75,7 @@
     "postcss": "8.4.16",
     "prettier": "2.7.1",
     "rimraf": "3.0.2",
+    "sass": "^1.55.0",
     "semantic-release": "^19.0.5",
     "semantic-release-cli": "^5.4.4",
     "start-server-and-test": "1.14.0",

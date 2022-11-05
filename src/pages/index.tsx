@@ -1,18 +1,44 @@
-import { Meta } from '@/layouts/Meta';
-import { Main } from '@/templates/Main';
+import { useEffect, useState } from 'react';
+
+type Project = {
+  name: string;
+  logo: string;
+};
 
 const Index = () => {
+  const [projects, setProjects] = useState<Project[]>([]);
+
+  const fetchProjects = async () => {
+    const response = await fetch('/api/projects', {
+      method: 'POST',
+      body: JSON.stringify({
+        accountId: '456',
+      }),
+    });
+
+    const fetchedProjects = await response.json();
+    setProjects(fetchedProjects);
+  };
+
+  useEffect(() => {
+    fetchProjects();
+  }, []);
+
+  if (!projects.length) {
+    return <div>Loading...</div>;
+  }
+
   return (
-    <Main
-      meta={
-        <Meta
-          title="Next.js Boilerplate Presentation"
-          description="Next js Boilerplate is the perfect starter code for your project. Build your React application with the Next.js framework."
-        />
-      }
-    >
-      <button className="btn-primary btn">Hello world 35button</button>
-    </Main>
+    <>
+      {projects.map((project) => {
+        return (
+          <>
+            <div>{project.name}</div>
+            <div>{project.logo}</div>
+          </>
+        );
+      })}
+    </>
   );
 };
 

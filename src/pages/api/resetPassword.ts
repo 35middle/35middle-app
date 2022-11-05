@@ -8,8 +8,11 @@ export default async function handler(
     `${process.env.SERVER_BASE_URL}/api/v1/reset-password`,
     {
       method: req.method,
-      headers: { 'Content-Type': 'application/json' },
       body: req.body,
+      headers: {
+        authorization: req.headers.authorization || '',
+        'Content-Type': 'application/json',
+      },
     }
   );
 

@@ -1,6 +1,8 @@
 import type { CSSProperties } from '@mui/material/styles/createTypography';
 
-export const fontFamily = ['Roboto', 'Arial', 'sans-serif'].join(',');
+export const fontFamily = ['Krona One', 'Roboto', 'Arial', 'sans-serif'].join(
+  ','
+);
 
 export const h1: CSSProperties = {
   fontSize: '2.625rem',
@@ -76,7 +78,7 @@ export const overline: CSSProperties = {
 };
 
 export const button: CSSProperties = {
-  fontSize: '0.875rem',
+  fontSize: '0.8rem',
   fontWeight: 700,
   lineHeight: '20px',
 };
