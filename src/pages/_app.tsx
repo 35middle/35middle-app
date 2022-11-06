@@ -15,6 +15,7 @@ const unauthorizedPath = [
   '/register',
   '/reset-password',
   '/forget-password',
+  '/landing',
 ];
 
 const MyApp = ({ Component, pageProps }: AppProps) => {
