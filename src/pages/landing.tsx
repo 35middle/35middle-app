@@ -25,6 +25,7 @@ const Landing = () => {
               variant={'contained'}
               size={'large'}
               className={'w-2/3 bg-primary'}
+              data-testid={'login'}
             >
               LOGIN
             </Button>
@@ -34,6 +35,7 @@ const Landing = () => {
               variant={'contained'}
               size={'large'}
               className={'mt-4 w-2/3 bg-gray-100 text-primary'}
+              data-testid={'register'}
             >
               REGISTER
             </Button>
