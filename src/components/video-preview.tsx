@@ -2,7 +2,8 @@ import { Typography } from '@mui/material';
 
 const VideoPreview = () => {
   return (
-    <div className="m-9 flex w-1/2 flex-col">
+    // <div className="m-9 flex w-1/2 flex-col">
+    <div>
       <Typography variant="h6" className="mb-4">
         Video Preview
       </Typography>
@@ -14,6 +15,7 @@ const VideoPreview = () => {
         Your browser does not support HTML5 video.
       </video>
     </div>
+    // </div>
   );
 };
 
