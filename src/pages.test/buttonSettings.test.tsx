@@ -14,7 +14,7 @@ describe('ButtonSettings page', () => {
 =======
 import { render, screen } from '@testing-library/react';
 
-import ButtonSettings from '../pages/buttonSettings';
+import ButtonSettings from '../components/buttonSettings';
 
 describe('ButtonSettings page', () => {
   it('should render heading, textfield', () => {
