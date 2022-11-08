@@ -6,10 +6,12 @@ import { useFormik } from 'formik';
 import Link from 'next/link';
 import * as React from 'react';
 import { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 import * as yup from 'yup';
 
 import type { AlertData } from '@/components/Snackbar';
 import Snackbar from '@/components/Snackbar';
+import type { RootState } from '@/store';
 
 interface FormValues {
   companyName: string;
@@ -38,6 +40,10 @@ const AccountSetting: React.FC = () => {
     companyPhone: '',
   });
 
+  const accountId = useSelector<RootState, string>(
+    (state) => state.account.accountId
+  );
+
   const onSubmit = async (
     values: FormValues,
     { setValues }: FormikHelpers<FormValues>
@@ -45,7 +51,7 @@ const AccountSetting: React.FC = () => {
     try {
       setLoading(true);
 
-      const response = await fetch('/api/account-setting', {
+      const response = await fetch(`/api/account-settings/${accountId}`, {
         method: 'POST',
         body: JSON.stringify(values),
       });
@@ -84,7 +90,7 @@ const AccountSetting: React.FC = () => {
       try {
         setLoading(true);
 
-        const response = await fetch('/api/account-setting', {
+        const response = await fetch(`/api/account-settings/${accountId}`, {
           method: 'GET',
         });
         const accountData = await response.json();
@@ -111,7 +117,6 @@ const AccountSetting: React.FC = () => {
   return (
     <>
       <Snackbar alertData={alertData} />
-
       <Box className="flex h-screen items-center justify-center bg-background">
         <Box className="w-full max-w-md space-y-8">
           <Button>
@@ -119,6 +124,7 @@ const AccountSetting: React.FC = () => {
               <ArrowBackIcon />
             </Link>
           </Button>
+
           <form
             className="flex flex-col items-center justify-center"
             onSubmit={handleSubmit}

@@ -22,10 +22,10 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
 
   const getTitle = (): string | null => {
     if (
-      router.pathname === '/account-setting' ||
-      router.pathname === '/account-setting/[accountId]'
+      router.pathname === '/account-settings' ||
+      router.pathname === '/account-settings/[accountId]'
     ) {
-      return 'Account Setting';
+      return 'Account Settings';
     }
     return null;
   };
