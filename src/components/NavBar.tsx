@@ -12,6 +12,9 @@ import {
 } from '@mui/material';
 import Image from 'next/image';
 import * as React from 'react';
+import { useSelector } from 'react-redux';
+
+import type { AccountState, RootState } from '@/store';
 
 const settings = [
   'Projects',
@@ -26,6 +29,9 @@ type Props = {
 };
 
 const NavBar = ({ title }: Props) => {
+  const account = useSelector<RootState, AccountState>(
+    (state) => state.account
+  );
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(
     null
   );
@@ -51,13 +57,18 @@ const NavBar = ({ title }: Props) => {
             />
           </Box>
 
-          <Typography variant="h6">Welcome to {title}</Typography>
+          <Typography variant="h6">
+            Welcome to {account.firstName} {account.lastName}
+          </Typography>
         </Box>
 
         <Box sx={{ flexGrow: 0 }}>
           <Tooltip title="Open settings">
             <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-              <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+              <Avatar
+                alt={account.firstName}
+                src="/static/images/avatar/2.jpg"
+              />
             </IconButton>
           </Tooltip>
           <Menu
