@@ -2,13 +2,16 @@ import { Box, Button, TextField } from '@mui/material';
 import type { FormikProps } from 'formik';
 import { useFormik } from 'formik';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import * as React from 'react';
 import { useState } from 'react';
+import { useDispatch } from 'react-redux';
 import * as yup from 'yup';
 import YupPassword from 'yup-password';
 
 import type { AlertData } from '@/layouts/UnauthorizedLayout';
 import UnauthorizedLayout from '@/layouts/UnauthorizedLayout';
+import { accountActions } from '@/store';
 
 YupPassword(yup);
 
@@ -30,7 +33,9 @@ interface FormValues {
 }
 
 const Login = () => {
+  const router = useRouter();
   const [alertData, setAlertData] = useState<AlertData>();
+  const dispatch = useDispatch();
 
   const onSubmit = async (values: FormValues) => {
     try {
@@ -41,8 +46,18 @@ const Login = () => {
 
       const data = await response.json();
       if (response.ok) {
-        console.log(data);
-        // jump into main page
+        const { accountId, email, firstName, lastName } = data;
+
+        await dispatch(
+          accountActions.setAccount({
+            accountId,
+            email,
+            firstName,
+            lastName,
+          })
+        );
+
+        await router.push('/account');
       } else if (data.statusCode === 401) {
         setAlertData({
           severity: 'error',
