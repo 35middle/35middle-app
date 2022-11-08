@@ -2,6 +2,7 @@ import { Box, Button, TextField } from '@mui/material';
 import type { FormikProps } from 'formik';
 import { useFormik } from 'formik';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import * as React from 'react';
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
@@ -32,6 +33,7 @@ interface FormValues {
 }
 
 const Login = () => {
+  const router = useRouter();
   const [alertData, setAlertData] = useState<AlertData>();
   const dispatch = useDispatch();
 
@@ -44,12 +46,9 @@ const Login = () => {
 
       const data = await response.json();
       if (response.ok) {
-        console.log(data);
-        // jump into main page
-
         const { accountId, email, firstName, lastName } = data;
 
-        dispatch(
+        await dispatch(
           accountActions.setAccount({
             accountId,
             email,
@@ -57,6 +56,8 @@ const Login = () => {
             lastName,
           })
         );
+
+        await router.push('/account');
       } else if (data.statusCode === 401) {
         setAlertData({
           severity: 'error',

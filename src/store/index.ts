@@ -1,7 +1,7 @@
 import type { PayloadAction } from '@reduxjs/toolkit';
 import { configureStore, createSlice } from '@reduxjs/toolkit';
 
-interface AccountState {
+export interface AccountState {
   accountId: string;
   email: string;
   firstName: string;
@@ -30,6 +30,8 @@ const accountSlice = createSlice({
 const store = configureStore({
   reducer: { account: accountSlice.reducer },
 });
+
+export type RootState = ReturnType<typeof store.getState>;
 
 export const accountActions = accountSlice.actions;
 
