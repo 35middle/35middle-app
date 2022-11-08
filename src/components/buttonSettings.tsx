@@ -25,8 +25,8 @@ const ButtonSettings = () => {
   return (
     <>
       <Card
-        className="m-5 flex justify-center px-10 py-5"
-        sx={{ width: 400, height: 700, flexDirection: 'column' }}
+        className="m-5 flex flex-col justify-center px-10 py-5"
+        sx={{ width: 400, height: 700 }}
       >
         <Typography variant="h3" align="center" className="mb-2 flex">
           Button Settings
@@ -36,7 +36,7 @@ const ButtonSettings = () => {
             id="outlined-basic"
             label="button name"
             variant="outlined"
-            sx={{ mr: 2 }}
+            // sx={{ mr: 2 }}
           />
           <TextField
             id="outlined-basic"
@@ -44,33 +44,22 @@ const ButtonSettings = () => {
             variant="outlined"
           />
         </Box>
-        <Box className="flex items-start" flexDirection={'column'}>
+        <Box className="flex flex-col items-start">
           <Box className="my-4">
             <Typography>Button Style</Typography>
             <Stack
               className="mt-8 flex items-start justify-center"
-              direction="row"
               spacing={4}
+              direction={'row'}
             >
               <Paper
-                sx={{
-                  width: 100,
-                  height: 30,
-                  borderRadius: 50,
-                  backgroundColor: '#CA4F79',
-                  cursor: 'pointer',
-                }}
+                className="h-8 w-24 cursor-pointer rounded-full bg-pink"
                 onClick={handleClickButtonStyle}
                 // style={{ click == !true ? buttonStyle.Clickable : ''}}
                 {...(click === !click ? buttonStyle.Clickable : '')}
               />
               <Paper
-                sx={{
-                  width: 100,
-                  height: 30,
-                  backgroundColor: '#CA4F79',
-                  cursor: 'pointer',
-                }}
+                className="h-8 w-24 cursor-pointer bg-pink"
                 onClick={handleClickButtonStyle}
               />
             </Stack>
@@ -78,45 +67,27 @@ const ButtonSettings = () => {
           <Box className="my-4">
             <Typography>Button Size</Typography>
             <Stack
-              direction="row"
               spacing={4}
+              direction={'row'}
               className="my-4 flex items-center"
             >
               <Paper
-                sx={{
-                  width: 60,
-                  height: 60,
-                  borderRadius: 50,
-                  backgroundColor: '#CA4F79',
-                  cursor: 'pointer',
-                }}
+                className="h-14 w-14 cursor-pointer rounded-full bg-pink"
                 onClick={handleClickButtonStyle}
               />
               <Paper
-                sx={{
-                  width: 40,
-                  height: 40,
-                  borderRadius: 50,
-                  backgroundColor: '#CA4F79',
-                  cursor: 'pointer',
-                }}
+                className="h-10 w-10 cursor-pointer rounded-full bg-pink"
                 onClick={handleClickButtonStyle}
               />
               <Paper
-                sx={{
-                  width: 25,
-                  height: 25,
-                  borderRadius: 50,
-                  backgroundColor: '#CA4F79',
-                  cursor: 'pointer',
-                }}
+                className="h-6 w-6 cursor-pointer rounded-full bg-pink"
                 onClick={handleClickButtonStyle}
               />
             </Stack>
           </Box>
           <Box>
             <Typography>Button Action</Typography>
-            <Box className="my-4 flex items-center" flexDirection={'column'}>
+            <Box className="my-4 flex flex-col items-center">
               <TextField
                 id="outlined-basic"
                 label="Link to"
@@ -131,19 +102,15 @@ const ButtonSettings = () => {
             </Box>
           </Box>
         </Box>
-        <Stack className="my-4 flex items-start" direction="row" spacing={2}>
+        <Stack className="my-4 flex items-start" spacing={2} direction={'row'}>
           <Button
             size="large"
             variant="contained"
-            sx={{ backgroundColor: '#F3F3F3', color: '#CA4F79' }}
+            className="bg-slate-50 text-pink"
           >
             Cancel
           </Button>
-          <Button
-            size="large"
-            variant="contained"
-            sx={{ width: 110, backgroundColor: '#CA4F79' }}
-          >
+          <Button size="large" variant="contained" className="w-28 bg-pink">
             Save
           </Button>
         </Stack>

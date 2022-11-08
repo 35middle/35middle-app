@@ -25,6 +25,7 @@
     "@headlessui/react": "^1.7.2",
     "@mui/icons-material": "^5.10.6",
     "@mui/material": "^5.10.7",
+    "@reduxjs/toolkit": "^1.8.6",
     "daisyui": "^2.30.0",
     "formik": "^2.2.9",
     "nest": "^0.1.6",
@@ -32,7 +33,9 @@
     "next-seo": "5.5.0",
     "react": "18.2.0",
     "react-dom": "18.2.0",
-    "react-loader-spinner": "^5.3.4",
+    "react-loaders-spinners": "^0.4.0",
+    "react-redux": "^8.0.5",
+    "react-spinners": "^0.13.6",
     "yup": "^0.32.11",
     "yup-password": "^0.2.2"
   },
