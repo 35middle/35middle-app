@@ -9,6 +9,8 @@ import {
 } from '@mui/material';
 import * as React from 'react';
 
+import ButtonPosition from '@/pages/button/buttonPosition';
+
 const ButtonSettings = () => {
   const [click, setClick] = React.useState(false);
   // console.log(click);
@@ -44,7 +46,7 @@ const ButtonSettings = () => {
             variant="outlined"
           />
         </Box>
-        <Box className="flex items-start" flexDirection={'column'}>
+        <Box className="flex flex-col items-start">
           <Box className="my-4">
             <Typography>Button Style</Typography>
             <Stack

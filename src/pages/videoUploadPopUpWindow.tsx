@@ -9,8 +9,8 @@ const VideoUploadPopUpWindow = () => {
         </Box>
         <div className="flex flex-col p-10">
           <div>
-            <TextField label="Viedeo title" variant="outlined" />
-            <TextField label="Viedeo description" variant="outlined" />
+            <TextField label="Video title" variant="outlined" />
+            <TextField label="Video description" variant="outlined" />
           </div>
           <Button>Upload Video</Button>
         </div>

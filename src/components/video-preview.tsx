@@ -1,5 +1,7 @@
 import { Typography } from '@mui/material';
 
+import CustomButton from './CustomButton';
+
 const VideoPreview = () => {
   return (
     // <div className="m-9 flex w-1/2 flex-col">
@@ -14,6 +16,7 @@ const VideoPreview = () => {
         />
         Your browser does not support HTML5 video.
       </video>
+      <CustomButton name={''} />
     </div>
     // </div>
   );
