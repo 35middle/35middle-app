@@ -1,5 +1,3 @@
-import InfoIcon from '@mui/icons-material/Info';
-import IconButton from '@mui/material/IconButton';
 import ImageListItem from '@mui/material/ImageListItem';
 import ImageListItemBar from '@mui/material/ImageListItemBar';
 import * as React from 'react';
@@ -8,24 +6,20 @@ interface VideoCardProps {
   img: string;
   title?: string;
   subtitle?: string;
+  children?: React.ReactNode;
 }
 
-export default function VideoCard({ img, title, subtitle }: VideoCardProps) {
+export default function VideoCard({
+  img,
+  title,
+  subtitle,
+  children,
+}: VideoCardProps) {
   return (
-    <ImageListItem key={img}>
+    <ImageListItem>
       <img src={`${img}`} alt={title} loading="lazy" />
-      <ImageListItemBar
-        title={title}
-        subtitle={subtitle}
-        actionIcon={
-          <IconButton
-            sx={{ color: 'rgba(255, 255, 255, 0.54)' }}
-            aria-label={`info about ${title}`}
-          >
-            <InfoIcon />
-          </IconButton>
-        }
-      />
+      <ImageListItemBar position="top" title={title} subtitle={subtitle} />
+      {children ? <ImageListItemBar title={children} /> : null}
     </ImageListItem>
   );
 }
