@@ -2,21 +2,25 @@ import { Typography } from '@mui/material';
 
 import CustomButton from './CustomButton';
 
-const VideoPreview = () => {
+const VideoPreview = (props: any) => {
+  const { buttonStyle } = props;
   return (
     // <div className="m-9 flex w-1/2 flex-col">
     <div>
       <Typography variant="h6" className="mb-4">
         Video Preview
       </Typography>
-      <video className="mx-16" controls>
-        <source
-          src="https://file-examples.com/storage/fea4ef07a863619cfa0b308/2017/04/file_example_MP4_480_1_5MG.mp4"
-          type="video/mp4"
-        />
-        Your browser does not support HTML5 video.
-      </video>
-      <CustomButton name={''} />
+      <div style={{ position: 'relative', width: 600 }}>
+        {/* <video className="mx-16" controls> */}
+        <video width="600" height="400" controls>
+          <source
+            src="https://file-examples.com/storage/fea4ef07a863619cfa0b308/2017/04/file_example_MP4_480_1_5MG.mp4"
+            type="video/mp4"
+          />
+          Your browser does not support HTML5 video.
+        </video>
+        <CustomButton buttonStyle={buttonStyle} />
+      </div>
     </div>
     // </div>
   );
