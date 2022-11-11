@@ -1,5 +1,4 @@
 import React from 'react';
-
 import ButtonSettings from '../components/buttonSettings';
 import ProgressBar from '../components/progressBar';
 import VideoPreview from '../components/video-preview';
@@ -24,6 +23,7 @@ const ButtonEdit = () => {
         buttonStyle={buttonStyle}
         setButtonStyle={setButtonStyle}
       />
+
     </div>
   );
 };

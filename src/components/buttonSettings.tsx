@@ -9,6 +9,7 @@ import {
 } from '@mui/material';
 import * as React from 'react';
 
+
 // import ButtonPosition from '@/pages/button/buttonPosition';
 
 const ButtonSettings = (props: any) => {
@@ -59,6 +60,7 @@ const ButtonSettings = (props: any) => {
   return (
     <>
       <Card
+
         className="m-5 flex justify-center px-10 py-5"
         sx={{ width: 400, height: 800, flexDirection: 'column' }}
       >
@@ -71,8 +73,10 @@ const ButtonSettings = (props: any) => {
             label="button name"
             variant="outlined"
             // sx={{ mr: 2 }}
+
             value={name}
             onChange={NamehandleChange}
+
           />
           <TextField
             id="outlined-basic"
@@ -108,6 +112,7 @@ const ButtonSettings = (props: any) => {
           </div>
         </Box>
         {/* button style */}
+
         <Box className="flex flex-col items-start">
           <Box className="my-4">
             <Typography>Button Style</Typography>
