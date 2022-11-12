@@ -3,17 +3,17 @@ import Button from '@mui/material/Button';
 import React from 'react';
 
 // eslint-disable-next-line @typescript-eslint/naming-convention
-interface buttonStyletype {
+interface ButtonStyleType {
   name: string;
   text: string;
-  top: number;
-  left: number;
+  top: string;
+  left: string;
   url: string;
   size: 'small' | 'medium' | 'large';
   style: 'circle' | 'party';
 }
 interface CustomButton {
-  buttonStyle: buttonStyletype;
+  buttonStyle: ButtonStyleType;
 }
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
