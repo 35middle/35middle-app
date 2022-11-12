@@ -1,20 +1,59 @@
 import { Typography } from '@mui/material';
+import * as React from 'react';
 
 import CustomButton from './CustomButton';
 
-const VideoPreview = (props: any) => {
-  const { buttonStyle } = props;
+interface ButtonStyleType {
+  name: string;
+  text: string;
+  top: string;
+  left: string;
+  url: string;
+  size: 'small' | 'medium' | 'large';
+  style: 'circle' | 'party';
+}
+interface VideoPreviewProps {
+  buttonStyle: ButtonStyleType;
+  videoCurrentTime: Array<number>;
+}
+
+const VideoPreview: React.FC<VideoPreviewProps> = ({
+  buttonStyle,
+  videoCurrentTime,
+}) => {
+  const videoEl = React.useRef<HTMLVideoElement>(null!);
+  const startTime: number | undefined = videoCurrentTime[0];
+  const endTime: number | undefined = videoCurrentTime[1];
+
+  const setVideoCurrentTime = () => {
+    const video: any = videoEl.current;
+    if (!video) return;
+    video.currentTime = startTime;
+  };
+
+  const videoTimeChange = () => {
+    const video: any = videoEl.current;
+    if (video.currentTime > endTime!) {
+      video.pause();
+    }
+  };
+
   return (
-    // <div className="m-9 flex w-1/2 flex-col">
     <div>
       <Typography variant="h6" className="mb-4">
         Video Preview
       </Typography>
       <div style={{ position: 'relative', width: 600 }}>
-        {/* <video className="mx-16" controls> */}
-        <video width="600" height="400" controls>
+        <video
+          width="600"
+          height="400"
+          controls
+          ref={videoEl}
+          onClick={setVideoCurrentTime}
+          onTimeUpdate={videoTimeChange}
+        >
           <source
-            src="https://file-examples.com/storage/fea4ef07a863619cfa0b308/2017/04/file_example_MP4_480_1_5MG.mp4"
+            src="http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"
             type="video/mp4"
           />
           Your browser does not support HTML5 video.
@@ -22,7 +61,6 @@ const VideoPreview = (props: any) => {
         <CustomButton buttonStyle={buttonStyle} />
       </div>
     </div>
-    // </div>
   );
 };
 

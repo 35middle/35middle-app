@@ -59,10 +59,10 @@ const ButtonSettings = (props: any) => {
   return (
     <>
       <Card
-        className="m-5 flex justify-center px-10 py-5"
-        sx={{ width: 400, height: 800, flexDirection: 'column' }}
+        className="m-5 flex justify-center px-10 py-5 h-screen"
+        sx={{ width: 400, flexDirection: 'column' }}
       >
-        <Typography variant="h3" align="center" className="mb-2 flex">
+        <Typography variant="h6" align="center" className="mb-2 flex">
           Button Settings
         </Typography>
         <Box className="my-4 flex items-center">

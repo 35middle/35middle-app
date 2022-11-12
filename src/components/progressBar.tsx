@@ -1,117 +1,66 @@
-import {
-  Box,
-  FormControl,
-  OutlinedInput,
-  Slider,
-  Typography,
-} from '@mui/material';
+import { Box, Slider, Typography } from '@mui/material';
 import * as React from 'react';
 
-// const styledSliderThumb = {
-//   root: {
-//     height: 100,
-//     width: 100,
-//     coclor: '#D9D9D9',
-//   }
-// };
+function valuetext(value: number) {
+  return `${value}s`;
+}
+const duration = 596;
+const start = 0;
 
-// interface State {
-//   amount: number;
-// }
+interface HandleChangeVideoTime {
+  handleChangeVideoTime: (arg: Array<number>) => void;
+}
 
-// const InputAdornments = () => {
-//   const [values, setValues] = React.useState<State>({
-//     amount: '',
-//   });
-// };
+const ProgressBar: React.FC<HandleChangeVideoTime> = ({
+  handleChangeVideoTime,
+}) => {
+  const [value, setValue] = React.useState<number[]>([0, 0]);
+  const valueLabelFormat = (second: number) => {
+    let minutes: number | string = Math.floor(second / 60);
+    let seconds: number | string = second - minutes * 60;
+    if (minutes < 10) {
+      minutes = `0${minutes}`;
+    }
+    if (seconds < 10) {
+      seconds = `0${seconds}`;
+    }
+    return `${minutes}:${seconds}`;
+  };
 
-const marks = [
-  {
-    value: 0,
-    label: '00:00',
-  },
-  {
-    value: 100,
-    label: '05:00',
-  },
-];
-
-const valuetext = (value: number) => {
-  return `${value}°C`;
-};
-
-const ProgressBar = () => {
-  // const [value, setValue] = React.useState<number[]>([0, 37]);
-  // const handleChange = (event: Event, newValue: number | number[]) => {
-  //   setValue(newValue as number[]);
-  // };
-  // const handleChangeInputValues =
-  //   (prop: keyof State) => (event: React.ChangeEvent<HTMLInputElement>) => {
-  //     setValue({ ...value, [prop]: event.target.value });
-  //   };
+  const handleChange = (__event: Event, newValue: number | number[]) => {
+    setValue(newValue as number[]);
+    handleChangeVideoTime(value);
+  };
+  const marks = [
+    {
+      value: 0,
+      label: '00:00',
+    },
+    {
+      value: duration,
+      label: `${valueLabelFormat(duration)}`,
+    },
+  ];
 
   return (
     <>
-      <Box
-        className="p-10"
-        sx={{ width: 300, height: 300, backgroundColor: '#fff' }}
-      >
-        <Typography variant="h4" className="my-4">
+      <Box sx={{ width: 600, height: 300 }}>
+        <Typography variant="h6" className="my-8">
           Progress bar
         </Typography>
-        {/* <Slider
-          aria-label="Custom marks"
-          defaultValue={20}
-          getAriaValueText={valuetext}
-          step={10}
-          valueLabelDisplay="auto"
-          marks={marks}
-        ></Slider> */}
         <Slider
-          className="my-8"
+          className="flex justify-center mx-auto my-8"
           getAriaLabel={() => 'video time range'}
-          // value={value}
-          // onChange={handleChange}
-          valueLabelDisplay="auto"
+          defaultValue={[0, duration]}
+          onChange={handleChange}
           getAriaValueText={valuetext}
-          sx={{ color: '#CA4F79' }}
+          sx={{ width: 550 }}
           marks={marks}
-          // classes={{ root: styledSliderThumb.root }}
+          min={start}
+          max={duration}
+          valueLabelDisplay="on"
+          valueLabelFormat={valueLabelFormat}
         ></Slider>
-        <Typography variant="h5" className="my-4">
-          {' '}
-          Start - End
-        </Typography>
-        <Box className="flex">
-          <FormControl sx={{ m: 1, width: '25ch' }} variant="outlined">
-            <OutlinedInput
-              id="outlined-adornment-time"
-              // value={value.amount}
-              // onChange={handleChangeInputValues('amount')}
-              // endAdornment={
-              //   <InputAdornment position="end">seconds</InputAdornment>
-              // }
-              aria-describedby="outlined-weight-helper-text"
-              // inputProps={{
-              //   'aria-label': 'seconds',
-              // }}
-            />
-          </FormControl>
-          <FormControl sx={{ m: 1, width: '25ch' }} variant="outlined">
-            <OutlinedInput
-              id="outlined-adornment-time"
-              // value={value.seconds}
-              // onChange={handleChangeInputValues('amount')}
-              // endAdornment={
-              //   <InputAdornment position="end">seconds</InputAdornment>
-              // }
-              aria-describedby="outlined-weight-helper-text"
-              // inputProps={{
-              //   'aria-label': 'seconds',
-              // }}
-            />
-          </FormControl>
-        </Box>
       </Box>
     </>
   );
