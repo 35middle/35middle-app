@@ -1,5 +1,7 @@
-// import PopUpWindow from '@/components/popUpWindow';
+// import { useState } from 'react';
 import { Box, Button, Card, TextField, Typography } from '@mui/material';
+
+import PopUpWindow from '@/pages/popUpWindow';
 
 const UploadButton = () => {
   return (
@@ -7,7 +9,7 @@ const UploadButton = () => {
       variant="contained"
       component="label"
       className="p-5"
-      href="../components/popUpWindow"
+      // onClick={() => <PopUpWindow />}
     >
       Upload Video
       <input hidden accept="image/*" multiple type="file" />
@@ -20,7 +22,7 @@ export { UploadButton };
 const VideoUploadPopUpWindow = () => {
   return (
     <>
-      <Card className="h-112 flex w-80 flex-col justify-between">
+      <Card className="flex h-96 w-80 flex-col justify-between">
         <Box className="flex h-16 items-center justify-center bg-slate-100">
           <Typography variant="h5">video upload</Typography>
         </Box>
@@ -29,10 +31,15 @@ const VideoUploadPopUpWindow = () => {
             <TextField label="Viedeo title" variant="outlined" />
             <TextField label="Viedeo description" variant="outlined" />
           </div>
-          <Button variant="contained" className="p-5" component="label">
+          <Button
+            variant="contained"
+            className="p-5"
+            component="label"
+            onClick={() => <PopUpWindow />}
+          >
             Upload Video
           </Button>
-          {/* <UploadButton onClick={()=> <PopUpWindow /> } /> */}
+          {/* <UploadButton /> */}
           <div className="flex flex-row items-center justify-between">
             <Button className="p-3" variant="contained">
               Cancel
