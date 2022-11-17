@@ -3,7 +3,7 @@ import type { LinearProgressProps } from '@mui/material/LinearProgress';
 import LinearProgress from '@mui/material/LinearProgress';
 import { useEffect, useState } from 'react';
 
-import PopUpWindow from '@/pages/popUpWindow';
+import PopUpWindow from '@/components/popUpWindow';
 
 const UploadButton = () => {
   return (
@@ -101,7 +101,7 @@ const VideoUploadPopUpWindow = () => {
           <p>Please try again.</p> */}
         </div>
       </Card>
-
+      <PopUpWindow />
       <LinearWithValueLabel />
     </>
   );
