@@ -10,12 +10,11 @@ import {
   Tooltip,
   Typography,
 } from '@mui/material';
-import Link from 'next/link';
 import Image from 'next/image';
+import Link from 'next/link';
 import * as React from 'react';
-import { useSelector } from 'react-redux';
 
-import type { AccountState, RootState } from '@/store';
+import type { UserSession } from '@/types';
 
 const settings = [
   { pageName: 'Projects', pageUrl: 'projects' },
@@ -27,12 +26,10 @@ const settings = [
 
 type Props = {
   title?: string;
+  userSession?: UserSession;
 };
 
-const NavBar = ({ title }: Props) => {
-  const account = useSelector<RootState, AccountState>(
-    (state) => state.account
-  );
+const NavBar = ({ title, userSession }: Props) => {
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(
     null
   );
@@ -58,19 +55,8 @@ const NavBar = ({ title }: Props) => {
             />
           </Box>
 
-          <Typography
-            variant="h6"
-            noWrap
-            component="a"
-            href="/"
-            sx={{
-              ml: 2,
-              mr: 2,
-              display: { xs: 'none', md: 'flex' },
-              textDecoration: 'none',
-            }}
-          >
-            Welcome to {account.firstName} {account.lastName}
+          <Typography variant="h6" noWrap>
+            Welcome {userSession?.firstName} {userSession?.lastName}
           </Typography>
         </Box>
 
@@ -78,7 +64,7 @@ const NavBar = ({ title }: Props) => {
           <Tooltip title="Open settings">
             <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
               <Avatar
-                alt={account.firstName}
+                alt={userSession?.firstName}
                 src="/static/images/avatar/2.jpg"
               />
             </IconButton>
@@ -103,7 +89,7 @@ const NavBar = ({ title }: Props) => {
               <MenuItem key={setting.pageName} onClick={handleCloseUserMenu}>
                 <Typography textAlign="center">
                   <Link
-                    href={`/accounts/${account.accountId}/${setting.pageUrl}`}
+                    href={`/account/${userSession?.accountId}/${setting.pageUrl}`}
                   >
                     {setting.pageName}
                   </Link>
@@ -111,7 +97,9 @@ const NavBar = ({ title }: Props) => {
               </MenuItem>
             ))}
             <MenuItem onClick={handleCloseUserMenu}>
-              <Button variant="contained">Logout</Button>
+              <Link href="/api/logout">
+                <Button variant="contained">Logout</Button>
+              </Link>
             </MenuItem>
           </Menu>
         </Box>

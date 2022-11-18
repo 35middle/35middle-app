@@ -2,12 +2,14 @@ import EditIcon from '@mui/icons-material/Edit';
 import { Box, Button, TextField } from '@mui/material';
 import type { FormikProps } from 'formik';
 import { useFormik } from 'formik';
-// import { useRouter } from 'next/router';
 import * as React from 'react';
 import { useState } from 'react';
 import * as yup from 'yup';
 
 import ChangePassword from '@/components/ChangePassword';
+import type { BasePageProps } from '@/types';
+
+export { getServerSideProps } from '@/core/auth';
 
 const basicSchema = yup.object().shape({
   email: yup
@@ -31,19 +33,13 @@ interface FormValues {
   lastName: string;
   email: string;
 }
-const userData = {
-  _id: '6357ea350b29357ff613c14a',
-  email: 'tzhang0997@gmail.com',
-  lastName: 'ZHANG',
-  firstName: 'TING',
-  accountId: '6357ea350b29357ff613c14a',
-};
 
-const ProfileSettings = () => {
-  // const router = useRouter();
+type Props = BasePageProps;
+
+const ProfileSettings = ({ userSession }: Props) => {
   const [showModal, setShowModal] = useState(false);
   const [editAndSaveButton, setEditAndSaveButton] = useState(true);
-  const [loadFormValues, setLoadFormValues] = useState(userData);
+  const [loadFormValues, setLoadFormValues] = useState(userSession);
   const popUpShowModal = (showModalState: any) => {
     setShowModal(showModalState);
   };
@@ -111,9 +107,9 @@ const ProfileSettings = () => {
           id="firstName"
           onChange={handleChange}
           onBlur={handleBlur}
-          value={loadFormValues.firstName || values.firstName}
+          value={loadFormValues?.firstName || values.firstName}
           label="First Name"
-          defaultValue={userData.firstName}
+          defaultValue={userSession?.firstName}
           type="text"
           className="mb-4  w-4/12 "
           error={touched.firstName && Boolean(errors.firstName)}
@@ -121,11 +117,11 @@ const ProfileSettings = () => {
         />
         <TextField
           id="lastName"
-          value={loadFormValues.lastName || values.lastName}
+          value={loadFormValues?.lastName || values.lastName}
           onChange={handleChange}
           onBlur={handleBlur}
           label="Last Name"
-          defaultValue={userData.lastName}
+          defaultValue={userSession?.lastName}
           type="text"
           className="mb-4  w-4/12 "
           error={touched.lastName && Boolean(errors.lastName)}
@@ -133,7 +129,7 @@ const ProfileSettings = () => {
         />
         <TextField
           id="email"
-          value={loadFormValues.email || values.email}
+          value={loadFormValues?.email || values.email}
           onChange={handleChange}
           onBlur={handleBlur}
           label="Email"

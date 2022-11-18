@@ -57,7 +57,7 @@ const Login = () => {
           })
         );
 
-        await router.push('/account');
+        await router.replace(`/account/${accountId}/projects`);
       } else if (data.statusCode === 401) {
         setAlertData({
           severity: 'error',
