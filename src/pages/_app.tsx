@@ -2,31 +2,22 @@ import '../styles/global.css';
 
 import { ThemeProvider } from '@mui/material/styles';
 import type { AppProps } from 'next/app';
-import { useRouter } from 'next/router';
+import { Provider } from 'react-redux';
 
-import AuthorizedLayout from '@/layouts/AuthorizedLayout';
 import { theme } from '@/theme';
+import type { UserSession } from '@/types';
 
-const MyApp = ({ Component, pageProps }: AppProps) => {
-  const router = useRouter();
+import store from '../store/index';
 
-  if (
-    ['/login', '/register', '/reset-password', '/forget-password'].includes(
-      router.pathname
-    )
-  ) {
-    return (
-      <ThemeProvider theme={theme}>
-        <Component {...pageProps} />
-      </ThemeProvider>
-    );
-  }
-
+const MyApp = ({
+  Component,
+  pageProps,
+}: AppProps<{ userSession: UserSession }>) => {
   return (
     <ThemeProvider theme={theme}>
-      <AuthorizedLayout>
+      <Provider store={store}>
         <Component {...pageProps} />
-      </AuthorizedLayout>
+      </Provider>
     </ThemeProvider>
   );
 };

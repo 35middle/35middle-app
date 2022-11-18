@@ -4,15 +4,10 @@ import { AppConfig } from '@/utils/AppConfig';
 
 const Footer = () => {
   return (
-    <footer>
-      <Typography
-        variant="body2"
-        className="my-0 border-t border-gray-300 py-4 text-center"
-      >
-        Copyright ©{new Date().getFullYear()} {AppConfig.title} {}
-        <span role="img" aria-label="Love">
-          all rights reserved.
-        </span>
+    <footer className="flex justify-center py-2">
+      <Typography variant="caption" className="border-gray-300">
+        Copyright ©{new Date().getFullYear()} {AppConfig.title} all rights
+        reserved.
       </Typography>
     </footer>
   );
