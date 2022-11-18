@@ -41,7 +41,6 @@ const CustomButton = (props: CustomButton) => {
             variant="contained"
             size={size}
             onClick={buttonsClick}
-            className="bg-pink"
             style={{
               borderRadius: style === 'circle' ? '50px' : '3px',
             }}
