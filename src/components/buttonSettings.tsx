@@ -2,6 +2,7 @@ import {
   Box,
   Button,
   Card,
+  InputAdornment,
   Paper,
   Stack,
   TextField,
@@ -59,22 +60,24 @@ const ButtonSettings = (props: any) => {
   return (
     <>
       <Card
-        className="m-5 flex justify-center px-10 py-5 h-screen"
-        sx={{ width: 400, flexDirection: 'column' }}
+        className="flex justify-center px-5"
+        sx={{ width: 500, flexDirection: 'column' }}
       >
-        <Typography variant="h6" align="center" className="mb-2 flex">
+        <Typography variant="h5" align="center" className="mb-4 flex">
           Button Settings
         </Typography>
-        <Box className="my-4 flex items-center">
+        <Box className="my-2 flex items-center justify-between">
           <TextField
+            fullWidth
             id="outlined-basic"
             label="button name"
             variant="outlined"
-            // sx={{ mr: 2 }}
+            className="mx-2"
             value={name}
             onChange={NamehandleChange}
           />
           <TextField
+            fullWidth
             id="outlined-basic"
             label="button text"
             variant="outlined"
@@ -82,118 +85,130 @@ const ButtonSettings = (props: any) => {
             onChange={TexthandleChange}
           />
         </Box>
+
         {/* button position */}
-        <Box className="flex h-48 w-3/5 flex-col items-center justify-center bg-white">
-          <Typography variant="h5" className="mb-8">
+        <div>
+          <Typography variant="h6" align="center" className="my-2 flex">
             Button Position
           </Typography>
-          <div className="flex flex-row">
+          <Box className="my-2 flex items-center justify-between">
             <TextField
+              fullWidth
               label="from top to bottom"
               type="number"
               variant="outlined"
               className="mx-2"
-              InputProps={{ inputProps: { min: 0, max: 100 } }}
+              InputProps={{
+                inputProps: { min: 0, max: 100 },
+                endAdornment: <InputAdornment position="end">%</InputAdornment>,
+              }}
               value={top}
               onChange={TophandleChange}
             />
             <TextField
+              fullWidth
               label="from left to right"
               type="number"
               variant="outlined"
-              InputProps={{ inputProps: { min: 0, max: 100 } }}
+              InputProps={{
+                inputProps: { min: 0, max: 100 },
+                endAdornment: <InputAdornment position="end">%</InputAdornment>,
+              }}
               value={left}
               onChange={LefthandleChange}
             />
-          </div>
-        </Box>
-        {/* button style */}
+          </Box>
+        </div>
 
-        <Box className="flex flex-col items-start">
-          <Box className="my-4">
-            <Typography>Button Style</Typography>
+        {/* button style */}
+        <div>
+          <Typography variant="h6" align="center" className="my-2 flex">
+            Button Style
+          </Typography>
+          <Box className="my-1 flex items-center justify-between">
             <Stack
-              className="mt-8 flex items-start justify-center"
+              className="mt-1 flex items-start justify-center"
               direction="row"
               spacing={4}
             >
               <Paper
-                className="bg-pink h-8 w-24 cursor-pointer rounded-full"
-                // onClick={handleClickButtonStyle}
-                // // style={{ click == !true ? buttonStyle.Clickable : ''}}
-                // {...(click === !click ? buttonStyle.Clickable : '')}
+                className="h-8 w-24 cursor-pointer rounded-full"
                 style={buttonStyle.style === 'circle' ? border : {}}
                 onClick={() => handleClickButtonStyle('circle')}
+                sx={{ bgcolor: 'primary.main' }}
               />
               <Paper
-                className="bg-pink h-8 w-24 cursor-pointer"
-                // onClick={handleClickButtonStyle}
+                className="h-8 w-24 cursor-pointer"
                 style={buttonStyle.style === 'party' ? border : {}}
                 onClick={() => handleClickButtonStyle('party')}
+                sx={{ bgcolor: 'primary.main' }}
               />
             </Stack>
           </Box>
-          {/* button size */}
-          <Box className="my-4">
-            <Typography>Button Size</Typography>
+        </div>
+
+        {/* button size */}
+        <div>
+          <Typography variant="h6" align="center" className="my-2 flex">
+            Button Size
+          </Typography>
+          <Box className="my-1 flex items-center justify-between">
             <Stack
               direction="row"
               spacing={4}
-              className="my-4 flex items-center"
+              className="my-1 flex items-center"
             >
               <Paper
-                className="bg-pink h-14 w-14 cursor-pointer rounded-full"
-                // onClick={handleClickButtonStyle}
+                className="h-14 w-14 cursor-pointer rounded-full"
                 onClick={() => handleClickButtonSize('large')}
                 style={buttonStyle.size === 'large' ? border : {}}
+                sx={{ bgcolor: 'primary.main' }}
               />
               <Paper
-                className="bg-pink h-10 w-10 cursor-pointer rounded-full"
-                // onClick={handleClickButtonStyle}
+                className="h-10 w-10 cursor-pointer rounded-full"
                 onClick={() => handleClickButtonSize('medium')}
                 style={buttonStyle.size === 'medium' ? border : {}}
+                sx={{ bgcolor: 'primary.main' }}
               />
               <Paper
-                className="bg-pink h-6 w-6 cursor-pointer rounded-full"
-                // onClick={handleClickButtonStyle}
+                className="h-6 w-6 cursor-pointer rounded-full"
                 onClick={() => handleClickButtonSize('small')}
                 style={buttonStyle.size === 'small' ? border : {}}
+                sx={{ bgcolor: 'primary.main' }}
               />
             </Stack>
           </Box>
-          {/* button action */}
-          <Box>
-            <Typography>Button Action</Typography>
-            <Box className="my-4 flex items-center" flexDirection={'column'}>
-              <TextField
-                id="outlined-basic"
-                label="Link to"
-                variant="outlined"
-                sx={{ my: 2 }}
-                value={url}
-                onChange={UrlhandleChange}
-              />
-              <TextField
-                id="outlined-basic"
-                label="Jump to video"
-                variant="outlined"
-              />
-            </Box>
+        </div>
+
+        {/* button Action */}
+        <div>
+          <Typography variant="h6" align="center" className="my-2 flex">
+            Button Action
+          </Typography>
+          <Box className="items-center justify-between">
+            <TextField
+              fullWidth
+              id="outlined-basic"
+              label="Link to"
+              variant="outlined"
+              sx={{ my: 1 }}
+              value={url}
+              onChange={UrlhandleChange}
+            />
+            <TextField
+              fullWidth
+              id="outlined-basic"
+              label="Jump to video"
+              variant="outlined"
+            />
           </Box>
-        </Box>
+        </div>
+
         <Stack className="my-4 flex items-start" direction="row" spacing={2}>
-          <Button
-            size="large"
-            variant="contained"
-            sx={{ backgroundColor: '#F3F3F3', color: '#CA4F79' }}
-          >
+          <Button size="large" variant="contained">
             Cancel
           </Button>
-          <Button
-            size="large"
-            variant="contained"
-            sx={{ width: 110, backgroundColor: '#CA4F79' }}
-          >
+          <Button size="large" variant="contained">
             Save
           </Button>
         </Stack>

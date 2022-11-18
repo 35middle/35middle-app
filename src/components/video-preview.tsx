@@ -4,6 +4,8 @@ import * as React from 'react';
 import CustomButton from './CustomButton';
 
 interface ButtonStyleType {
+  startTime: number | undefined;
+  endTime: number | undefined;
   name: string;
   text: string;
   top: string;
@@ -14,33 +16,31 @@ interface ButtonStyleType {
 }
 interface VideoPreviewProps {
   buttonStyle: ButtonStyleType;
-  videoCurrentTime: Array<number>;
 }
 
-const VideoPreview: React.FC<VideoPreviewProps> = ({
-  buttonStyle,
-  videoCurrentTime,
-}) => {
+const VideoPreview: React.FC<VideoPreviewProps> = ({ buttonStyle }) => {
   const videoEl = React.useRef<HTMLVideoElement>(null!);
-  const startTime: number | undefined = videoCurrentTime[0];
-  const endTime: number | undefined = videoCurrentTime[1];
 
-  const setVideoCurrentTime = () => {
-    const video: any = videoEl.current;
-    if (!video) return;
-    video.currentTime = startTime;
-  };
+  React.useEffect(() => {
+    if (buttonStyle.startTime !== 0 && buttonStyle.startTime !== undefined) {
+      videoEl.current.currentTime = buttonStyle.startTime;
+      videoEl.current.play();
+    }
+  });
 
   const videoTimeChange = () => {
     const video: any = videoEl.current;
-    if (video.currentTime > endTime!) {
+    if (
+      buttonStyle.endTime !== undefined &&
+      video.currentTime > buttonStyle.endTime
+    ) {
       video.pause();
     }
   };
 
   return (
-    <div>
-      <Typography variant="h6" className="mb-4">
+    <div className="flex flex-col justify-center px-5">
+      <Typography variant="h5" className="mb-0">
         Video Preview
       </Typography>
       <div style={{ position: 'relative', width: 600 }}>
@@ -49,7 +49,6 @@ const VideoPreview: React.FC<VideoPreviewProps> = ({
           height="400"
           controls
           ref={videoEl}
-          onClick={setVideoCurrentTime}
           onTimeUpdate={videoTimeChange}
         >
           <source

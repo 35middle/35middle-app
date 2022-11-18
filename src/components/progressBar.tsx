@@ -7,14 +7,19 @@ function valuetext(value: number) {
 const duration = 596;
 const start = 0;
 
-interface HandleChangeVideoTime {
-  handleChangeVideoTime: (arg: Array<number>) => void;
+// interface HandleChangeCommitted {
+//   handleChangeCommitted: (arg: Array<number> | number) => void;
+// }
+
+interface ProgressBarPropsType {
+  onChangeCommitted: (
+    event: React.SyntheticEvent | Event,
+    value: number | Array<number>
+  ) => void;
 }
 
-const ProgressBar: React.FC<HandleChangeVideoTime> = ({
-  handleChangeVideoTime,
-}) => {
-  const [value, setValue] = React.useState<number[]>([0, 0]);
+const ProgressBar = ({ onChangeCommitted }: ProgressBarPropsType) => {
+  // const [value, setValue] = React.useState<number[]>([0, 0]);
   const valueLabelFormat = (second: number) => {
     let minutes: number | string = Math.floor(second / 60);
     let seconds: number | string = second - minutes * 60;
@@ -27,10 +32,6 @@ const ProgressBar: React.FC<HandleChangeVideoTime> = ({
     return `${minutes}:${seconds}`;
   };
 
-  const handleChange = (__event: Event, newValue: number | number[]) => {
-    setValue(newValue as number[]);
-    handleChangeVideoTime(value);
-  };
   const marks = [
     {
       value: 0,
@@ -44,15 +45,15 @@ const ProgressBar: React.FC<HandleChangeVideoTime> = ({
 
   return (
     <>
-      <Box sx={{ width: 600, height: 300 }}>
-        <Typography variant="h6" className="my-8">
+      <Box sx={{ width: 600 }} className="flex flex-col justify-center px-5">
+        <Typography variant="h5" className="mt-4">
           Progress bar
         </Typography>
         <Slider
           className="flex justify-center mx-auto my-8"
           getAriaLabel={() => 'video time range'}
           defaultValue={[0, duration]}
-          onChange={handleChange}
+          onChangeCommitted={onChangeCommitted}
           getAriaValueText={valuetext}
           sx={{ width: 550 }}
           marks={marks}
@@ -60,7 +61,7 @@ const ProgressBar: React.FC<HandleChangeVideoTime> = ({
           max={duration}
           valueLabelDisplay="on"
           valueLabelFormat={valueLabelFormat}
-        ></Slider>
+        />
       </Box>
     </>
   );
