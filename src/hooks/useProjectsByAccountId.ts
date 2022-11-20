@@ -5,9 +5,8 @@ const fetcher = (url: string) => fetch(url).then((res) => res.json());
 export type ProjectEntity = {
   id: string;
   name: string;
-  description?: string;
-  imageUrl?: string;
-  color?: string;
+  logoPath: string;
+  brandColor?: string;
   accountId: string;
 };
 

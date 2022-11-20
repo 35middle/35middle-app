@@ -1,120 +1,48 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
+import fetch from 'node-fetch';
 
 import type { ProjectEntity } from '@/hooks/useProjectsByAccountId';
 
-export default async function handler(_: NextApiRequest, res: NextApiResponse) {
-  // const { accountId } = req.query;
-  // const response = await fetch(
-  //   `${process.env.SERVER_BASE_URL}/api/v1/projects?accountId=${accountId}`,
-  //   {
-  //     method: 'GET',
-  //     headers: { 'Content-Type': 'application/json' },
-  //   }
-  // );
+export const config = {
+  api: {
+    bodyParser: false,
+  },
+};
 
-  // const data: ProjectEntity[] = await response.json();
+export default async function handler(
+  req: NextApiRequest,
+  res: NextApiResponse
+) {
+  if (req.method === 'GET') {
+    const { accountId } = req.query;
+    const response = await fetch(
+      `${process.env.SERVER_BASE_URL}/api/v1/projects?accountId=${accountId}`,
+      {
+        method: 'GET',
+        headers: { 'Content-Type': 'application/json' },
+      }
+    );
 
-  const data: ProjectEntity[] = [
-    {
-      id: '60f1b0b0b9b1b8b1b1b1b1b1',
-      name: 'Project 1',
-      imageUrl: 'https://via.placeholder.com/150.png',
-      accountId: '60f1b0b0b9b1b8b1b1b1b1b1',
-      color: '#faac3a',
-    },
-    {
-      id: '60f1b0b0b9b1b8b1b1b1b1b2',
-      name: 'Project 1',
-      imageUrl: 'https://via.placeholder.com/150.png',
-      accountId: '60f1b0b0b9b1b8b1b1b1b1b1',
-      color: '#0a8213',
-    },
-    {
-      id: '60f1b0b0b9b1b8b1b1b1b1b3',
-      name: 'Project 1',
-      imageUrl: 'https://via.placeholder.com/150.png',
-      accountId: '60f1b0b0b9b1b8b1b1b1b1b1',
-      color: undefined,
-    },
-    {
-      id: '60f1b0b0b9b1b8b1b1b1b1b4',
-      name: 'Project 1',
-      imageUrl: 'https://via.placeholder.com/150.png',
-      accountId: '60f1b0b0b9b1b8b1b1b1b1b1',
-    },
-    {
-      id: '60f1b0b0b9b1b8b1b1b1b1b5',
-      name: 'Project 1',
-      imageUrl: 'https://via.placeholder.com/150.png',
-      accountId: '60f1b0b0b9b1b8b1b1b1b1b1',
-    },
-    {
-      id: '60f1b0b0b9b1b8b1b1b1b1b1',
-      name: 'Project 1',
-      imageUrl: 'https://via.placeholder.com/150.png',
-      accountId: '60f1b0b0b9b1b8b1b1b1b1b1',
-      color: '#faac3a',
-    },
-    {
-      id: '60f1b0b0b9b1b8b1b1b1b1b2',
-      name: 'Project 1',
-      imageUrl: 'https://via.placeholder.com/150.png',
-      accountId: '60f1b0b0b9b1b8b1b1b1b1b1',
-      color: '#0a8213',
-    },
-    {
-      id: '60f1b0b0b9b1b8b1b1b1b1b3',
-      name: 'Project 1',
-      imageUrl: 'https://via.placeholder.com/150.png',
-      accountId: '60f1b0b0b9b1b8b1b1b1b1b1',
-      color: undefined,
-    },
-    {
-      id: '60f1b0b0b9b1b8b1b1b1b1b4',
-      name: 'Project 1',
-      imageUrl: 'https://via.placeholder.com/150.png',
-      accountId: '60f1b0b0b9b1b8b1b1b1b1b1',
-    },
-    {
-      id: '60f1b0b0b9b1b8b1b1b1b1b5',
-      name: 'Project 1',
-      imageUrl: 'https://via.placeholder.com/150.png',
-      accountId: '60f1b0b0b9b1b8b1b1b1b1b1',
-    },
-    {
-      id: '60f1b0b0b9b1b8b1b1b1b1b1',
-      name: 'Project 1',
-      imageUrl: 'https://via.placeholder.com/150.png',
-      accountId: '60f1b0b0b9b1b8b1b1b1b1b1',
-      color: '#faac3a',
-    },
-    {
-      id: '60f1b0b0b9b1b8b1b1b1b1b2',
-      name: 'Project 1',
-      imageUrl: 'https://via.placeholder.com/150.png',
-      accountId: '60f1b0b0b9b1b8b1b1b1b1b1',
-      color: '#0a8213',
-    },
-    {
-      id: '60f1b0b0b9b1b8b1b1b1b1b3',
-      name: 'Project 1',
-      imageUrl: 'https://via.placeholder.com/150.png',
-      accountId: '60f1b0b0b9b1b8b1b1b1b1b1',
-      color: undefined,
-    },
-    {
-      id: '60f1b0b0b9b1b8b1b1b1b1b4',
-      name: 'Project 1',
-      imageUrl: 'https://via.placeholder.com/150.png',
-      accountId: '60f1b0b0b9b1b8b1b1b1b1b1',
-    },
-    {
-      id: '60f1b0b0b9b1b8b1b1b1b1b5',
-      name: 'Project 1',
-      imageUrl: 'https://via.placeholder.com/150.png',
-      accountId: '60f1b0b0b9b1b8b1b1b1b1b1',
-    },
-  ];
+    if (response.ok) {
+      const data = (await response.json()) as ProjectEntity[];
+      res.status(200).json(data);
+    }
+  }
 
-  res.status(200).json(data);
+  if (req.method === 'POST' || req.method === 'PUT') {
+    const response = await fetch(
+      `${process.env.SERVER_BASE_URL}/api/v1/projects`,
+      {
+        method: req.method,
+        body: req,
+        headers: { 'Content-Type': req.headers['content-type'] || '' },
+      }
+    );
+
+    // const data: ProjectEntity = await response.json();
+    if (response.ok) {
+      const data = await response.json();
+      res.status(200).json(data);
+    }
+  }
 }
