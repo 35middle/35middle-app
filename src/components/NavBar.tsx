@@ -54,10 +54,6 @@ const NavBar = ({ title, userSession }: Props) => {
               objectFit="contain"
             />
           </Box>
-
-          <Typography variant="h6" noWrap>
-            Welcome {userSession?.firstName} {userSession?.lastName}
-          </Typography>
         </Box>
 
         <Box sx={{ flexGrow: 0 }}>
