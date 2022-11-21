@@ -204,9 +204,10 @@ const ProjectEditing = ({
               <Avatar
                 alt="Project Logo"
                 src={
-                  mode === 'create'
+                  preview ||
+                  (mode === 'create'
                     ? '/assets/images/default-project-logo.png'
-                    : preview || `/api/project-logo/${projectEntity?.logoPath}`
+                    : `/api/project-logo/${projectEntity?.logoPath}`)
                 }
                 sx={{ width: 56, height: 56 }}
               />

@@ -1,6 +1,8 @@
-import type { NextApiRequest, NextApiResponse } from 'next';
+import { withIronSessionApiRoute } from 'iron-session/next';
 
-type UserEntity = {
+import { sessionOptions } from '@/lib/session';
+
+export type UserEntity = {
   _id: string;
   email: string;
   lastName: string;
@@ -8,17 +10,24 @@ type UserEntity = {
   accountId: string;
 };
 
-export default async function handler(
-  req: NextApiRequest,
-  res: NextApiResponse
-) {
+export default withIronSessionApiRoute(async function loginRoute(req, res) {
+  // get user from database then:
   const response = await fetch(`${process.env.SERVER_BASE_URL}/api/v1/login`, {
     method: req.method,
     headers: { 'Content-Type': 'application/json' },
     body: req.body,
   });
 
-  const data: UserEntity = await response.json();
-  res.setHeader('Set-Cookie', response.headers.get('Set-Cookie') || '');
-  res.status(response.status).json(data);
-}
+  const {
+    userEntity,
+    accessToken,
+  }: { userEntity: UserEntity; accessToken: string } = await response.json();
+
+  req.session.user = {
+    accessToken,
+    userEntity,
+  };
+
+  await req.session.save();
+  res.status(response.status).json(userEntity);
+}, sessionOptions);

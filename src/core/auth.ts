@@ -1,30 +1,23 @@
+import { withIronSessionSsr } from 'iron-session/next';
 import type { GetServerSideProps } from 'next';
 
+import { sessionOptions } from '@/lib/session';
 import type { BasePageProps } from '@/types';
 
-export const getServerSideProps: GetServerSideProps<BasePageProps> = async (
-  context
-) => {
-  const result = await fetch(`${process.env.SERVER_BASE_URL}/api/v1/me`, {
-    method: 'GET',
-    headers: {
-      authorization: `Bearer ${context.req.cookies?.access_token}`,
-    },
-  });
+export const getServerSideProps: GetServerSideProps<BasePageProps> =
+  withIronSessionSsr(async function getServerSideProps(context) {
+    if (context.req.session.user) {
+      return {
+        props: {
+          userSession: context.req.session.user.userEntity || null,
+        },
+      };
+    }
 
-  if (result.ok) {
-    const user = await result.json();
     return {
-      props: {
-        userSession: user,
+      redirect: {
+        destination: '/login',
+        permanent: false,
       },
     };
-  }
-
-  return {
-    redirect: {
-      destination: '/login',
-      permanent: false,
-    },
-  };
-};
+  }, sessionOptions);

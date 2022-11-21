@@ -1,7 +1,9 @@
+import { withIronSessionApiRoute } from 'iron-session/next';
 import type { NextApiRequest, NextApiResponse } from 'next';
 import fetch from 'node-fetch';
 
 import type { ProjectEntity } from '@/hooks/useProjectsByAccountId';
+import { sessionOptions } from '@/lib/session';
 
 export const config = {
   api: {
@@ -9,7 +11,7 @@ export const config = {
   },
 };
 
-export default async function handler(
+export default withIronSessionApiRoute(async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
@@ -19,13 +21,18 @@ export default async function handler(
       `${process.env.SERVER_BASE_URL}/api/v1/projects?accountId=${accountId}`,
       {
         method: 'GET',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          authorization: `Bearer ${req.session.user?.accessToken}`,
+        },
       }
     );
 
     if (response.ok) {
       const data = (await response.json()) as ProjectEntity[];
       res.status(200).json(data);
+    } else {
+      res.status(response.status).json({ message: response.statusText });
     }
   }
 
@@ -45,4 +52,5 @@ export default async function handler(
       res.status(200).json(data);
     }
   }
-}
+},
+sessionOptions);

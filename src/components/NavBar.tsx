@@ -25,7 +25,7 @@ const settings = [
 ];
 
 type Props = {
-  title?: string;
+  title: string;
   userSession?: UserSession;
 };
 
@@ -47,22 +47,14 @@ const NavBar = ({ title, userSession }: Props) => {
       <Toolbar className="flex justify-between py-2">
         <Box className="flex h-full items-center justify-between">
           <Box className="relative mr-10 h-full w-40">
-            <Image
-              alt={title}
-              src="/assets/images/main-page-logo.svg"
-              layout="fill"
-              objectFit="contain"
-            />
+            <Image alt={title} src="/assets/images/main-page-logo.svg" fill />
           </Box>
         </Box>
 
         <Box sx={{ flexGrow: 0 }}>
           <Tooltip title="Open settings">
             <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-              <Avatar
-                alt={userSession?.firstName}
-                src="/static/images/avatar/2.jpg"
-              />
+              <Avatar>{userSession?.firstName?.charAt(0) || ''}</Avatar>
             </IconButton>
           </Tooltip>
           <Menu

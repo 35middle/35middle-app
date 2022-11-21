@@ -9,7 +9,6 @@ class MyDocument extends Document {
     return (
       <Html lang={AppConfig.locale}>
         <Head>
-          <title>{AppConfig.title}</title>
           <link rel="icon" href="/favicon.ico" />
           <link
             rel="stylesheet"
