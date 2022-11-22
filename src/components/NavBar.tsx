@@ -11,27 +11,25 @@ import {
   Typography,
 } from '@mui/material';
 import Image from 'next/image';
+import Link from 'next/link';
 import * as React from 'react';
-import { useSelector } from 'react-redux';
 
-import type { AccountState, RootState } from '@/store';
+import type { UserSession } from '@/types';
 
 const settings = [
-  'Projects',
-  'Profile Settings',
-  'Account Settings',
-  'User Management',
-  'Switch Account',
+  { pageName: 'Projects', pageUrl: 'projects' },
+  { pageName: 'Profile', pageUrl: 'profile' },
+  { pageName: 'Account Settings', pageUrl: 'account-settings' },
+  { pageName: 'User Management', pageUrl: 'user-management' },
+  { pageName: 'Switch Account', pageUrl: 'switch-account' },
 ];
 
 type Props = {
-  title?: string;
+  title: string;
+  userSession?: UserSession;
 };
 
-const NavBar = ({ title }: Props) => {
-  const account = useSelector<RootState, AccountState>(
-    (state) => state.account
-  );
+const NavBar = ({ title, userSession }: Props) => {
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(
     null
   );
@@ -49,26 +47,14 @@ const NavBar = ({ title }: Props) => {
       <Toolbar className="flex justify-between py-2">
         <Box className="flex h-full items-center justify-between">
           <Box className="relative mr-10 h-full w-40">
-            <Image
-              alt={title}
-              src="/assets/images/main-page-logo.svg"
-              layout="fill"
-              objectFit="contain"
-            />
+            <Image alt={title} src="/assets/images/main-page-logo.svg" fill />
           </Box>
-
-          <Typography variant="h6">
-            Welcome to {account.firstName} {account.lastName}
-          </Typography>
         </Box>
 
         <Box sx={{ flexGrow: 0 }}>
           <Tooltip title="Open settings">
             <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-              <Avatar
-                alt={account.firstName}
-                src="/static/images/avatar/2.jpg"
-              />
+              <Avatar>{userSession?.firstName?.charAt(0) || ''}</Avatar>
             </IconButton>
           </Tooltip>
           <Menu
@@ -88,12 +74,20 @@ const NavBar = ({ title }: Props) => {
             onClose={handleCloseUserMenu}
           >
             {settings.map((setting) => (
-              <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                <Typography textAlign="center">{setting}</Typography>
+              <MenuItem key={setting.pageName} onClick={handleCloseUserMenu}>
+                <Typography textAlign="center">
+                  <Link
+                    href={`/account/${userSession?.accountId}/${setting.pageUrl}`}
+                  >
+                    {setting.pageName}
+                  </Link>
+                </Typography>
               </MenuItem>
             ))}
             <MenuItem onClick={handleCloseUserMenu}>
-              <Button variant="contained">Logout</Button>
+              <Link href="/api/logout">
+                <Button variant="contained">Logout</Button>
+              </Link>
             </MenuItem>
           </Menu>
         </Box>

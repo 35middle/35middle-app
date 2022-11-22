@@ -130,7 +130,6 @@ const ButtonSettings = (props: any) => {
               className="mt-1 flex items-start justify-center"
               direction="row"
               spacing={4}
-              direction={'row'}
             >
               <Paper
                 className="h-8 w-24 cursor-pointer rounded-full"
@@ -155,6 +154,7 @@ const ButtonSettings = (props: any) => {
           </Typography>
           <Box className="my-1 flex items-center justify-between">
             <Stack
+              direction="row"
               spacing={4}
               className="my-1 flex items-center"
             >
