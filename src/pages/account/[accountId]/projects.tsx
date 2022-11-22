@@ -146,17 +146,19 @@ const Projects = ({ userSession }: Props) => {
                 })
               }
             >
-              <ProjectEditing
-                mode={isProjectEditingOpen.mode}
-                projectEntity={isProjectEditingOpen.selectedProject}
-                accountId={userSession?.accountId || ''}
-                onClose={() =>
-                  setIsProjectEditingOpen({
-                    open: false,
-                    mode: 'create',
-                  })
-                }
-              />
+              <Box>
+                <ProjectEditing
+                  mode={isProjectEditingOpen.mode}
+                  projectEntity={isProjectEditingOpen.selectedProject}
+                  accountId={userSession?.accountId || ''}
+                  onClose={() =>
+                    setIsProjectEditingOpen({
+                      open: false,
+                      mode: 'create',
+                    })
+                  }
+                />
+              </Box>
             </Modal>
           </Box>
         </>
