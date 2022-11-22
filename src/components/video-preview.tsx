@@ -16,9 +16,13 @@ interface ButtonStyleType {
 }
 interface VideoPreviewProps {
   buttonStyle: ButtonStyleType;
+  setButtonStyle: Function;
 }
 
-const VideoPreview: React.FC<VideoPreviewProps> = ({ buttonStyle }) => {
+const VideoPreview: React.FC<VideoPreviewProps> = ({
+  buttonStyle,
+  setButtonStyle,
+}) => {
   const videoEl = React.useRef<HTMLVideoElement>(null!);
 
   React.useEffect(() => {
@@ -27,6 +31,7 @@ const VideoPreview: React.FC<VideoPreviewProps> = ({ buttonStyle }) => {
       videoEl.current.play();
     }
   });
+  const draggleRef = React.useRef(null);
 
   const videoTimeChange = () => {
     const video: any = videoEl.current;
@@ -43,13 +48,18 @@ const VideoPreview: React.FC<VideoPreviewProps> = ({ buttonStyle }) => {
       <Typography variant="h5" className="mb-0">
         Video Preview
       </Typography>
-      <div style={{ position: 'relative', width: 600 }}>
+
+      <div
+        style={{ position: 'relative', width: 600, height: '400px' }}
+        ref={draggleRef}
+      >
         <video
           width="600"
           height="400"
           controls
           ref={videoEl}
           onTimeUpdate={videoTimeChange}
+          style={{ objectFit: 'fill' }}
         >
           <source
             src="http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"
@@ -57,7 +67,12 @@ const VideoPreview: React.FC<VideoPreviewProps> = ({ buttonStyle }) => {
           />
           Your browser does not support HTML5 video.
         </video>
-        <CustomButton buttonStyle={buttonStyle} />
+
+        <CustomButton
+          buttonStyle={buttonStyle}
+          draggleRef={draggleRef}
+          setButtonStyle={setButtonStyle}
+        />
       </div>
     </div>
   );

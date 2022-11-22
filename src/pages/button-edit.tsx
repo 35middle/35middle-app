@@ -23,8 +23,8 @@ const ButtonEdit = () => {
     endTime: 596,
     name: 'Button 1',
     text: 'Buy me now',
-    top: '50',
-    left: '50',
+    top: '0',
+    left: '0',
     style: 'circle',
     size: 'large',
     url: 'www.myers.com.au',
@@ -45,7 +45,10 @@ const ButtonEdit = () => {
   return (
     <div className="flex flex-row items-center">
       <div className="mt-5 mb-2 flex w-1/2 flex-col justify-center">
-        <VideoPreview buttonStyle={buttonStyle} />
+        <VideoPreview
+          buttonStyle={buttonStyle}
+          setButtonStyle={setButtonStyle}
+        />
         <ProgressBar onChangeCommitted={onChangeCommitted} />;
         <div className="flex flex-row px-5 items-center mt-4">
           <Button size="large" variant="contained" className="m-2">
