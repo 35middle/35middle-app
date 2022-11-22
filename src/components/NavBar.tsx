@@ -18,7 +18,7 @@ import type { UserSession } from '@/types';
 
 const settings = [
   { pageName: 'Projects', pageUrl: 'projects' },
-  { pageName: 'Profile Settings', pageUrl: 'profile-settings' },
+  { pageName: 'Profile', pageUrl: 'profile' },
   { pageName: 'Account Settings', pageUrl: 'account-settings' },
   { pageName: 'User Management', pageUrl: 'user-management' },
   { pageName: 'Switch Account', pageUrl: 'switch-account' },
