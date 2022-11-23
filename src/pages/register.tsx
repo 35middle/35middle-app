@@ -1,6 +1,8 @@
+import { LoadingButton } from '@mui/lab';
 import { Box, Button, TextField } from '@mui/material';
 import type { FormikProps } from 'formik';
 import { useFormik } from 'formik';
+import Head from 'next/head';
 import Link from 'next/link';
 import * as React from 'react';
 import { useState } from 'react';
@@ -35,9 +37,11 @@ interface FormValues {
 
 const Register = () => {
   const [alertData, setAlertData] = useState<AlertData>();
+  const [isLoading, setIsLoading] = useState(false);
 
   const onSubmit = async (values: FormValues, actions: any) => {
     try {
+      setIsLoading(true);
       const response = await fetch('/api/register', {
         method: 'POST',
         body: JSON.stringify(values),
@@ -66,6 +70,7 @@ const Register = () => {
         message: e.message,
       });
     } finally {
+      setIsLoading(false);
       actions.resetForm();
     }
   };
@@ -90,6 +95,9 @@ const Register = () => {
 
   return (
     <>
+      <Head>
+        <title>35middle | Register</title>
+      </Head>
       <UnauthorizedLayout
         title="Welcome to register 35middle"
         alertData={alertData}
@@ -108,6 +116,7 @@ const Register = () => {
             className="mb-4 w-full"
             error={touched.firstName && Boolean(errors.firstName)}
             helperText={touched.firstName && errors.firstName}
+            disabled={isLoading}
           />
           <TextField
             id="lastName"
@@ -119,6 +128,7 @@ const Register = () => {
             className="mb-4 w-full"
             error={touched.lastName && Boolean(errors.lastName)}
             helperText={touched.lastName && errors.lastName}
+            disabled={isLoading}
           />
           <TextField
             id="email"
@@ -130,6 +140,7 @@ const Register = () => {
             className="mb-4 w-full"
             error={touched.email && Boolean(errors.email)}
             helperText={touched.email && errors.email}
+            disabled={isLoading}
           />
           <TextField
             id="password"
@@ -141,22 +152,25 @@ const Register = () => {
             className="w-full"
             error={touched.password && Boolean(errors.password)}
             helperText={touched.password && errors.password}
+            disabled={isLoading}
           />
           <Box className="mt-4 flex w-full items-center justify-between">
-            <Button
+            <LoadingButton
               type="submit"
               variant="contained"
               color="primary"
               size="large"
+              loading={isLoading}
             >
               Register
-            </Button>
-            <Link href="/login">
+            </LoadingButton>
+            <Link href="/login" className="no-underline">
               <Button
                 variant="text"
                 color="primary"
                 size="large"
                 className="p-0"
+                disabled={isLoading}
               >
                 Already registered?
               </Button>

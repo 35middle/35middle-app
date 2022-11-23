@@ -32,7 +32,7 @@ export default withIronSessionApiRoute(async function handler(
       const data = (await response.json()) as ProjectEntity[];
       res.status(200).json(data);
     } else {
-      res.status(response.status).json({ message: response.statusText });
+      res.status(response.status).json({ message: 'Failed to fetch projects' });
     }
   }
 

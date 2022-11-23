@@ -8,7 +8,7 @@ type Props = {
 
 const PageAlert = ({ alertMsg }: Props) => {
   return (
-    <Box className="flex h-full w-full flex-col items-center justify-center">
+    <Box className="flex w-full flex-col items-center justify-center">
       <Image
         src="/assets/images/auth-page-logo.svg"
         alt="logo"

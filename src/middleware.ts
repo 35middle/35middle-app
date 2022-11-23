@@ -9,7 +9,7 @@ export const middleware = async (req: NextRequest) => {
   const session = await getIronSession(req, res, sessionOptions);
   const { user } = session;
 
-  if (user) {
+  if (user?.userEntity) {
     return NextResponse.redirect(
       new URL(`/account/${user.userEntity.accountId}/projects`, req.url)
     );

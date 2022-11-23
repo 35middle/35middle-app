@@ -1,6 +1,8 @@
-import { Button, TextField } from '@mui/material';
+import { LoadingButton } from '@mui/lab';
+import { TextField } from '@mui/material';
 import type { FormikProps } from 'formik';
 import { useFormik } from 'formik';
+import Head from 'next/head';
 import Link from 'next/link';
 import { useState } from 'react';
 import * as React from 'react';
@@ -19,9 +21,11 @@ interface FormValues {
 
 const ForgetPassword = () => {
   const [alertData, setAlertData] = useState<AlertData>();
+  const [isLoading, setIsLoading] = useState(false);
 
   const onSubmit = async (values: FormValues, actions: any) => {
     try {
+      setIsLoading(true);
       const response = await fetch('/api/forgetPassword', {
         method: 'POST',
         body: JSON.stringify(values),
@@ -50,6 +54,7 @@ const ForgetPassword = () => {
         message: e.message,
       });
     } finally {
+      setIsLoading(false);
       actions.resetForm();
     }
   };
@@ -71,6 +76,9 @@ const ForgetPassword = () => {
 
   return (
     <>
+      <Head>
+        <title>35middle | Forget password</title>
+      </Head>
       <UnauthorizedLayout
         title="Get forget password link"
         alertData={alertData}
@@ -89,15 +97,17 @@ const ForgetPassword = () => {
             className="mb-4 w-full"
             error={touched.email && Boolean(errors.email)}
             helperText={touched.email && errors.email}
+            disabled={isLoading}
           />
-          <Button
+          <LoadingButton
             type="submit"
             variant="contained"
             color="primary"
             size="large"
+            loading={isLoading}
           >
             Submit
-          </Button>
+          </LoadingButton>
         </form>
       </UnauthorizedLayout>
     </>

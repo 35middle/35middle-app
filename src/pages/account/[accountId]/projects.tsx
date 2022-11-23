@@ -1,17 +1,9 @@
 import AssignmentIndOutlinedIcon from '@mui/icons-material/AssignmentIndOutlined';
-import {
-  Box,
-  Button,
-  CircularProgress,
-  Grid,
-  Modal,
-  Paper,
-} from '@mui/material';
+import { Box, Button, CircularProgress, Grid, Modal } from '@mui/material';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 
 import PageAlert from '@/components/PageAlert';
-import PageHeader from '@/components/PageHeader';
 import ProjectCard from '@/components/ProjectCard';
 import ProjectEditing from '@/components/ProjectEditing';
 import type { ProjectEntity } from '@/hooks/useProjectsByAccountId';
@@ -26,9 +18,10 @@ type Props = BasePageProps;
 
 const Projects = ({ userSession }: Props) => {
   const router = useRouter();
-  const { projects, isLoading, isError } = useProjectsByAccountId(
+  const { projects, isLoading, error } = useProjectsByAccountId(
     userSession?.accountId || ''
   );
+
   const [isProjectEditingOpen, setIsProjectEditingOpen] = useState<{
     open: boolean;
     mode?: 'create' | 'edit';
@@ -40,32 +33,29 @@ const Projects = ({ userSession }: Props) => {
   });
 
   const { accountId } = router.query;
-  const isAuthorized = userSession?.accountId === accountId;
+  const isNotAuthorized =
+    userSession?.accountId !== accountId ||
+    (error && error.message === 'Unauthorized');
 
-  if (!isAuthorized) {
+  if (isNotAuthorized) {
     return (
       <AuthorizedLayout
         userSession={userSession}
         title="35middle | projects"
         description="Projects list page"
       >
-        <Box className="box-border h-full py-10">
-          <Box className="mx-auto flex h-full w-full max-w-screen-xl flex-col ">
-            <Box className="flex items-center justify-between">
-              <PageHeader
-                icon={
-                  <AssignmentIndOutlinedIcon fontSize="large" color="primary" />
-                }
-                title={`Welcome back, ${userSession?.firstName}`}
-                subtitle="This is where you can edit brand projects"
-              />
-            </Box>
-
-            <Paper elevation={3} className="mt-5 grow p-5">
-              <PageAlert alertMsg="No access to this account" />
-            </Paper>
+        <MainPageLayout
+          icon={<AssignmentIndOutlinedIcon fontSize="large" color="primary" />}
+          title={`Welcome back, ${userSession?.firstName}`}
+          subtitle="This is where you can edit brand projects"
+        >
+          <Box className="flex h-full w-full flex-col items-center justify-center">
+            <PageAlert alertMsg="No access to this account" />
+            <Button href="/login" variant="outlined" className="mt-5">
+              Back to login
+            </Button>
           </Box>
-        </Box>
+        </MainPageLayout>
       </AuthorizedLayout>
     );
   }
@@ -102,7 +92,7 @@ const Projects = ({ userSession }: Props) => {
             title={`Welcome back, ${userSession?.firstName}`}
             subtitle="This is where you can edit brand projects"
           >
-            {isError || projects.length === 0 ? (
+            {projects && projects.length === 0 ? (
               <PageAlert alertMsg="No projects found" />
             ) : (
               <Grid

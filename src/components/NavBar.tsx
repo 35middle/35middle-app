@@ -1,8 +1,15 @@
 import {
+  BusinessOutlined,
+  ChangeCircleOutlined,
+  FolderOpenOutlined,
+  GroupOutlined,
+  LogoutOutlined,
+  ManageAccountsOutlined,
+} from '@mui/icons-material';
+import {
   AppBar,
   Avatar,
   Box,
-  Button,
   IconButton,
   Menu,
   MenuItem,
@@ -17,11 +24,31 @@ import * as React from 'react';
 import type { UserSession } from '@/types';
 
 const settings = [
-  { pageName: 'Projects', pageUrl: 'projects' },
-  { pageName: 'Profile', pageUrl: 'profile' },
-  { pageName: 'Account Settings', pageUrl: 'account-settings' },
-  { pageName: 'User Management', pageUrl: 'user-management' },
-  { pageName: 'Switch Account', pageUrl: 'switch-account' },
+  {
+    pageName: 'Projects',
+    pageUrl: 'projects',
+    icon: <FolderOpenOutlined color="primary" />,
+  },
+  {
+    pageName: 'Profile',
+    pageUrl: 'profile',
+    icon: <ManageAccountsOutlined color="primary" />,
+  },
+  {
+    pageName: 'Account Settings',
+    pageUrl: 'account-settings',
+    icon: <BusinessOutlined color="primary" />,
+  },
+  {
+    pageName: 'User Management',
+    pageUrl: 'user-management',
+    icon: <GroupOutlined color="primary" />,
+  },
+  {
+    pageName: 'Switch Account',
+    pageUrl: 'switch-account',
+    icon: <ChangeCircleOutlined color="primary" />,
+  },
 ];
 
 type Props = {
@@ -51,12 +78,24 @@ const NavBar = ({ title, userSession }: Props) => {
           </Box>
         </Box>
 
-        <Box sx={{ flexGrow: 0 }}>
+        <Box sx={{ flexGrow: 0 }} className="flex items-center">
           <Tooltip title="Open settings">
             <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
               <Avatar>{userSession?.firstName?.charAt(0) || ''}</Avatar>
             </IconButton>
           </Tooltip>
+          {userSession && (
+            <Tooltip title="Logout" className="ml-5">
+              <Link href="/api/logout">
+                <LogoutOutlined
+                  fontSize="large"
+                  style={{
+                    color: 'white',
+                  }}
+                />
+              </Link>
+            </Tooltip>
+          )}
           <Menu
             sx={{ mt: '45px' }}
             id="menu-appbar"
@@ -75,20 +114,30 @@ const NavBar = ({ title, userSession }: Props) => {
           >
             {settings.map((setting) => (
               <MenuItem key={setting.pageName} onClick={handleCloseUserMenu}>
-                <Typography textAlign="center">
-                  <Link
-                    href={`/account/${userSession?.accountId}/${setting.pageUrl}`}
+                <Link
+                  href={`/account/${userSession?.accountId}/${setting.pageUrl}`}
+                  style={{ textDecoration: 'none' }}
+                >
+                  <Box
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                    }}
                   >
-                    {setting.pageName}
-                  </Link>
-                </Typography>
+                    {setting.icon}
+                    <Typography
+                      variant="body2"
+                      color="primary"
+                      style={{
+                        marginLeft: '0.5rem',
+                      }}
+                    >
+                      {setting.pageName}
+                    </Typography>
+                  </Box>
+                </Link>
               </MenuItem>
             ))}
-            <MenuItem onClick={handleCloseUserMenu}>
-              <Link href="/api/logout">
-                <Button variant="contained">Logout</Button>
-              </Link>
-            </MenuItem>
           </Menu>
         </Box>
       </Toolbar>

@@ -1,7 +1,5 @@
 import useSWR from 'swr';
 
-const fetcher = (url: string) => fetch(url).then((res) => res.json());
-
 export type ProjectEntity = {
   id: string;
   name: string;
@@ -10,16 +8,35 @@ export type ProjectEntity = {
   accountId: string;
 };
 
-const useProjectsByAccountId = (accountId: string) => {
+const useProjectsByAccountId = (
+  accountId: string
+): {
+  projects: ProjectEntity[];
+  isLoading: boolean;
+  error: Error | null | undefined;
+} => {
   const { data, error } = useSWR<ProjectEntity[]>(
     `/api/account/${accountId}/projects`,
-    fetcher
+    async (url) => {
+      const res = await fetch(url);
+
+      // If the status code is not in the range 200-299,
+      // we still try to parse and throw it.
+      if (res.ok) {
+        return res.json();
+      }
+      if (res.status === 401) {
+        throw new Error('Unauthorized');
+      } else {
+        throw new Error('Unexpected error');
+      }
+    }
   );
 
   return {
     projects: data || [],
     isLoading: !error && !data,
-    isError: error,
+    error,
   };
 };
 

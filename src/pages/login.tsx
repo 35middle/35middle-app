@@ -34,19 +34,21 @@ interface FormValues {
 const Login = () => {
   const router = useRouter();
   const [alertData, setAlertData] = useState<AlertData>();
+  const [isLogin, setIsLogin] = useState(false);
 
   const onSubmit = async (values: FormValues) => {
     try {
+      setIsLogin(true);
       const response = await fetch('/api/login', {
         method: 'POST',
         body: JSON.stringify(values),
       });
 
-      const data = await response.json();
       if (response.ok) {
+        const data = await response.json();
         const { accountId } = data;
         await router.replace(`/account/${accountId}/projects`);
-      } else if (data.statusCode === 401) {
+      } else if (response.status === 401) {
         setAlertData({
           severity: 'error',
           message: 'Email or password is incorrect',
@@ -57,6 +59,8 @@ const Login = () => {
         severity: 'error',
         message: e.message,
       });
+    } finally {
+      setIsLogin(false);
     }
   };
 
@@ -78,10 +82,14 @@ const Login = () => {
 
   return (
     <>
-      <UnauthorizedLayout title="Welcome to 35middle" alertData={alertData}>
-        <Head>
-          <title>35middle | Login</title>
-        </Head>
+      <Head>
+        <title>35middle | Login</title>
+      </Head>
+      <UnauthorizedLayout
+        title="Welcome to 35middle"
+        alertData={alertData}
+        loading={isLogin}
+      >
         <form
           className="flex flex-col items-center justify-center"
           onSubmit={handleSubmit}
@@ -118,11 +126,11 @@ const Login = () => {
               LOGIN
             </Button>
 
-            <Link href="/forget-password">
+            <Link href="/forget-password" className="no-underline">
               <Button color="primary">Forget Password?</Button>
             </Link>
 
-            <Link href="/register">
+            <Link href="/register" className="no-underline">
               <Button color="primary" variant="outlined" size="large">
                 SIGN UP
               </Button>

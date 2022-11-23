@@ -1,4 +1,11 @@
-import { Alert, Box, Snackbar, Typography } from '@mui/material';
+import {
+  Alert,
+  Backdrop,
+  Box,
+  CircularProgress,
+  Snackbar,
+  Typography,
+} from '@mui/material';
 import Image from 'next/image';
 import * as React from 'react';
 import { useEffect, useState } from 'react';
@@ -10,11 +17,12 @@ export type AlertData = {
 
 type Props = {
   alertData?: AlertData;
+  loading?: boolean;
   title: string;
   children: React.ReactNode;
 };
 
-const UnauthorizedLayout = ({ title, alertData, children }: Props) => {
+const UnauthorizedLayout = ({ title, alertData, children, loading }: Props) => {
   const [isAlertOpen, setIsAlertOpen] = useState(!!alertData);
 
   useEffect(() => {
@@ -59,6 +67,11 @@ const UnauthorizedLayout = ({ title, alertData, children }: Props) => {
           {children}
         </Box>
       </Box>
+      {loading && (
+        <Backdrop open={true}>
+          <CircularProgress />
+        </Backdrop>
+      )}
     </>
   );
 };
