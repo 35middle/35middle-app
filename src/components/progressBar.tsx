@@ -1,4 +1,4 @@
-import { Box, Slider, Typography } from '@mui/material';
+import { Box, Slider } from '@mui/material';
 import * as React from 'react';
 
 function valuetext(value: number) {
@@ -46,11 +46,8 @@ const ProgressBar = ({ onChangeCommitted }: ProgressBarPropsType) => {
   return (
     <>
       <Box sx={{ width: 600 }} className="flex flex-col justify-center px-5">
-        <Typography variant="h5" className="mt-4">
-          Progress bar
-        </Typography>
         <Slider
-          className="flex justify-center mx-auto my-8"
+          className="flex justify-center mx-auto my-14"
           getAriaLabel={() => 'video time range'}
           defaultValue={[0, duration]}
           onChangeCommitted={onChangeCommitted}

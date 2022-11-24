@@ -1,4 +1,4 @@
-import { Typography } from '@mui/material';
+// import { Typography } from '@mui/material';
 import * as React from 'react';
 
 import CustomButton from './CustomButton';
@@ -6,11 +6,12 @@ import CustomButton from './CustomButton';
 interface ButtonStyleType {
   startTime: number | undefined;
   endTime: number | undefined;
+  jumpToTime: number | undefined;
   name: string;
   text: string;
   top: string;
   left: string;
-  url: string;
+  url: string | undefined;
   size: 'small' | 'medium' | 'large';
   style: 'circle' | 'party';
 }
@@ -43,12 +44,19 @@ const VideoPreview: React.FC<VideoPreviewProps> = ({
     }
   };
 
+  const onClick = (event: any) => {
+    event.preventDefault();
+    event.stopPropagation();
+    if (buttonStyle.url !== undefined) {
+      window.open(`https://${buttonStyle.url}`);
+    } else if (buttonStyle.jumpToTime !== undefined) {
+      videoEl.current.currentTime = buttonStyle.jumpToTime;
+      videoEl.current.play();
+    }
+  };
+
   return (
     <div className="flex flex-col justify-center px-5">
-      <Typography variant="h5" className="mb-0">
-        Video Preview
-      </Typography>
-
       <div
         style={{ position: 'relative', width: 600, height: '400px' }}
         ref={draggleRef}
@@ -69,6 +77,7 @@ const VideoPreview: React.FC<VideoPreviewProps> = ({
         </video>
 
         <CustomButton
+          onClick={onClick}
           buttonStyle={buttonStyle}
           draggleRef={draggleRef}
           setButtonStyle={setButtonStyle}

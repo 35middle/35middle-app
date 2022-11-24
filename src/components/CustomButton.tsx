@@ -5,11 +5,14 @@ import type { DraggableEvent } from 'react-draggable';
 import Draggable from 'react-draggable';
 // eslint-disable-next-line @typescript-eslint/naming-convention
 interface ButtonStyleType {
+  startTime: number | undefined;
+  endTime: number | undefined;
+  jumpToTime: number | undefined;
   name: string;
   text: string;
   top: string;
   left: string;
-  url: string;
+  url: string | undefined;
   size: 'small' | 'medium' | 'large';
   style: 'circle' | 'party';
 }
@@ -17,22 +20,17 @@ interface CustomButton {
   buttonStyle: ButtonStyleType;
   draggleRef: any;
   setButtonStyle: Function;
+  onClick: React.MouseEventHandler<HTMLButtonElement>;
 }
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 const CustomButton = (props: CustomButton) => {
-  const { buttonStyle, draggleRef, setButtonStyle } = props;
+  const { buttonStyle, draggleRef, setButtonStyle, onClick } = props;
   // eslint-disable-next-line unused-imports/no-unused-vars
-  const { text, top, left, url, size, style } = buttonStyle;
+  const { text, top, left, size, style } = buttonStyle;
   // const [isOnclick, setIsOnclick] = React.useState(true);
 
   // eslint-disable-next-line @typescript-eslint/no-shadow
-  const buttonsClick = (event: any) => {
-    event.preventDefault();
-    event.stopPropagation();
-
-    window.open(`https://${url}`);
-  };
 
   const ButtonRef: any = React.useRef(null);
 
@@ -104,7 +102,7 @@ const CustomButton = (props: CustomButton) => {
           borderRadius: style === 'circle' ? '50px' : '3px',
         }}
       >
-        <span onClick={(event) => buttonsClick(event)}> {text}</span>
+        <span onClick={onClick}> {text}</span>
       </Button>
     </Draggable>
   );
