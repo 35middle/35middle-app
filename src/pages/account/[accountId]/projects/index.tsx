@@ -111,6 +111,9 @@ const Projects = ({ userSession }: Props) => {
                           selectedProject: project,
                         })
                       }
+                      onView={() => {
+                        router.push(`/${router.asPath}/${project.id}/videos`);
+                      }}
                     ></ProjectCard>
                   </Grid>
                 ))}

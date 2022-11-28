@@ -12,6 +12,12 @@ module.exports = withBundleAnalyzer({
         port: '',
         pathname: '/**',
       },
+      {
+        protocol: 'https',
+        hostname: 'images.unsplash.com',
+        port: '',
+        pathname: '/**',
+      },
     ],
   },
   // The starter code load resources from `public` folder with `router.basePath` in React components.

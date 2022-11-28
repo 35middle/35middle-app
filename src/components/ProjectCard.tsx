@@ -7,6 +7,7 @@ import type { ProjectEntity } from '@/hooks/useProjectsByAccountId';
 
 type Props = ProjectEntity & {
   onEdit?: () => void;
+  onView?: () => void;
 };
 
 const ProjectCard = ({
@@ -14,6 +15,7 @@ const ProjectCard = ({
   logoPath,
   brandColor = '#8249FC',
   onEdit,
+  onView,
 }: Props) => {
   return (
     <Card
@@ -46,7 +48,9 @@ const ProjectCard = ({
       <Divider variant="middle" className="my-5 w-full border" />
 
       <Box className="flex w-full justify-between">
-        <Button variant="contained">View project</Button>
+        <Button variant="contained" onClick={onView}>
+          View project
+        </Button>
         <Button
           variant="outlined"
           startIcon={<SettingsIcon />}
