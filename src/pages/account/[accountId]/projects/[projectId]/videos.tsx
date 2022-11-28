@@ -4,7 +4,9 @@ import * as React from 'react';
 
 import VideoCard from '@/components/VideoCard';
 import VideoList from '@/components/VideoList';
+import AuthorizedLayout from '@/layouts/AuthorizedLayout';
 import MainPageLayout from '@/layouts/MainPageLayout';
+import type { BasePageProps } from '@/types';
 
 interface VideoSummary {
   id: string;
@@ -57,42 +59,49 @@ const videoData: VideoSummary[] = [
     author: '@tjdragotta',
   },
 ];
+type Props = BasePageProps;
 
-export default function ProjectPage() {
+export default function ProjectPage({ userSession }: Props) {
   return (
-    <MainPageLayout
-      action={
-        <Button variant="contained" href="/video/create">
-          NEW VIDEO
-        </Button>
-      }
-      icon={<AssignmentIndOutlinedIcon fontSize="large" color="primary" />}
-      title={`Video Page`}
-      subtitle="This is where you can edit find you videos"
+    <AuthorizedLayout
+      userSession={userSession}
+      title="35middle | videos"
+      description="Projects list page"
     >
-      <VideoList>
-        {videoData.map(({ id, img, title, author }) => (
-          <VideoCard key={id} img={img} title={title} subtitle={author}>
-            <Grid container justifyContent="space-between">
-              <Grid item>
-                <Button variant="contained" href={`/video/${id}/edit`}>
-                  EDIT
-                </Button>
+      <MainPageLayout
+        action={
+          <Button variant="contained" href="/video/create">
+            NEW VIDEO
+          </Button>
+        }
+        icon={<AssignmentIndOutlinedIcon fontSize="large" color="primary" />}
+        title={`Video Page`}
+        subtitle="This is where you can edit find you videos"
+      >
+        <VideoList>
+          {videoData.map(({ id, img, title, author }) => (
+            <VideoCard key={id} img={img} title={title} subtitle={author}>
+              <Grid container justifyContent="space-between">
+                <Grid item>
+                  <Button variant="contained" href={`/video/${id}/edit`}>
+                    EDIT
+                  </Button>
+                </Grid>
+                <Grid item>
+                  <Button
+                    variant="contained"
+                    onClick={() => {
+                      console.log(`delete video ${id}`);
+                    }}
+                  >
+                    DELETE
+                  </Button>
+                </Grid>
               </Grid>
-              <Grid item>
-                <Button
-                  variant="contained"
-                  onClick={() => {
-                    console.log(`delete video ${id}`);
-                  }}
-                >
-                  DELETE
-                </Button>
-              </Grid>
-            </Grid>
-          </VideoCard>
-        ))}
-      </VideoList>
-    </MainPageLayout>
+            </VideoCard>
+          ))}
+        </VideoList>
+      </MainPageLayout>
+    </AuthorizedLayout>
   );
 }
