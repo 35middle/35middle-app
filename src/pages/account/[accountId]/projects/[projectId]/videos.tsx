@@ -1,8 +1,10 @@
-import { Box, Button, Grid } from '@mui/material';
+import AssignmentIndOutlinedIcon from '@mui/icons-material/AssignmentIndOutlined';
+import { Button, Grid } from '@mui/material';
 import * as React from 'react';
 
 import VideoCard from '@/components/VideoCard';
 import VideoList from '@/components/VideoList';
+import MainPageLayout from '@/layouts/MainPageLayout';
 
 interface VideoSummary {
   id: string;
@@ -58,10 +60,16 @@ const videoData: VideoSummary[] = [
 
 export default function ProjectPage() {
   return (
-    <Box sx={{ p: 2 }}>
-      <Button variant="contained" href="/video/create">
-        NEW VIDEO
-      </Button>
+    <MainPageLayout
+      action={
+        <Button variant="contained" href="/video/create">
+          NEW VIDEO
+        </Button>
+      }
+      icon={<AssignmentIndOutlinedIcon fontSize="large" color="primary" />}
+      title={`Video Page`}
+      subtitle="This is where you can edit find you videos"
+    >
       <VideoList>
         {videoData.map(({ id, img, title, author }) => (
           <VideoCard key={id} img={img} title={title} subtitle={author}>
@@ -85,6 +93,6 @@ export default function ProjectPage() {
           </VideoCard>
         ))}
       </VideoList>
-    </Box>
+    </MainPageLayout>
   );
 }
