@@ -1,4 +1,4 @@
-import AssignmentIndOutlinedIcon from '@mui/icons-material/AssignmentIndOutlined';
+import MovieOutlinedIcon from '@mui/icons-material/MovieOutlined';
 import { Box, Button, CircularProgress, Grid } from '@mui/material';
 import { useRouter } from 'next/router';
 import { useSWRConfig } from 'swr';
@@ -54,7 +54,7 @@ const Videos = ({ userSession }: Props) => {
         description="Videos list page"
       >
         <MainPageLayout
-          icon={<AssignmentIndOutlinedIcon fontSize="large" color="primary" />}
+          icon={<MovieOutlinedIcon fontSize="large" color="primary" />}
           title={`Video Page`}
           subtitle="This is where you can play magic on your videos"
         >
@@ -86,7 +86,7 @@ const Videos = ({ userSession }: Props) => {
               NEW VIDEO
             </Button>
           }
-          icon={<AssignmentIndOutlinedIcon fontSize="large" color="primary" />}
+          icon={<MovieOutlinedIcon fontSize="large" color="primary" />}
           title={`Video Page`}
           subtitle="This is where you can play magic on your videos"
         >
