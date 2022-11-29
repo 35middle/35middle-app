@@ -47,6 +47,7 @@ const Login = () => {
       if (response.ok) {
         const data = await response.json();
         const { accountId } = data;
+        // testing
         await router.replace(`/account/${accountId}/projects`);
       } else if (response.status === 401) {
         setAlertData({

@@ -4,6 +4,7 @@ export type VideoEntity = {
   id: string;
   name: string;
   thumbnail: string;
+  preview: string;
   videoUrl: string;
   projectId: string;
 };

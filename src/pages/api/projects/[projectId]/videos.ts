@@ -36,9 +36,10 @@ export default withIronSessionApiRoute(async function handler(
     }
   }
 
-  if (req.method === 'POST' || req.method === 'PUT') {
+  if (req.method === 'POST') {
+    const { projectId } = req.query;
     const response = await fetch(
-      `${process.env.SERVER_BASE_URL}/api/v1/projects`,
+      `${process.env.SERVER_BASE_URL}/api/v1/videos?projectId=${projectId}`,
       {
         method: req.method,
         body: req,

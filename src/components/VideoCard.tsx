@@ -12,15 +12,29 @@ type Props = VideoEntity & {
   children?: React.ReactNode;
 };
 
-export default function VideoCard({ thumbnail, name, children }: Props) {
+export default function VideoCard({
+  thumbnail,
+  name,
+  preview,
+  children,
+}: Props) {
   const [hidden, setHidden] = useState(true);
   return (
     <ImageListItem
-      className="cursor-pointer"
+      className="cursor-pointer h-full"
       onMouseEnter={() => setHidden(false)}
       onMouseLeave={() => setHidden(true)}
     >
-      <img src={thumbnail} alt={name} loading="lazy" />
+      <img
+        src={`/api/video-preview/${preview}` || ''}
+        alt={name}
+        className={hidden ? 'hidden' : ''}
+      />
+      <img
+        src={`/api/video-thumbnail/${thumbnail}` || ''}
+        alt={name}
+        className={!hidden ? 'hidden' : ''}
+      />
       <ImageListItemBar position="top" title={name} />
       {children ? (
         <ImageListItemBar

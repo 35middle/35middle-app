@@ -19,7 +19,7 @@ interface ButtonStyleType {
 interface CustomButton {
   buttonStyle: ButtonStyleType;
   draggleRef: any;
-  setButtonStyle: Function;
+  setButtonStyle: (d: any) => void;
   onClick: React.MouseEventHandler<HTMLButtonElement>;
 }
 

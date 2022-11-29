@@ -1,4 +1,5 @@
 import AddCircleOutlineOutlinedIcon from '@mui/icons-material/AddCircleOutlineOutlined';
+import CloudUploadOutlinedIcon from '@mui/icons-material/CloudUploadOutlined';
 import {
   Box,
   Button,
@@ -7,6 +8,7 @@ import {
   TextField,
   Typography,
 } from '@mui/material';
+import axios from 'axios';
 import type { FormikProps } from 'formik';
 import { useFormik } from 'formik';
 import { useState } from 'react';
@@ -18,99 +20,84 @@ import type { AlertData } from '@/components/Snackbar';
 import Snackbar from '@/components/Snackbar';
 
 const basicSchema = yup.object().shape({
-  videoTitle: yup.string().required('Video title is required'),
-  videoDescription: yup.string().required('Video description is required'),
-  videoUpload: yup
+  name: yup.string().required('Video title is required'),
+  description: yup.string().required('Video description is required'),
+  videoFile: yup
     .mixed()
     .required('Please select a video for upload')
-    .test(
-      'fileType',
-      'The file should be only in format: .mp4, .x-m4v',
-      (value) => {
-        return (
-          value && ['video/mp4', 'video/x-m4v'].includes(value.type)
-          // doesn't work with 'video/.mov'. '.mov' is just a container. So maybe the mime type / codec is still wrong. You should first verify this with a tool like this: https://mediaarea.net/
-        );
-      }
-    )
+    .test('fileType', 'The file should be only in format: .mp4', (value) => {
+      return value && ['video/mp4'].includes(value.type);
+    })
     .test('fileSize', 'The file is too large, should < 50mb', (value) => {
-      return value && value.size < 50000000;
-      // fileSize ?
+      return value && value.size < 50 * 1024 * 1024; // 50mb
     }),
 });
 
 interface FormValues {
-  videoTitle: string;
-  videoDescription: string;
-  videoUpload: File | null;
+  name: string;
+  description: string;
+  videoFile: File | null;
 }
 
 type Props = {
   onClose: () => void;
-  accountId: string;
   projectId: string;
 };
 
-const VideoUpload = ({ onClose, accountId, projectId }: Props) => {
+const VideoUpload = ({ onClose, projectId }: Props) => {
   const [alertData, setAlertData] = useState<AlertData>();
-  const [openProgress, setOpenProgress] = useState<boolean>(false);
+  const [progress, setProgress] = useState(0);
+  const [uploadSpeed, setUploadSpeed] = useState('');
+  const [uploadedSize, setUploadedSize] = useState('');
+  const [isProcessing, setIsProcessing] = useState(false);
+  const [isDone, setIsDone] = useState(false);
   const { mutate } = useSWRConfig();
 
-  const onSubmit = async (values: FormValues, actions: any) => {
+  const onSubmit = async (values: FormValues) => {
     try {
-      setOpenProgress(true);
-      const responseAddress = await fetch(
-        `/api/account/${accountId}/projects/${projectId}/videos`,
+      const startTime = new Date().getTime();
+      const formData = new FormData();
+      formData.append('projectId', projectId);
+      formData.append('name', values.name);
+      formData.append('description', values.description);
+      formData.append('videoFile', values.videoFile as File);
+
+      const response = await axios.post(
+        `/api/projects/${projectId}/videos`,
+        formData,
         {
-          method: 'POST',
-          body: values.videoUpload,
+          headers: { 'Content-Type': 'multipart/form-data' },
+          onUploadProgress: (progressEvent) => {
+            setProgress(
+              Math.round(
+                (progressEvent.loaded * 100) / (progressEvent.total as number)
+              )
+            );
+            const timeDiff = new Date().getTime() - startTime; // ms
+            const sizeDiff = progressEvent.loaded;
+            const speed = sizeDiff / timeDiff;
+
+            setUploadSpeed(`${(speed / 1024).toFixed(2)} mb/s`);
+            setUploadedSize(`${(sizeDiff / 1024 / 1024).toFixed(2)} mb`);
+
+            if (progressEvent.loaded === progressEvent.total) {
+              setIsProcessing(true);
+            }
+          },
         }
       );
-
-      const data = await responseAddress.json();
-      if (responseAddress.ok) {
-        const { videoAddress } = data;
-
-        setAlertData({
-          severity: 'success',
-          message: 'Congratulations! Your video has been uploaded.',
-        });
-
-        const formData = new FormData();
-        formData.append('accountId', accountId);
-        formData.append('projectId', projectId);
-        formData.append('videoTitle', values.videoTitle);
-        formData.append('videoDescription', values.videoDescription);
-        formData.append('videoAddress', videoAddress);
-
-        const response = await fetch(
-          `/api/account/${accountId}/projects/${projectId}/videos`,
-          {
-            method: 'POST',
-            body: formData,
-          }
-        );
-
-        if (response.ok) {
-          actions.resetForm();
-          await mutate(
-            `/api/account/${accountId}/projects/${projectId}/videos`
-          );
+      if (response.status === 200) {
+        setIsDone(true);
+        setTimeout(() => {
+          mutate(`/api/projects/${projectId}/videos`);
           onClose();
-        }
-      } else {
-        setAlertData({
-          severity: 'error',
-          message: 'Sorry. Your video upload failed. Please try again later.',
-        });
+        }, 500);
       }
     } catch (e: any) {
       setAlertData({
         severity: 'error',
         message: 'Sorry. Your video upload failed. Please try again later.',
       });
-    } finally {
-      setOpenProgress(false);
     }
   };
 
@@ -124,9 +111,9 @@ const VideoUpload = ({ onClose, accountId, projectId }: Props) => {
     setFieldValue,
   }: FormikProps<FormValues> = useFormik<FormValues>({
     initialValues: {
-      videoTitle: '',
-      videoDescription: '',
-      videoUpload: null,
+      name: '',
+      description: '',
+      videoFile: null,
     },
     validationSchema: basicSchema,
     onSubmit,
@@ -160,170 +147,146 @@ const VideoUpload = ({ onClose, accountId, projectId }: Props) => {
 
         <Divider variant="middle" style={{ margin: '1rem 0' }} />
 
-        {openProgress ? (
-          <LinearWithValueLabel />
-        ) : (
-          <form
+        <form
+          style={{
+            display: 'flex',
+            flex: 'column',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
+          onSubmit={handleSubmit}
+        >
+          <Box
             style={{
               display: 'flex',
-              flex: 'column',
-              justifyContent: 'center',
-              alignItems: 'center',
+              flexDirection: 'column',
             }}
-            onSubmit={handleSubmit}
           >
-            <Box
+            <TextField
+              id="name"
+              label="Video Title"
+              type="text"
+              style={{
+                width: '30rem',
+                marginBottom: '2rem',
+              }}
+              onChange={handleChange}
+              onBlur={handleBlur}
+              value={values.name}
+              error={touched.name && Boolean(errors.name)}
+              helperText={touched.name && errors.name}
+            />
+            <TextField
+              multiline
+              rows={4}
+              id="description"
+              label="Video Description"
+              type="text"
+              style={{
+                width: '30rem',
+                marginBottom: '2rem',
+              }}
+              onChange={handleChange}
+              onBlur={handleBlur}
+              value={values.description}
+              error={touched.description && Boolean(errors.description)}
+              helperText={touched.description && errors.description}
+            />
+            <div
               style={{
                 display: 'flex',
-                flexDirection: 'column',
+                height: '12rem',
+                width: '16rem',
+                justifyContent: 'center',
+                alignItems: 'center',
               }}
             >
-              <TextField
-                id="videoTitle"
-                label="Video Title"
-                type="text"
-                style={{
-                  width: '30rem',
-                  marginBottom: '2rem',
-                }}
-                onChange={handleChange}
-                onBlur={handleBlur}
-                value={values.videoTitle}
-                error={touched.videoTitle && Boolean(errors.videoTitle)}
-                helperText={touched.videoTitle && errors.videoTitle}
-              />
-              <TextField
-                multiline
-                rows={4}
-                id="videoDescription"
-                label="Video Description"
-                type="text"
-                style={{
-                  width: '30rem',
-                  marginBottom: '2rem',
-                }}
-                onChange={handleChange}
-                onBlur={handleBlur}
-                value={values.videoDescription}
-                error={
-                  touched.videoDescription && Boolean(errors.videoDescription)
-                }
-                helperText={touched.videoDescription && errors.videoDescription}
-              />
-              <div
+              <label
+                htmlFor="videoFile"
                 style={{
                   display: 'flex',
                   height: '12rem',
-                  width: '16rem',
+                  width: '100%',
+                  cursor: 'pointer',
+                  flexDirection: 'column',
                   justifyContent: 'center',
                   alignItems: 'center',
+                  borderRadius: '0.5rem',
+                  borderWidth: '2px',
+                  borderStyle: 'dashed',
+                  borderColor: 'rgb(209 213 219)',
+                  backgroundColor: 'rgb(243 244 246)',
                 }}
               >
-                <label
-                  htmlFor="videoUpload"
+                <Box
                   style={{
                     display: 'flex',
-                    height: '12rem',
-                    width: '100%',
-                    cursor: 'pointer',
                     flexDirection: 'column',
                     justifyContent: 'center',
                     alignItems: 'center',
-                    borderRadius: '0.5rem',
-                    borderWidth: '2px',
-                    borderStyle: 'dashed',
-                    borderColor: 'rgb(209 213 219)',
-                    backgroundColor: 'rgb(243 244 246)',
                   }}
                 >
-                  <div
-                    style={{
-                      display: 'flex',
-                      flexDirection: 'column',
-                      justifyContent: 'center',
-                      alignItems: 'center',
-                    }}
-                  >
-                    <svg
-                      aria-hidden="true"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                      xmlns="http://www.w3.org/2000/svg"
-                      style={{
-                        marginBottom: '0.75rem',
-                        height: '2.5rem',
-                        width: '2.5rem',
-                        color: 'rgb(156 163 175)',
-                      }}
-                    >
-                      <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        stroke-width="2"
-                        d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"
-                      ></path>
-                    </svg>
-                    <p
-                      style={{
-                        marginBottom: '0.5rem',
-                        fontSize: '0.875rem',
-                        lineHeight: '1.25rem',
-                        color: 'rgb(107 114 128)',
-                      }}
-                    >
-                      {values.videoUpload?.name || (
-                        <span
-                          style={{
-                            fontWeight: '600',
-                          }}
-                        >
-                          Click to upload
-                        </span>
-                      )}
-                    </p>
-                  </div>
-                  <input
-                    id="videoUpload"
-                    type="file"
-                    style={{ display: 'none' }}
-                    onChange={(event) => {
-                      setFieldValue('videoUpload', event.target.files?.[0]);
-                    }}
-                  />
-                </label>
-              </div>
-              <Typography variant="overline" color="error">
-                {touched.videoUpload && errors.videoUpload}
-              </Typography>
+                  <CloudUploadOutlinedIcon fontSize="large" color="primary" />
 
-              <Box
-                style={{
-                  display: 'flex',
-                  justifyContent: 'space-between',
-                  marginTop: '4rem',
-                }}
+                  <Typography variant="body2" className="mt-5">
+                    {values.videoFile?.name || 'Click to upload'}
+                  </Typography>
+                </Box>
+                <input
+                  id="videoFile"
+                  type="file"
+                  style={{ display: 'none' }}
+                  onChange={(event) => {
+                    setFieldValue('videoFile', event.target.files?.[0]);
+                  }}
+                />
+              </label>
+            </div>
+            <Typography variant="overline" color="error">
+              {touched.videoFile && errors.videoFile}
+            </Typography>
+
+            <LinearWithValueLabel
+              value={progress}
+              isProcessing={isProcessing}
+              isDone={isDone}
+            />
+            {uploadSpeed && (
+              <Typography variant="overline" color="error">
+                Upload speed: {uploadSpeed}
+              </Typography>
+            )}
+            {uploadedSize && (
+              <Typography variant="overline" color="error">
+                Uploaded: {uploadedSize}
+              </Typography>
+            )}
+            <Box
+              style={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                marginTop: '4rem',
+              }}
+            >
+              <Button
+                variant="outlined"
+                color="primary"
+                size="medium"
+                onClick={onClose}
               >
-                <Button
-                  variant="outlined"
-                  color="primary"
-                  size="medium"
-                  onClick={onClose}
-                >
-                  Cancel
-                </Button>
-                <Button
-                  type="submit"
-                  variant="contained"
-                  color="primary"
-                  size="medium"
-                >
-                  Upload
-                </Button>
-              </Box>
+                Cancel
+              </Button>
+              <Button
+                type="submit"
+                variant="contained"
+                color="primary"
+                size="medium"
+              >
+                Upload
+              </Button>
             </Box>
-          </form>
-        )}
+          </Box>
+        </form>
       </Paper>
     </>
   );

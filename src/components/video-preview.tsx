@@ -17,7 +17,7 @@ interface ButtonStyleType {
 }
 interface VideoPreviewProps {
   buttonStyle: ButtonStyleType;
-  setButtonStyle: Function;
+  setButtonStyle: any;
 }
 
 const VideoPreview: React.FC<VideoPreviewProps> = ({

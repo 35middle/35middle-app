@@ -5,7 +5,11 @@ import Typography from '@mui/material/Typography';
 import * as React from 'react';
 
 const LinearProgressWithLabel = (
-  props: LinearProgressProps & { value: number }
+  props: LinearProgressProps & {
+    value: number;
+    isProcessing?: boolean;
+    isDone?: boolean;
+  }
 ) => {
   return (
     <Box sx={{ display: 'flex', alignItems: 'center' }}>
@@ -13,31 +17,34 @@ const LinearProgressWithLabel = (
         <LinearProgress variant="determinate" {...props} />
       </Box>
       <Box sx={{ minWidth: 35 }}>
-        <Typography variant="body2" color="text.secondary">{`${Math.round(
-          props.value
-        )}%`}</Typography>
+        <Typography variant="body2" color="text.secondary">
+          {/* eslint-disable-next-line no-nested-ternary */}
+          {props.isDone
+            ? 'Done'
+            : props.isProcessing
+            ? 'Processing...'
+            : `${Math.round(props.value)}%`}
+          {}
+        </Typography>
       </Box>
     </Box>
   );
 };
 
-const LinearWithValueLabel = () => {
-  const [progress, setProgress] = React.useState(10);
+type Props = {
+  value?: number;
+  isProcessing?: boolean;
+  isDone?: boolean;
+};
 
-  React.useEffect(() => {
-    const timer = setInterval(() => {
-      setProgress((prevProgress) =>
-        prevProgress >= 100 ? 10 : prevProgress + 10
-      );
-    }, 800);
-    return () => {
-      clearInterval(timer);
-    };
-  }, []);
-
+const LinearWithValueLabel = ({ value = 0, isProcessing, isDone }: Props) => {
   return (
     <Box sx={{ width: '100%' }}>
-      <LinearProgressWithLabel value={progress} />
+      <LinearProgressWithLabel
+        value={value}
+        isProcessing={isProcessing}
+        isDone={isDone}
+      />
     </Box>
   );
 };

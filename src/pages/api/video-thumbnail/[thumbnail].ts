@@ -7,9 +7,9 @@ export default async function handler(
 ) {
   res.setHeader('Cache-Control', 's-maxage=86400');
   if (req.method === 'GET') {
-    const { logoPath } = req.query;
+    const { thumbnail } = req.query;
     const response = await fetch(
-      `${process.env.SERVER_BASE_URL}/api/v1/projects/project-logo/${logoPath}`,
+      `${process.env.SERVER_BASE_URL}/api/v1/videos/video-thumbnail/${thumbnail}`,
       {
         method: 'GET',
       }
