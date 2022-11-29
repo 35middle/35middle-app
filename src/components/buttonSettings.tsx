@@ -242,7 +242,7 @@ const ButtonSettings = (props: any) => {
           <Button size="medium" variant="contained">
             Cancel
           </Button>
-          <Link href={`/video-preview`}>
+          <Link href={`/video-preview-page`}>
             <Button size="medium" variant="contained">
               Video Preview
             </Button>
