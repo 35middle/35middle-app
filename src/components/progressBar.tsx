@@ -4,21 +4,16 @@ import * as React from 'react';
 function valuetext(value: number) {
   return `${value}s`;
 }
-const duration = 596;
-const start = 0;
-
-// interface HandleChangeCommitted {
-//   handleChangeCommitted: (arg: Array<number> | number) => void;
-// }
 
 interface ProgressBarPropsType {
+  duration: number;
   onChangeCommitted: (
     event: React.SyntheticEvent | Event,
     value: number | Array<number>
   ) => void;
 }
 
-const ProgressBar = ({ onChangeCommitted }: ProgressBarPropsType) => {
+const ProgressBar = ({ onChangeCommitted, duration }: ProgressBarPropsType) => {
   // const [value, setValue] = React.useState<number[]>([0, 0]);
   const valueLabelFormat = (second: number) => {
     let minutes: number | string = Math.floor(second / 60);
@@ -54,7 +49,7 @@ const ProgressBar = ({ onChangeCommitted }: ProgressBarPropsType) => {
           getAriaValueText={valuetext}
           sx={{ width: 550 }}
           marks={marks}
-          min={start}
+          min={0}
           max={duration}
           valueLabelDisplay="on"
           valueLabelFormat={valueLabelFormat}

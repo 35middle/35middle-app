@@ -16,7 +16,7 @@ export { getServerSideProps } from '@/core/auth';
 
 type Props = BasePageProps;
 
-const Videos = ({ userSession }: Props) => {
+const VideoListPage = ({ userSession }: Props) => {
   const router = useRouter();
   const { mutate } = useSWRConfig();
   const { projectId, accountId } = router.query;
@@ -111,6 +111,14 @@ const Videos = ({ userSession }: Props) => {
                         <Grid item>
                           <Button
                             variant="contained"
+                            href={`${router.asPath}/${video.id}/pin`}
+                          >
+                            Pin
+                          </Button>
+                        </Grid>
+                        <Grid item>
+                          <Button
+                            variant="contained"
                             onClick={() => handleVideoDelete(video.id)}
                           >
                             DELETE
@@ -138,4 +146,4 @@ const Videos = ({ userSession }: Props) => {
   );
 };
 
-export default Videos;
+export default VideoListPage;

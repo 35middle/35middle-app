@@ -14,7 +14,7 @@ export default withIronSessionApiRoute(async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  if (req.method === 'DELETE') {
+  if (req.method === 'GET' || req.method === 'DELETE') {
     const response = await fetch(
       `${process.env.SERVER_BASE_URL}/api/v1/videos/${req.query.videoId}`,
       {

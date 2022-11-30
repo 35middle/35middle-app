@@ -28,8 +28,8 @@ const basicSchema = yup.object().shape({
     .test('fileType', 'The file should be only in format: .mp4', (value) => {
       return value && ['video/mp4'].includes(value.type);
     })
-    .test('fileSize', 'The file is too large, should < 50mb', (value) => {
-      return value && value.size < 50 * 1024 * 1024; // 50mb
+    .test('fileSize', 'The file is too large, should < 200mb', (value) => {
+      return value && value.size < 200 * 1024 * 1024; // 50mb
     }),
 });
 

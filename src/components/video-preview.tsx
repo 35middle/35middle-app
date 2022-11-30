@@ -16,22 +16,23 @@ interface ButtonStyleType {
   style: 'circle' | 'party';
 }
 interface VideoPreviewProps {
+  videoUrl: string;
   buttonStyle: ButtonStyleType;
   setButtonStyle: any;
 }
 
 const VideoPreview: React.FC<VideoPreviewProps> = ({
+  videoUrl,
   buttonStyle,
   setButtonStyle,
 }) => {
   const videoEl = React.useRef<HTMLVideoElement>(null!);
 
   React.useEffect(() => {
-    if (buttonStyle.startTime !== 0 && buttonStyle.startTime !== undefined) {
+    if (buttonStyle.startTime) {
       videoEl.current.currentTime = buttonStyle.startTime;
-      videoEl.current.play();
     }
-  });
+  }, [buttonStyle.startTime]);
   const draggleRef = React.useRef(null);
 
   const videoTimeChange = () => {
@@ -69,10 +70,7 @@ const VideoPreview: React.FC<VideoPreviewProps> = ({
           onTimeUpdate={videoTimeChange}
           style={{ objectFit: 'fill' }}
         >
-          <source
-            src="http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"
-            type="video/mp4"
-          />
+          <source src={videoUrl} type="video/mp4" />
           Your browser does not support HTML5 video.
         </video>
 
