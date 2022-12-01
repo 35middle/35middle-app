@@ -2,7 +2,7 @@ import {
   Box,
   Button,
   InputAdornment,
-  Link,
+  Modal,
   Paper,
   Stack,
   TextField,
@@ -10,11 +10,12 @@ import {
 } from '@mui/material';
 import * as React from 'react';
 
+import VideoOnlinePreview from '@/components/VideoOnlinePreview';
+
 // import ButtonPosition from '@/pages/button/buttonPosition';
 
 const ButtonSettings = (props: any) => {
-  const [isJumpToVideo, setIsJumpToVideo] = React.useState(false);
-  const [isUrl, setIsUrl] = React.useState(true);
+  const [isPreviewOpen, setIsPreviewOpen] = React.useState(false);
 
   // const [click, setClick] = React.useState(false);
   // // console.log(click);
@@ -45,26 +46,25 @@ const ButtonSettings = (props: any) => {
     const { value } = event.target;
     if (value !== '') {
       setButtonStyle((v: any) => ({ ...v, url: value }));
-      setIsUrl(true);
     } else {
       setButtonStyle((v: any) => ({ ...v, url: undefined }));
-      setIsUrl(false);
     }
   };
 
-  const JumpToTimeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const { value } = event.target;
-    if (value.includes(':')) {
-      const timeArray: Array<string> = value.split(':');
-      if (timeArray[0] !== undefined && timeArray[1] !== undefined) {
-        const jumpToTimeSeconds: number = +timeArray[0] * 60 + +timeArray[1];
-        setButtonStyle((v: any) => ({ ...v, jumpToTime: jumpToTimeSeconds }));
-        setIsJumpToVideo(true);
-      }
-    } else {
-      setIsJumpToVideo(false);
-    }
-  };
+  // const JumpToTimeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  //   const { value } = event.target;
+  //   if (value.includes(':')) {
+  //     const timeArray: Array<string> = value.split(':');
+  //     if (timeArray[0] !== undefined && timeArray[1] !== undefined) {
+  //       const jumpToTimeSeconds: number = +timeArray[0] * 60 + +timeArray[1];
+  //       setButtonStyle((v: any) => ({ ...v, jumpToTime: jumpToTimeSeconds }));
+  //       setIsJumpToVideo(true);
+  //     }
+  //   } else {
+  //     setIsJumpToVideo(false);
+  //   }
+  // };
+
   const handleClickButtonStyle = (value: string) => {
     setButtonStyle((v: any) => ({ ...v, style: value }));
   };
@@ -219,17 +219,6 @@ const ButtonSettings = (props: any) => {
               size="small"
               onChange={UrlhandleChange}
               className="m-1"
-              disabled={isJumpToVideo}
-            />
-            <TextField
-              fullWidth
-              id="outlined-basic"
-              label="Jump to video"
-              size="small"
-              variant="outlined"
-              onChange={JumpToTimeChange}
-              className="m-1"
-              disabled={isUrl}
             />
           </Box>
         </div>
@@ -242,13 +231,23 @@ const ButtonSettings = (props: any) => {
           <Button size="medium" variant="contained">
             Cancel
           </Button>
-          <Link href={`/video-preview`}>
-            <Button size="medium" variant="contained">
-              Video Preview
-            </Button>
-          </Link>
+
+          <Button
+            size="medium"
+            variant="contained"
+            onClick={() => setIsPreviewOpen(true)}
+          >
+            Video Preview
+          </Button>
         </Stack>
       </div>
+
+      <Modal open={isPreviewOpen} onClose={() => setIsPreviewOpen(false)}>
+        <VideoOnlinePreview
+          buttonPreviewStyle={buttonStyle}
+          videoUrl={props.videoUrl || ''}
+        />
+      </Modal>
     </>
   );
 };

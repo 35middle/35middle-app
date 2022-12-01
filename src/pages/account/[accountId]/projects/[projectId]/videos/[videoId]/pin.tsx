@@ -88,6 +88,7 @@ const PinButtonPage = ({ userSession }: Props) => {
             </div>
             <div className="mt-1 mb-2 p-1 w-1/2 flex items-center justify-center">
               <ButtonSettings
+                videoUrl={video?.videoUrl || ''}
                 buttonStyle={buttonStyle}
                 setButtonStyle={setButtonStyle}
               />
