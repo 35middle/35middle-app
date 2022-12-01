@@ -2,6 +2,7 @@ import {
   Alert,
   Box,
   Button,
+  Paper,
   Snackbar,
   TextField,
   Typography,
@@ -87,7 +88,11 @@ const ChangePassword: React.FC<SetModalProps> = ({ popUpShowModal }) => {
   });
 
   return (
-    <>
+    <Paper
+      style={{
+        borderRadius: '5%',
+      }}
+    >
       <Snackbar
         anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
         open={!!errorMsg}
@@ -103,7 +108,7 @@ const ChangePassword: React.FC<SetModalProps> = ({ popUpShowModal }) => {
           {/* {'Change password failed!'} */}
         </Alert>
       </Snackbar>
-      <Box className="flex  items-center justify-center bg-background opacity-100">
+      <Box>
         <Box
           sx={{
             width: 500,
@@ -118,7 +123,7 @@ const ChangePassword: React.FC<SetModalProps> = ({ popUpShowModal }) => {
             className="flex flex-row items-center bg-slate-200"
           >
             <Typography className="pl-8" variant="h4">
-              Change password
+              Change Password
             </Typography>
           </Box>
           <form
@@ -189,7 +194,7 @@ const ChangePassword: React.FC<SetModalProps> = ({ popUpShowModal }) => {
           </form>
         </Box>
       </Box>
-    </>
+    </Paper>
   );
 };
 

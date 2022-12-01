@@ -74,7 +74,10 @@ const Profile = ({ userSession }: Props) => {
         title={`Manage ${userSession?.firstName}'s profile`}
         subtitle="This is where you can manage profile information"
       >
-        <Box className="flex h-full flex-col items-center justify-center ">
+        <Box
+          className="flex h-full flex-col items-center justify-center"
+          style={{ position: 'relative' }}
+        >
           <form onSubmit={handleSubmit} className="flex w-1/3 flex-col">
             <TextField
               id="firstName"
@@ -128,14 +131,17 @@ const Profile = ({ userSession }: Props) => {
               Save
             </Button>
           </form>
+          <Box
+            className="z-10 flex items-center justify-center bg-background"
+            style={{ position: 'absolute', borderRadius: '5%' }}
+          >
+            {showModal ? (
+              <div>
+                <ChangePassword popUpShowModal={popUpShowModal} />
+              </div>
+            ) : null}
+          </Box>
         </Box>
-        <div className="fixed top-32 left-52 z-10">
-          {showModal ? (
-            <div>
-              <ChangePassword popUpShowModal={popUpShowModal} />
-            </div>
-          ) : null}
-        </div>
       </MainPageLayout>
     </AuthorizedLayout>
   );
