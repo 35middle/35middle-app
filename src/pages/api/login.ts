@@ -35,7 +35,7 @@ export default withIronSessionApiRoute(async function loginRoute(req, res) {
     return serialize(key, value, {
       path: '/',
       expires: new Date(new Date().getTime() + 1000 * 60 * 60 * 24 * 7),
-      domain: '35middle.com',
+      domain: '.35middle.com',
       secure: true,
     });
   });
