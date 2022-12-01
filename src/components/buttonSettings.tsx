@@ -2,13 +2,14 @@ import {
   Box,
   Button,
   InputAdornment,
-  Link,
   Paper,
   Stack,
   TextField,
   Typography,
 } from '@mui/material';
-import * as React from 'react';
+import React from 'react';
+
+import VideoPreview from './video-preview';
 
 // import ButtonPosition from '@/pages/button/buttonPosition';
 
@@ -78,6 +79,8 @@ const ButtonSettings = (props: any) => {
     border: '3px solid #000',
     // },
   };
+
+  const [showModal, setShowModal] = React.useState(false);
 
   return (
     <>
@@ -242,12 +245,26 @@ const ButtonSettings = (props: any) => {
           <Button size="medium" variant="contained">
             Cancel
           </Button>
-          <Link href={`/video-preview-page`}>
-            <Button size="medium" variant="contained">
-              Video Preview
-            </Button>
-          </Link>
+          {/* <Link href={`/video-preview-page`}> */}
+          <Button
+            size="medium"
+            variant="contained"
+            onClick={() => setShowModal(true)}
+          >
+            Video Preview
+          </Button>
+          {/* </Link> */}
         </Stack>
+        <div className="fixed top-32 left-52 z-10">
+          {showModal ? (
+            <div>
+              <VideoPreview
+                buttonStyle={buttonStyle}
+                setButtonStyle={setButtonStyle}
+              />
+            </div>
+          ) : null}
+        </div>
       </div>
     </>
   );
